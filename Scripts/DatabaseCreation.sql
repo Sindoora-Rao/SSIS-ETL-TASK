@@ -69,7 +69,8 @@ IF (SELECT COUNT(*) FROM prod.Users) = 0
  (108, 'James Taylor', 29, 'jamestaylor@example.com', '2019-06-22', '2023-02-05', 210.00),
  (109, 'Linda Anderson', 27, 'lindaanderson@example.com', '2021-04-16', '2023-01-25', 165.95),
  (110, 'Robert Wilson', 31, 'robertwilson@example.com', '2020-02-20', '2023-01-20', 175.00);
- END
+ END
+
 
 SELECT * from prod.Users;
 
