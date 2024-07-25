@@ -11,8 +11,8 @@
   DTS:LocaleID="4105"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="42"
-  DTS:VersionGUID="{0743E163-13AE-46C8-9A60-5B37596EFB93}">
+  DTS:VersionBuild="79"
+  DTS:VersionGUID="{87E93343-760C-4B95-82F1-48B83D537C4E}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -171,17 +171,25 @@
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="Age"
-                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[Age]" />
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Age]" />
                     <inputColumn
-                      refId="Package\ExtractData From CSV to Staging\Conditional Split.Inputs[Conditional Split Input].Columns[IsNumeric]"
+                      refId="Package\ExtractData From CSV to Staging\Conditional Split.Inputs[Conditional Split Input].Columns[UserID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="UserID"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[UserID]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Conditional Split.Inputs[Conditional Split Input].Columns[IsUserIDNumeric]"
                       cachedDataType="i4"
-                      cachedName="IsNumeric"
-                      lineageId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsNumeric]" />
+                      cachedName="IsUserIDNumeric"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsUserIDNumeric]" />
                     <inputColumn
-                      refId="Package\ExtractData From CSV to Staging\Conditional Split.Inputs[Conditional Split Input].Columns[HasPurchaseTotal]"
-                      cachedDataType="bool"
-                      cachedName="HasPurchaseTotal"
-                      lineageId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[HasPurchaseTotal]" />
+                      refId="Package\ExtractData From CSV to Staging\Conditional Split.Inputs[Conditional Split Input].Columns[IsAgeNumeric]"
+                      cachedDataType="i4"
+                      cachedName="IsAgeNumeric"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsAgeNumeric]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -201,17 +209,45 @@
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsNumeric]} == 1 &amp;&amp; ![ISNULL](#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[Age]}) &amp;&amp; (DT_I4)#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[Age]} &gt;= 0 &amp;&amp; #{Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[HasPurchaseTotal]} ==  TRUE </property>
+                      name="Expression">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsAgeNumeric]} == 1 &amp;&amp; (DT_I4)#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Age]} &gt;= 0 &amp;&amp; #{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsUserIDNumeric]} == 1</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">IsNumeric == 1 &amp;&amp; !ISNULL(Age) &amp;&amp; (DT_I4)Age &gt;= 0 &amp;&amp; HasPurchaseTotal ==  TRUE </property>
+                      name="FriendlyExpression">IsAgeNumeric == 1 &amp;&amp; (DT_I4)Age &gt;= 0 &amp;&amp; IsUserIDNumeric == 1</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
                       name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\ExtractData From CSV to Staging\Conditional Split.Outputs[InValid]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="InValid"
+                  synchronousInputId="Package\ExtractData From CSV to Staging\Conditional Split.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[LEN]([TRIM](#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[UserID]})) == 0</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">LEN(TRIM(UserID)) == 0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
                   </properties>
                   <externalMetadataColumns />
                 </output>
@@ -271,49 +307,48 @@
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="UserID"
-                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[UserID]" />
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[UserID]" />
                     <inputColumn
                       refId="Package\ExtractData From CSV to Staging\Data Conversion.Inputs[Data Conversion Input].Columns[FullName]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="FullName"
-                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[FullName]" />
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[FullName]" />
                     <inputColumn
                       refId="Package\ExtractData From CSV to Staging\Data Conversion.Inputs[Data Conversion Input].Columns[Age]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="Age"
-                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[Age]" />
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Age]" />
                     <inputColumn
                       refId="Package\ExtractData From CSV to Staging\Data Conversion.Inputs[Data Conversion Input].Columns[Email]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="Email"
-                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[Email]" />
-                    <inputColumn
-                      refId="Package\ExtractData From CSV to Staging\Data Conversion.Inputs[Data Conversion Input].Columns[RegistrationDate]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="RegistrationDate"
-                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[RegistrationDate]" />
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Email]" />
                     <inputColumn
                       refId="Package\ExtractData From CSV to Staging\Data Conversion.Inputs[Data Conversion Input].Columns[LastLoginDate]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="LastLoginDate"
-                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[LastLoginDate]" />
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[LastLoginDate]" />
                     <inputColumn
                       refId="Package\ExtractData From CSV to Staging\Data Conversion.Inputs[Data Conversion Input].Columns[PurchaseTotal]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="PurchaseTotal"
-                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[PurchaseTotal]" />
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[PurchaseTotal]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion.Inputs[Data Conversion Input].Columns[CleanRegistrationDate]"
+                      cachedDataType="dbDate"
+                      cachedName="CleanRegistrationDate"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[CleanRegistrationDate]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -338,7 +373,7 @@
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[UserID]}</property>
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[UserID]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -359,7 +394,7 @@
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[FullName]}</property>
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[FullName]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -379,7 +414,7 @@
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[Age]}</property>
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Age]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -400,27 +435,7 @@
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[Email]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\ExtractData From CSV to Staging\Data Conversion.Outputs[Data Conversion Output].Columns[RegistrationDate]"
-                      dataType="dbDate"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion.Outputs[Data Conversion Output].Columns[RegistrationDate]"
-                      name="RegistrationDate"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[RegistrationDate]}</property>
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Email]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -440,7 +455,7 @@
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[LastLoginDate]}</property>
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[LastLoginDate]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -462,7 +477,27 @@
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[PurchaseTotal]}</property>
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[PurchaseTotal]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion.Outputs[Data Conversion Output].Columns[RegistrationDate]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion.Outputs[Data Conversion Output].Columns[RegistrationDate]"
+                      name="RegistrationDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[CleanRegistrationDate]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -522,7 +557,32 @@
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="PurchaseTotal"
-                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[PurchaseTotal]" />
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="IgnoreFailure"
+                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[PurchaseTotal]"
+                      truncationRowDisposition="IgnoreFailure"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[LEN]([TRIM](#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[PurchaseTotal]})) == 0 ? "0.0" : #{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[PurchaseTotal]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">LEN(TRIM(PurchaseTotal)) == 0 ? "0.0" : PurchaseTotal</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Derived Column.Inputs[Derived Column Input].Columns[UserID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="UserID"
+                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[UserID]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -536,13 +596,35 @@
                   synchronousInputId="Package\ExtractData From CSV to Staging\Derived Column.Inputs[Derived Column Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsNumeric]"
+                      refId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsUserIDNumeric]"
                       dataType="i4"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="IgnoreFailure"
-                      lineageId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsNumeric]"
-                      name="IsNumeric"
-                      truncationRowDisposition="FailComponent">
+                      lineageId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsUserIDNumeric]"
+                      name="IsUserIDNumeric"
+                      truncationRowDisposition="IgnoreFailure">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_I4)#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[UserID]} == (DT_I4)#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[UserID]} ? 1 : 0</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_I4)UserID == (DT_I4)UserID ? 1 : 0</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsAgeNumeric]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="IgnoreFailure"
+                      lineageId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsAgeNumeric]"
+                      name="IsAgeNumeric"
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           containsID="true"
@@ -555,28 +637,6 @@
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
                           name="FriendlyExpression">(DT_I4)Age == (DT_I4)Age ? 1 : 0</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[HasPurchaseTotal]"
-                      dataType="bool"
-                      errorOrTruncationOperation="Computation"
-                      errorRowDisposition="FailComponent"
-                      lineageId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[HasPurchaseTotal]"
-                      name="HasPurchaseTotal"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.String"
-                          description="Derived Column Expression"
-                          name="Expression">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[PurchaseTotal]} == "" ?  FALSE  :  TRUE </property>
-                        <property
-                          containsID="true"
-                          dataType="System.String"
-                          description="Derived Column Friendly Expression"
-                          expressionType="Notify"
-                          name="FriendlyExpression">PurchaseTotal == "" ?  FALSE  :  TRUE </property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -967,12 +1027,6 @@
                       externalMetadataColumnId="Package\ExtractData From CSV to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Email]"
                       lineageId="Package\ExtractData From CSV to Staging\Data Conversion.Outputs[Data Conversion Output].Columns[Email]" />
                     <inputColumn
-                      refId="Package\ExtractData From CSV to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RegistrationDate]"
-                      cachedDataType="dbDate"
-                      cachedName="RegistrationDate"
-                      externalMetadataColumnId="Package\ExtractData From CSV to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RegistrationDate]"
-                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion.Outputs[Data Conversion Output].Columns[RegistrationDate]" />
-                    <inputColumn
                       refId="Package\ExtractData From CSV to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[LastLoginDate]"
                       cachedDataType="dbDate"
                       cachedName="LastLoginDate"
@@ -986,6 +1040,12 @@
                       cachedScale="2"
                       externalMetadataColumnId="Package\ExtractData From CSV to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PurchaseTotal]"
                       lineageId="Package\ExtractData From CSV to Staging\Data Conversion.Outputs[Data Conversion Output].Columns[PurchaseTotal]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RegistrationDate]"
+                      cachedDataType="dbDate"
+                      cachedName="RegistrationDate"
+                      externalMetadataColumnId="Package\ExtractData From CSV to Staging\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RegistrationDate]"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion.Outputs[Data Conversion Output].Columns[RegistrationDate]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1051,6 +1111,1308 @@
                 </output>
               </outputs>
             </component>
+            <component
+              refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID"
+              componentClassID="Microsoft.Sort"
+              contactInfo="Sort;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Sorts input data in ascending or descending order when it cannot be sorted at its source. For example, sort sales data by 'customer id' before it is written to a flat file and delivered to another department. Note: We do not recommend this transformation for large data flows."
+              name="Remove duplicate UserID"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the Sort transformation removes rows with duplicate sort values."
+                  name="EliminateDuplicates">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the maximum number of threads to use for sorting."
+                  expressionType="Notify"
+                  name="MaximumThreads">-1</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input]"
+                  name="Sort Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input].Columns[UserID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="UserID"
+                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[UserID]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">1</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input].Columns[FullName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="FullName"
+                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[FullName]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input].Columns[Age]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Age"
+                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[Age]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input].Columns[Email]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Email"
+                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[Email]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input].Columns[RegistrationDate]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="RegistrationDate"
+                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[RegistrationDate]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input].Columns[LastLoginDate]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="LastLoginDate"
+                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[LastLoginDate]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input].Columns[PurchaseTotal]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="PurchaseTotal"
+                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[PurchaseTotal]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input].Columns[IsUserIDNumeric]"
+                      cachedDataType="i4"
+                      cachedName="IsUserIDNumeric"
+                      lineageId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsUserIDNumeric]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input].Columns[CleanRegistrationDate]"
+                      cachedDataType="dbDate"
+                      cachedName="CleanRegistrationDate"
+                      lineageId="Package\ExtractData From CSV to Staging\Script Component.Outputs[Output 0].Columns[CleanRegistrationDate]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input].Columns[IsAgeNumeric]"
+                      cachedDataType="i4"
+                      cachedName="IsAgeNumeric"
+                      lineageId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsAgeNumeric]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output]"
+                  isSorted="true"
+                  name="Sort Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[UserID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[UserID]"
+                      name="UserID"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[UserID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[FullName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[FullName]"
+                      name="FullName">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[FullName]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Age]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Age]"
+                      name="Age">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[Age]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Email]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Email]"
+                      name="Email">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[Email]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[RegistrationDate]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[RegistrationDate]"
+                      name="RegistrationDate">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[RegistrationDate]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[LastLoginDate]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[LastLoginDate]"
+                      name="LastLoginDate">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[LastLoginDate]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[PurchaseTotal]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[PurchaseTotal]"
+                      name="PurchaseTotal">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[PurchaseTotal]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsUserIDNumeric]"
+                      dataType="i4"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsUserIDNumeric]"
+                      name="IsUserIDNumeric">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsUserIDNumeric]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[CleanRegistrationDate]"
+                      dataType="dbDate"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[CleanRegistrationDate]"
+                      name="CleanRegistrationDate">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\ExtractData From CSV to Staging\Script Component.Outputs[Output 0].Columns[CleanRegistrationDate]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsAgeNumeric]"
+                      dataType="i4"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsAgeNumeric]"
+                      name="IsAgeNumeric">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsAgeNumeric]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\ExtractData From CSV to Staging\Script Component"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum.;Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;13"
+              description="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum."
+              name="Script Component"
+              version="13">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Stores the source code of the component"
+                  isArray="true"
+                  name="SourceCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="30">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[ComponentWrapper.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+*  Microsoft SQL Server Integration Services component wrapper
+*  This module defines the base class for your component
+*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
+
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime.Wrapper;
+
+public class UserComponent: ScriptComponent
+{
+    public Connections Connections;
+    public Variables Variables;
+    public UserComponent()
+    {
+        Connections = new Connections(this);
+        Variables = new Variables(this);
+    }
+
+    public override void ProcessInput(int InputID, string InputName, PipelineBuffer Buffer, OutputNameMap OutputMap)
+    {
+
+        if (InputName.Equals(@"Input 0", StringComparison.Ordinal))
+        {
+            Input0_ProcessInput(new Input0Buffer(Buffer, GetColumnIndexes(InputID), OutputMap));
+        }
+
+    }
+
+    public virtual void Input0_ProcessInput(Input0Buffer Buffer)
+    {
+        while (Buffer.NextRow())
+        {
+            Input0_ProcessInputRow(Buffer);
+        }
+    }
+
+    public virtual void Input0_ProcessInputRow(Input0Buffer Row)
+    {
+    }
+
+}
+
+public class Connections
+{
+    ScriptComponent ParentComponent;
+
+    public Connections(ScriptComponent Component)
+    {
+        ParentComponent = Component;
+    }
+
+}
+
+public class Variables
+{
+    ScriptComponent ParentComponent;
+
+    public Variables(ScriptComponent Component)
+    {
+        ParentComponent = Component;
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Resources.resx]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[main.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[#region Help:  Introduction to the Script Component
+/* The Script Component allows you to perform virtually any operation that can be accomplished in
+ * a .Net application within the context of an Integration Services data flow.
+ *
+ * Expand the other regions which have "Help" prefixes for examples of specific ways to use
+ * Integration Services features within this script component. */
+#endregion
+
+#region Namespaces
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime.Wrapper;
+#endregion
+
+/// <summary>
+/// This is the class to which to add your code.  Do not change the name, attributes, or parent
+/// of this class.
+/// </summary>
+[Microsoft.SqlServer.Dts.Pipeline.SSISScriptComponentEntryPointAttribute]
+public class ScriptMain : UserComponent
+{
+    #region Help:  Using Integration Services variables and parameters
+    /* To use a variable in this script, first ensure that the variable has been added to
+     * either the list contained in the ReadOnlyVariables property or the list contained in
+     * the ReadWriteVariables property of this script component, according to whether or not your
+     * code needs to write into the variable.  To do so, save this script, close this instance of
+     * Visual Studio, and update the ReadOnlyVariables and ReadWriteVariables properties in the
+     * Script Transformation Editor window.
+     * To use a parameter in this script, follow the same steps. Parameters are always read-only.
+     *
+     * Example of reading from a variable or parameter:
+     *  DateTime startTime = Variables.MyStartTime;
+     *
+     * Example of writing to a variable:
+     *  Variables.myStringVariable = "new value";
+     */
+    #endregion
+
+    #region Help:  Using Integration Services Connnection Managers
+    /* Some types of connection managers can be used in this script component.  See the help topic
+     * "Working with Connection Managers Programatically" for details.
+     *
+     * To use a connection manager in this script, first ensure that the connection manager has
+     * been added to either the list of connection managers on the Connection Managers page of the
+     * script component editor.  To add the connection manager, save this script, close this instance of
+     * Visual Studio, and add the Connection Manager to the list.
+     *
+     * If the component needs to hold a connection open while processing rows, override the
+     * AcquireConnections and ReleaseConnections methods.
+     * 
+     * Example of using an ADO.Net connection manager to acquire a SqlConnection:
+     *  object rawConnection = Connections.SalesDB.AcquireConnection(transaction);
+     *  SqlConnection salesDBConn = (SqlConnection)rawConnection;
+     *
+     * Example of using a File connection manager to acquire a file path:
+     *  object rawConnection = Connections.Prices_zip.AcquireConnection(transaction);
+     *  string filePath = (string)rawConnection;
+     *
+     * Example of releasing a connection manager:
+     *  Connections.SalesDB.ReleaseConnection(rawConnection);
+     */
+    #endregion
+
+    #region Help:  Firing Integration Services Events
+    /* This script component can fire events.
+     *
+     * Example of firing an error event:
+     *  ComponentMetaData.FireError(10, "Process Values", "Bad value", "", 0, out cancel);
+     *
+     * Example of firing an information event:
+     *  ComponentMetaData.FireInformation(10, "Process Values", "Processing has started", "", 0, fireAgain);
+     *
+     * Example of firing a warning event:
+     *  ComponentMetaData.FireWarning(10, "Process Values", "No rows were received", "", 0);
+     */
+    #endregion
+
+    /// <summary>
+    /// This method is called once, before rows begin to be processed in the data flow.
+    ///
+    /// You can remove this method if you don't need to do anything here.
+    /// </summary>
+    public override void PreExecute()
+    {
+        base.PreExecute();
+        /*
+         * Add your code here
+         */
+    }
+
+    /// <summary>
+    /// This method is called after all the rows have passed through this component.
+    ///
+    /// You can delete this method if you don't need to do anything here.
+    /// </summary>
+    public override void PostExecute()
+    {
+        base.PostExecute();
+        /*
+         * Add your code here
+         */
+    }
+
+    /// <summary>
+    /// This method is called once for every row that passes through the component from Input0.
+    ///
+    /// Example of reading a value from a column in the the row:
+    ///  string zipCode = Row.ZipCode
+    ///
+    /// Example of writing a value to a column in the row:
+    ///  Row.ZipCode = zipCode
+    /// </summary>
+    /// <param name="Row">The row that is currently passing through the component</param>
+    public override void Input0_ProcessInputRow(Input0Buffer Row)
+    {
+        /*
+         * Add your code here
+         */
+
+        if (Row.RegistrationDate_IsNull || string.IsNullOrWhiteSpace(Row.RegistrationDate))
+        {
+            Row.CleanRegistrationDate_IsNull = true;
+        }
+        else
+        {
+            string dateStr = Row.RegistrationDate.Trim();
+            DateTime parsedDate;
+
+            if (dateStr.Contains("/"))
+            {
+                // Handle dates with slashes (dd/MM/yyyy)
+                string[] dateParts = dateStr.Split('/');
+                if (dateParts.Length == 3)
+                {
+                    string formattedDate = $"{dateParts[2]}-{dateParts[1]}-{dateParts[0]}";
+                    if (DateTime.TryParse(formattedDate, out parsedDate))
+                    {
+                        Row.CleanRegistrationDate = parsedDate;
+                    }
+                    else
+                    {
+                        Row.CleanRegistrationDate_IsNull = true;
+                    }
+                }
+                else
+                {
+                    Row.CleanRegistrationDate_IsNull = true;
+                }
+            }
+            else
+            {
+                // Handle dates without slashes
+                if (DateTime.TryParse(dateStr, out parsedDate))
+                {
+                    Row.CleanRegistrationDate = parsedDate;
+                }
+                else
+                {
+                    Row.CleanRegistrationDate_IsNull = true;
+                }
+            }
+        }
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[BufferWrapper.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+*  Microsoft SQL Server Integration Services buffer wrappers
+*  This module defines classes for accessing data flow buffers
+*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
+
+
+
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+
+public class Input0Buffer: ScriptBuffer
+
+{
+    public Input0Buffer(PipelineBuffer Buffer, int[] BufferColumnIndexes, OutputNameMap OutputMap)
+        : base(Buffer, BufferColumnIndexes, OutputMap)
+    {
+    }
+
+    public String RegistrationDate
+    {
+        get
+        {
+            return Buffer.GetString(BufferColumnIndexes[0]);
+        }
+    }
+    public bool RegistrationDate_IsNull
+    {
+        get
+        {
+            return IsNull(0);
+        }
+    }
+
+    public DateTime CleanRegistrationDate
+    {
+        set
+        {
+            this[1] = value;
+        }
+    }
+    public bool CleanRegistrationDate_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(1);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    new public bool NextRow()
+    {
+        return base.NextRow();
+    }
+
+    new public bool EndOfRowset()
+    {
+        return base.EndOfRowset();
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Settings.Designer.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_352229efcdd54405872c1725bdd177aa.Properties.Settings.get_Default():SC_352229efcdd54405872c1725bdd177aa.Properties.Sett" +
+    "ings")]
+
+namespace SC_352229efcdd54405872c1725bdd177aa.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[SC_352229efcdd54405872c1725bdd177aa.csproj]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{325a1877-9373-46dd-8836-0d013c228c02}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SC_352229efcdd54405872c1725bdd177aa</RootNamespace>
+    <AssemblyName>SC_352229efcdd54405872c1725bdd177aa</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.TxScript, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSRuntimeWrap, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSPipelineWrap, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.PipelineHost, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Compile Include="main.cs" />
+    <Compile Include="BufferWrapper.cs" />
+    <Compile Include="ComponentWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- This section defines VSTA properties that describe the host-changable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptComponent" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" DebugInfoExeName="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" />
+        <Host Name="ScriptComponent" GeneratedNamespace="SC_352229efcdd54405872c1725bdd177aa" IconIndex="0"></Host>
+        <ProjectClient>
+          <HostIdentifier>SSIS_SC160</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Project]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF16LE]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+  <msb:PropertyGroup>
+    <msb:CodeName>SC_352229efcdd54405872c1725bdd177aa</msb:CodeName>
+    <msb:Language>msBuild</msb:Language>
+    <msb:DisplayName>SC_352229efcdd54405872c1725bdd177aa</msb:DisplayName>
+    <msb:ProjectId>{47D56C2C-5DA6-4BE6-AD2E-5057BA37BF76}</msb:ProjectId>
+  </msb:PropertyGroup>
+  <msb:ItemGroup>
+    <msb:Project Include="SC_352229efcdd54405872c1725bdd177aa.csproj" />
+    <msb:File Include="main.cs" />
+    <msb:File Include="BufferWrapper.cs" />
+    <msb:File Include="ComponentWrapper.cs" />
+    <msb:File Include="Properties\Settings.settings" />
+    <msb:File Include="Properties\AssemblyInfo.cs" />
+    <msb:File Include="Properties\Resources.resx" />
+    <msb:File Include="Properties\Resources.Designer.cs" />
+    <msb:File Include="Properties\Settings.Designer.cs" />
+  </msb:ItemGroup>
+</c:Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\AssemblyInfo.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("SC_352229efcdd54405872c1725bdd177aa")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("HP")]
+[assembly: AssemblyProduct("SC_352229efcdd54405872c1725bdd177aa")]
+[assembly: AssemblyCopyright("Copyright @ HP 2024")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.0.0")]
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Settings.settings]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Resources.Designer.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_352229efcdd54405872c1725bdd177aa.Properties.Resources.get_ResourceManager():System.Resources.Resou" +
+    "rceManager")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_352229efcdd54405872c1725bdd177aa.Properties.Resources.get_Culture():System.Globalization.CultureIn" +
+    "fo")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_352229efcdd54405872c1725bdd177aa.Properties.Resources.set_Culture(System.Globalization.CultureInfo" +
+    "):Void")]
+
+namespace SC_352229efcdd54405872c1725bdd177aa.Properties {
+    
+    
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    internal class Resources {
+        
+        private static global::System.Resources.ResourceManager resourceMan;
+        
+        private static global::System.Globalization.CultureInfo resourceCulture;
+        
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal Resources() {
+        }
+        
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if ((resourceMan == null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SC_352229efcdd54405872c1725bdd177aa.Properties.Resources", typeof(Resources).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+        
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+    }
+}
+]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Stores the binary representation of the component"
+                  isArray="true"
+                  name="BinaryCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="2">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[SC_352229efcdd54405872c1725bdd177aa.dll]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDALZWoWYAAAAAAAAAAOAAIiALATAAABQAAAAIAAAAAAAAMjMA
+AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAGAAAAAAAAAACAAAAAAgAAAAAAAAMAYIUAABAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAOAyAABPAAAAAEAAAFAEAAAAAAAAAAAAAAAAAAAA
+AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAOBMAAAAgAAAAFAAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAFAEAAAAQAAAAAYAAAAWAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAHAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAAU
+MwAAAAAAAEgAAAACAAUAYCIAAMgPAAABAAAAAAAAACgyAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKBAAAAoqHgIoEQAACioTMAUAtgAAAAEAABEDbwcAAAYt
+DQNvBgAABigSAAAKLAgDF28JAAAGKgNvBgAABm8TAAAKCgZyAQAAcG8UAAAKLGYGF40cAAABJRYf
+L51vFQAACgwIjmkZM0YbjRsAAAElFggYmqIlF3IFAABwoiUYCBeaoiUZcgUAAHCiJRoIFpqiKBYA
+AAoSASgXAAAKLAgDB28IAAAGKgMXbwkAAAYqAxdvCQAABioGEgEoFwAACiwIAwdvCAAABioDF28J
+AAAGKh4CKAwAAAYqKgIDBAUoGAAACipSAnsZAAAKAnsaAAAKFpRvGwAACioiAhYoHAAACio6AhcD
+jA4AAAEoHQAACipaAywIAhcoHgAACipyCQAAcHMfAAAKeh4CKCAAAAoqHgIoIQAACip+AigiAAAK
+AgJzEAAABn0BAAAEAgJzEQAABn0CAAAEKpIEcqYAAHAabyMAAAosFQIFAgMoJAAACg4EcwUAAAZv
+DgAABipKKwcCA28PAAAGA28KAAAGLfEqBio6AiglAAAKAgN9AwAABCo6AiglAAAKAgN9BAAABCoe
+AiglAAAKKq5+BQAABC0ecrYAAHDQBwAAAigmAAAKbycAAApzKAAACoAFAAAEfgUAAAQqGn4GAAAE
+Kh4CgAYAAAQqGn4HAAAEKh4CKCkAAAoqLnMXAAAGgAcAAAQqAEJTSkIBAAEAAAAAAAwAAAB2NC4w
+LjMwMzE5AAAAAAUAbAAAAJwFAAAjfgAACAYAAKgGAAAjU3RyaW5ncwAAAACwDAAAKAEAACNVUwDY
+DQAAEAAAACNHVUlEAAAA6A0AAOABAAAjQmxvYgAAAAAAAAACAAABVxWiAQkBAAAA+gEzABYAAAEA
+AAAhAAAACAAAAAcAAAAYAAAADwAAACkAAAAQAAAAAQAAAAMAAAAHAAAACAAAAAEAAAAEAAAAAQAA
+AAAAQQMBAAAAAAAGADgCxwQGAMwCxwQGAIQBtAQPADsFAAAGALEBBAQGABsCBAQGAPwBBAQGALMC
+BAQGAFgCBAQGAHECBAQGAMgBBAQGAOMBBwMKAIwCmQAGAJAAtwMKAIYEmQAOAHcEmQAKAE0EmQAK
+ABcGmQAGANQFtwMGAGcBtAQGAJcE5wQGAEEE7wMSADcBKwMSAJgBKwMSAOcA2gMGAEwBxwQGACQD
+twMGAGUEtwMGABYEtwMGADAEtwMGALoAtwMGAGIAtwMGAJwGBAQAAAAAAQAAAAAAAQABAAEAEADP
+AwAAEAABAAEAAQAQAGoEAAA9AAEABQABABAA+QUAAEkAAQAMAAEAEADBBQAATQADABAAAQAQAHkF
+AABNAAQAEQAAABAA7gRKBU0ABQASAAABEACoBUoFZQAHABYABgDBBaEABgB5BaUAAQAHBqkAAQAH
+BqkAEQDDA60AEQDXALEAEQBSALUAUCAAAAAAxgDqAgYAAQBYIAAAAADGAPUCBgABAGAgAAAAAMYA
+eQa5AAEAIiEAAAAAhhinBAYAAgAqIQAAAACGGKcERgACADUhAAAAAIYICAEoAAUASiEAAAAAhghp
+A2gABQBTIQAAAACGCB0BvwAFAGIhAAAAAIYIhQPFAAYAeSEAAAAAhgCQBmgABwCBIQAAAACGANsF
+aAAHAIkhAAAAAIYYpwQGAAcAqSEAAAAAxgBsBsoABwDOIQAAAADGAWUGuQALAOEhAAAAAMYBeQa5
+AAwA4yEAAAAAhhinBNQADQDyIQAAAACGGKcE1AAOAAEiAAAAAIMYpwQGAA8ACSIAAAAAkwiTBNoA
+DwA1IgAAAACTCL8A3wAPADwiAAAAAJMIywDkAA8ARCIAAAAAlgjtBeoAEABLIgAAAACGGKcEBgAQ
+AFMiAAAAAJEYrQTvABAAAAABAJQGAAABAIwEAAACAIMFAAADAFsEAAABAAEDAAABAAEDAAABAAoA
+AAACAIYAAAADAIwEAAAEAFsEAAABAIwEAAABAJQGAAABAB0GAAABAB0GAAABAAEDCQCnBAEAEQCn
+BAYAGQCnBAoAKQCnBBAAMQCnBBAAOQCnBBAAQQCnBBAASQCnBBAAUQCnBBAAWQCnBBAAYQCnBBAA
+aQCnBAYAoQCnBAYAwQCnBBUA0QCnBAYAkQDqAgYAkQD1AgYA2QA/ACMA2QC+AygA2QC4BSwA2QDn
+BTEA2QDNBTgAcQD/AD4AeQCnBEYAeQCMBFAAeQCDBVQAgQAhA1gAeQCfA10AeQCuA2IAeQCmAwEA
+6QCnBBAAeQCQBmgAeQDbBWgAkQCnBAYA2QCxBWwAkQCXBXMAmQCnBAYA+QB0AHkA+QCYBoEAqQCn
+BIcAyQCnBAYALgALAA8BLgATABgBLgAbADcBLgAjAEABLgArAGkBLgAzAGkBLgA7AG8BLgBDAEAB
+LgBLAHcBLgBTAGkBLgBbAJABQwBjANoBqQBzADcByQBzADcB4QB7ANoB4wBrANoBGwADAAEABwAF
+AAgABwAAACYB8wAAAI4D9wAAACEB+wAAAIkD9wAAAJcEAAEAAN8ABQEAAPEFCgECAAYAAwACAAcA
+BQABAAgABwABAAkACQACABMACwACABQADQABABUADQACABYADwAEgAAAAQAAAAAAAAAAAAAAAAAS
+AAAABAAAAAAAAAAAAAAAjwA2AAAAAAAQAAAAAAAAAAAAAACYACcGAAAAABAAAAAAAAAAAAAAAJgA
+RAYAAAAABAAAAAAAAAAAAAAAjwC3AwAAAAAAAAAAAQAAAPgEAAAAAAAAADxNb2R1bGU+AElucHV0
+SUQAU0NfMzUyMjI5ZWZjZGQ1NDQwNTg3MmMxNzI1YmRkMTc3YWEAbXNjb3JsaWIASXNOdWxsT3JX
+aGl0ZVNwYWNlAGRlZmF1bHRJbnN0YW5jZQBSdW50aW1lVHlwZUhhbmRsZQBHZXRUeXBlRnJvbUhh
+bmRsZQBJbnB1dE5hbWUARGF0ZVRpbWUATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuUGlwZWxpbmUA
+VHlwZQBnZXRfQ3VsdHVyZQBzZXRfQ3VsdHVyZQByZXNvdXJjZUN1bHR1cmUAQXBwbGljYXRpb25T
+ZXR0aW5nc0Jhc2UAVHJ5UGFyc2UAZ2V0X1JlZ2lzdHJhdGlvbkRhdGUAc2V0X0NsZWFuUmVnaXN0
+cmF0aW9uRGF0ZQBFZGl0b3JCcm93c2FibGVTdGF0ZQBDb21waWxlckdlbmVyYXRlZEF0dHJpYnV0
+ZQBEZWJ1Z2dlck5vblVzZXJDb2RlQXR0cmlidXRlAERlYnVnZ2FibGVBdHRyaWJ1dGUARWRpdG9y
+QnJvd3NhYmxlQXR0cmlidXRlAEFzc2VtYmx5VGl0bGVBdHRyaWJ1dGUAQXNzZW1ibHlUcmFkZW1h
+cmtBdHRyaWJ1dGUAVGFyZ2V0RnJhbWV3b3JrQXR0cmlidXRlAEFzc2VtYmx5Q29uZmlndXJhdGlv
+bkF0dHJpYnV0ZQBBc3NlbWJseURlc2NyaXB0aW9uQXR0cmlidXRlAENvbXBpbGF0aW9uUmVsYXhh
+dGlvbnNBdHRyaWJ1dGUAQXNzZW1ibHlQcm9kdWN0QXR0cmlidXRlAEFzc2VtYmx5Q29weXJpZ2h0
+QXR0cmlidXRlAFNTSVNTY3JpcHRDb21wb25lbnRFbnRyeVBvaW50QXR0cmlidXRlAEFzc2VtYmx5
+Q29tcGFueUF0dHJpYnV0ZQBSdW50aW1lQ29tcGF0aWJpbGl0eUF0dHJpYnV0ZQBQcmVFeGVjdXRl
+AFBvc3RFeGVjdXRlAHZhbHVlAFN5c3RlbS5SdW50aW1lLlZlcnNpb25pbmcAR2V0U3RyaW5nAFN5
+c3RlbS5Db21wb25lbnRNb2RlbABTQ18zNTIyMjllZmNkZDU0NDA1ODcyYzE3MjViZGQxNzdhYS5k
+bGwAZ2V0X1JlZ2lzdHJhdGlvbkRhdGVfSXNOdWxsAHNldF9DbGVhblJlZ2lzdHJhdGlvbkRhdGVf
+SXNOdWxsAFNldE51bGwAc2V0X0l0ZW0AU3lzdGVtAFRyaW0AcmVzb3VyY2VNYW4AU2NyaXB0TWFp
+bgBTeXN0ZW0uQ29uZmlndXJhdGlvbgBTeXN0ZW0uR2xvYmFsaXphdGlvbgBTeXN0ZW0uUmVmbGVj
+dGlvbgBJbnZhbGlkT3BlcmF0aW9uRXhjZXB0aW9uAFN0cmluZ0NvbXBhcmlzb24AQ3VsdHVyZUlu
+Zm8AT3V0cHV0TmFtZU1hcABPdXRwdXRNYXAAQ2hhcgBJbnB1dDBCdWZmZXIAUGlwZWxpbmVCdWZm
+ZXIAU2NyaXB0QnVmZmVyAGdldF9SZXNvdXJjZU1hbmFnZXIALmN0b3IALmNjdG9yAFN5c3RlbS5E
+aWFnbm9zdGljcwBTeXN0ZW0uUnVudGltZS5Db21waWxlclNlcnZpY2VzAFN5c3RlbS5SZXNvdXJj
+ZXMAU0NfMzUyMjI5ZWZjZGQ1NDQwNTg3MmMxNzI1YmRkMTc3YWEuUHJvcGVydGllcy5SZXNvdXJj
+ZXMucmVzb3VyY2VzAERlYnVnZ2luZ01vZGVzAFNDXzM1MjIyOWVmY2RkNTQ0MDU4NzJjMTcyNWJk
+ZDE3N2FhLlByb3BlcnRpZXMAVmFyaWFibGVzAEJ1ZmZlckNvbHVtbkluZGV4ZXMAR2V0Q29sdW1u
+SW5kZXhlcwBTZXR0aW5ncwBFcXVhbHMAQ29udGFpbnMAQ29ubmVjdGlvbnMAQ29uY2F0AE9iamVj
+dABFbmRPZlJvd3NldABTcGxpdABnZXRfRGVmYXVsdABVc2VyQ29tcG9uZW50AFBhcmVudENvbXBv
+bmVudABTY3JpcHRDb21wb25lbnQATWljcm9zb2Z0LlNxbFNlcnZlci5UeFNjcmlwdABNaWNyb3Nv
+ZnQuU3FsU2VydmVyLlBpcGVsaW5lSG9zdABJbnB1dDBfUHJvY2Vzc0lucHV0AElucHV0MF9Qcm9j
+ZXNzSW5wdXRSb3cATmV4dFJvdwBnZXRfQXNzZW1ibHkAAAAAAAMvAAADLQABgJtJAHMATgB1AGwA
+bAAgAHAAcgBvAHAAZQByAHQAeQAgAGMAYQBuAG4AbwB0ACAAYgBlACAAcwBlAHQAIAB0AG8AIABG
+AGEAbABzAGUALgAgAEEAcwBzAGkAZwBuACAAYQAgAHYAYQBsAHUAZQAgAHQAbwAgAHQAaABlACAA
+YwBvAGwAdQBtAG4AIABpAG4AcwB0AGUAYQBkAC4AAA9JAG4AcAB1AHQAIAAwAABxUwBDAF8AMwA1
+ADIAMgAyADkAZQBmAGMAZABkADUANAA0ADAANQA4ADcAMgBjADEANwAyADUAYgBkAGQAMQA3ADcA
+YQBhAC4AUAByAG8AcABlAHIAdABpAGUAcwAuAFIAZQBzAG8AdQByAGMAZQBzAAAWTl5aUSl3Rpsp
+4IMXljPcAAQgAQEIAyAAAQUgAQEREQQgAQEOBSABARFdBwcDDhE5HQ4EAAECDgMgAA4EIAECDgYg
+AR0OHQMFAAEOHQ4HAAICDhAROQkgAwESQR0IEkUDBhJBAwYdCAQgAQ4IBCABAggFIAIBCBwDIAAC
+BiACAg4ReQUgAR0ICAcAARJ9EYCBBSAAEoCFByACAQ4SgIUIt3pcVhk04IkIiYRdzYCAzJEDBhIU
+AwYSGAMGEkkDBhJVAwYSWQMGEiAFIAEBEgwFIAEBETkEIAEBAgkgBAEIDhJBEkUFIAEBEkkEAAAS
+VQQAABJZBQABARJZBAAAEiADAAABAygADgMoAAIEKAAROQQIABJVBAgAElkECAASIAgBAAgAAAAA
+AB4BAAEAVAIWV3JhcE5vbkV4Y2VwdGlvblRocm93cwEIAQACAAAAAAAoAQAjU0NfMzUyMjI5ZWZj
+ZGQ1NDQwNTg3MmMxNzI1YmRkMTc3YWEAAAUBAAAAAAcBAAJIUAAAGAEAE0NvcHlyaWdodCBAIEhQ
+IDIwMjQAAEkBABouTkVURnJhbWV3b3JrLFZlcnNpb249djQuNwEAVA4URnJhbWV3b3JrRGlzcGxh
+eU5hbWUSLk5FVCBGcmFtZXdvcmsgNC43BAEAAAAAtAAAAM7K774BAAAAkQAAAGxTeXN0ZW0uUmVz
+b3VyY2VzLlJlc291cmNlUmVhZGVyLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJl
+PW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkjU3lzdGVtLlJlc291cmNl
+cy5SdW50aW1lUmVzb3VyY2VTZXQCAAAAAAAAAAAAAABQQURQQURQtAAAAAgzAAAAAAAAAAAAACIz
+AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUMwAAAAAAAAAAAAAAAF9Db3JEbGxNYWluAG1zY29y
+ZWUuZGxsAAAAAAD/JQAgABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAQAQAAAAGAAAgAAAAAAAAAAAAAAAAAAAAQABAAAAMAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAA
+SAAAAFhAAAD0AwAAAAAAAAAAAAD0AzQAAABWAFMAXwBWAEUAUgBTAEkATwBOAF8ASQBOAEYATwAA
+AAAAvQTv/gAAAQAAAAEAAAAAAAAAAQAAAAAAPwAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAEQA
+AAABAFYAYQByAEYAaQBsAGUASQBuAGYAbwAAAAAAJAAEAAAAVAByAGEAbgBzAGwAYQB0AGkAbwBu
+AAAAAAAAALAEVAMAAAEAUwB0AHIAaQBuAGcARgBpAGwAZQBJAG4AZgBvAAAAMAMAAAEAMAAwADAA
+MAAwADQAYgAwAAAAGgABAAEAQwBvAG0AbQBlAG4AdABzAAAAAAAAACYAAwABAEMAbwBtAHAAYQBu
+AHkATgBhAG0AZQAAAAAASABQAAAAAABwACQAAQBGAGkAbABlAEQAZQBzAGMAcgBpAHAAdABpAG8A
+bgAAAAAAUwBDAF8AMwA1ADIAMgAyADkAZQBmAGMAZABkADUANAA0ADAANQA4ADcAMgBjADEANwAy
+ADUAYgBkAGQAMQA3ADcAYQBhAAAAMAAIAAEARgBpAGwAZQBWAGUAcgBzAGkAbwBuAAAAAAAxAC4A
+MAAuADAALgAwAAAAcAAoAAEASQBuAHQAZQByAG4AYQBsAE4AYQBtAGUAAABTAEMAXwAzADUAMgAy
+ADIAOQBlAGYAYwBkAGQANQA0ADQAMAA1ADgANwAyAGMAMQA3ADIANQBiAGQAZAAxADcANwBhAGEA
+LgBkAGwAbAAAAEwAFAABAEwAZQBnAGEAbABDAG8AcAB5AHIAaQBnAGgAdAAAAEMAbwBwAHkAcgBp
+AGcAaAB0ACAAQAAgAEgAUAAgADIAMAAyADQAAAAqAAEAAQBMAGUAZwBhAGwAVAByAGEAZABlAG0A
+YQByAGsAcwAAAAAAAAAAAHgAKAABAE8AcgBpAGcAaQBuAGEAbABGAGkAbABlAG4AYQBtAGUAAABT
+AEMAXwAzADUAMgAyADIAOQBlAGYAYwBkAGQANQA0ADQAMAA1ADgANwAyAGMAMQA3ADIANQBiAGQA
+ZAAxADcANwBhAGEALgBkAGwAbAAAAGgAJAABAFAAcgBvAGQAdQBjAHQATgBhAG0AZQAAAAAAUwBD
+AF8AMwA1ADIAMgAyADkAZQBmAGMAZABkADUANAA0ADAANQA4ADcAMgBjADEANwAyADUAYgBkAGQA
+MQA3ADcAYQBhAAAANAAIAAEAUAByAG8AZAB1AGMAdABWAGUAcgBzAGkAbwBuAAAAMQAuADAALgAw
+AC4AMAAAADgACAABAEEAcwBzAGUAbQBiAGwAeQAgAFYAZQByAHMAaQBvAG4AAAAxAC4AMAAuADAA
+LgAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAMAAAANDMAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the Microsoft Visual Studio Tools for Applications project. Project names must be unique within a package."
+                  name="VSTAProjectName"
+                  typeConverter="NOTBROWSABLE">SC_352229efcdd54405872c1725bdd177aa</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the programming language used by the script."
+                  name="ScriptLanguage"
+                  typeConverter="Microsoft.SqlServer.VSTAHosting.ScriptingLanguages">CSharp</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a comma-separated list of read-only variables."
+                  name="ReadOnlyVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIVariablePickerDlg"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a comma-separated list of read/write variables."
+                  name="ReadWriteVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIWriteableVariablePickerDlg"></property>
+                <property
+                  dataType="System.String"
+                  description="List of breakpoints present on the script."
+                  isArray="true"
+                  name="BreakpointCollection"
+                  typeConverter="NOTBROWSABLE">
+                  <arrayElements
+                    arrayElementCount="0" />
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Checksum to match component metedata against compiled codes."
+                  name="MetadataChecksum140"
+                  typeConverter="NOTBROWSABLE">C8</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.ScriptComponentHost</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\ExtractData From CSV to Staging\Script Component.Inputs[Input 0]"
+                  hasSideEffects="true"
+                  name="Input 0">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Script Component.Inputs[Input 0].Columns[RegistrationDate]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="RegistrationDate"
+                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[RegistrationDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\ExtractData From CSV to Staging\Script Component.Outputs[Output 0]"
+                  name="Output 0"
+                  synchronousInputId="Package\ExtractData From CSV to Staging\Script Component.Inputs[Input 0]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Script Component.Outputs[Output 0].Columns[CleanRegistrationDate]"
+                      dataType="dbDate"
+                      lineageId="Package\ExtractData From CSV to Staging\Script Component.Outputs[Output 0].Columns[CleanRegistrationDate]"
+                      name="CleanRegistrationDate" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
           </components>
           <paths>
             <path
@@ -1060,7 +2422,7 @@
               startId="Package\ExtractData From CSV to Staging\Data Conversion.Outputs[Data Conversion Output]" />
             <path
               refId="Package\ExtractData From CSV to Staging.Paths[Derived Column Output]"
-              endId="Package\ExtractData From CSV to Staging\Conditional Split.Inputs[Conditional Split Input]"
+              endId="Package\ExtractData From CSV to Staging\Script Component.Inputs[Input 0]"
               name="Derived Column Output"
               startId="Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output]" />
             <path
@@ -1068,6 +2430,16 @@
               endId="Package\ExtractData From CSV to Staging\Derived Column.Inputs[Derived Column Input]"
               name="Flat File Source Output"
               startId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output]" />
+            <path
+              refId="Package\ExtractData From CSV to Staging.Paths[Output 0]"
+              endId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input]"
+              name="Output 0"
+              startId="Package\ExtractData From CSV to Staging\Script Component.Outputs[Output 0]" />
+            <path
+              refId="Package\ExtractData From CSV to Staging.Paths[Sort Output]"
+              endId="Package\ExtractData From CSV to Staging\Conditional Split.Inputs[Conditional Split Input]"
+              name="Sort Output"
+              startId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output]" />
             <path
               refId="Package\ExtractData From CSV to Staging.Paths[ValidAge]"
               endId="Package\ExtractData From CSV to Staging\Data Conversion.Inputs[Data Conversion Input]"
@@ -1105,71 +2477,27 @@
         <NodeLayout
           Size="171.2,63.2"
           Id="Package\ExtractData From CSV to Staging\OLE DB Destination"
-          TopLeft="231.333320994345,434.033331766393" />
+          TopLeft="239.666653872365,615.166665431195" />
         <NodeLayout
           Size="156,41.6"
           Id="Package\ExtractData From CSV to Staging\Data Conversion"
-          TopLeft="238.433333424396,323.766665159994" />
+          TopLeft="244.26666643901,518.766665395035" />
+        <NodeLayout
+          Size="196.8,41.6"
+          Id="Package\ExtractData From CSV to Staging\Remove duplicate UserID"
+          TopLeft="215.833321540721,301.066665919356" />
         <NodeLayout
           Size="151.2,41.6"
           Id="Package\ExtractData From CSV to Staging\Flat File Source"
           TopLeft="242.5,5.49999999999995" />
-        <EdgeLayout
-          Id="Package\ExtractData From CSV to Staging.Paths[Data Conversion Output]"
-          TopLeft="316.68332720937,365.366665159994">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,68.6666666063996"
-              Start="0,0"
-              End="0,61.1666666063996">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,61.1666666063996" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-8,22.5833333031998,16,16"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="153.6,41.6"
-          Id="Package\ExtractData From CSV to Staging\Conditional Split"
-          TopLeft="236.666653735771,203.666665250394" />
-        <EdgeLayout
-          Id="Package\ExtractData From CSV to Staging.Paths[ValidAge]"
-          TopLeft="314.949993580083,245.266665250394">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,78.4999999095995"
-              Start="0,0"
-              End="0,70.9999999095995">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,70.9999999095995" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-19.831640625,27.4999999547997,39.66328125,16"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <NodeLayout
           Size="152.8,41.6"
           Id="Package\ExtractData From CSV to Staging\Derived Column"
           TopLeft="234.166653872365,89.2666660459174" />
+        <NodeLayout
+          Size="153.6,41.6"
+          Id="Package\ExtractData From CSV to Staging\Conditional Split"
+          TopLeft="242.499986750385,402.999998788635" />
         <EdgeLayout
           Id="Package\ExtractData From CSV to Staging.Paths[Flat File Source Output]"
           TopLeft="314.333326936182,47.1">
@@ -1189,30 +2517,132 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="-18.1494140625,12.5467119292088,36.298828125,9.5732421875"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ExtractData From CSV to Staging.Paths[Derived Column Output]"
-          TopLeft="312.016653804068,130.866666045917">
+          Id="Package\ExtractData From CSV to Staging.Paths[Data Conversion Output]"
+          TopLeft="323.766660155688,560.366665395035">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,72.7999992044766"
+              EndConnector="0,54.8000000361595"
               Start="0,0"
-              End="0,65.2999992044766">
+              End="0,47.3000000361595">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,65.2999992044766" />
+                    End="0,47.3000000361595" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-8,24.6499996022383,16,16"
+              BoundingBox="-26.88623046875,15.6500000180798,53.7724609375,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ExtractData From CSV to Staging.Paths[ValidAge]"
+          TopLeft="320.783326594698,444.599998788635">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,74.1666666064"
+              Start="0,0"
+              End="0,66.6666666064">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,66.6666666064" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-42.775390625,25.3333333032,85.55078125,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ExtractData From CSV to Staging.Paths[Sort Output]"
+          TopLeft="316.766654145553,342.666665919356">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.3333328692786"
+              Start="0,0"
+              End="0,52.8333328692786">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.8333328692786" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-26.88623046875,18.4166664346393,53.7724609375,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="161.6,41.6"
+          Id="Package\ExtractData From CSV to Staging\Script Component"
+          TopLeft="235.833320447969,197.666665431195" />
+        <EdgeLayout
+          Id="Package\ExtractData From CSV to Staging.Paths[Derived Column Output]"
+          TopLeft="313.599987160167,130.866666045917">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,66.7999993852775"
+              Start="0,0"
+              End="0,59.2999993852775">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,59.2999993852775" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-18.1494140625,24.8633785988887,36.298828125,9.5732421875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ExtractData From CSV to Staging.Paths[Output 0]"
+          TopLeft="315.433320994345,239.266665431195">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,61.8000004881611"
+              Start="0,0"
+              End="0,54.3000004881611">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,54.3000004881611" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-26.88623046875,19.1500002440806,53.7724609375,16"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>

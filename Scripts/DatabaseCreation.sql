@@ -73,7 +73,5 @@ IF (SELECT COUNT(*) FROM prod.Users) = 0
 
 
 SELECT * from prod.Users;
-
 Truncate table stg.Users;
-
 SELECT * from stg.Users;
