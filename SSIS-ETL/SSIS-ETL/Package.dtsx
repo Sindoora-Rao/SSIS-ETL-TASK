@@ -11,8 +11,8 @@
   DTS:LocaleID="4105"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="114"
-  DTS:VersionGUID="{8FEDF36A-EA37-4429-B56E-421B7F3B68BC}">
+  DTS:VersionBuild="124"
+  DTS:VersionGUID="{8D6B4A3B-87FD-473E-AD11-8A1FD2C77DE5}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -108,7 +108,7 @@
         <DTS:ConnectionManager
           DTS:ConnectRetryCount="0"
           DTS:ConnectRetryInterval="0"
-          DTS:ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\s97ra\OneDrive\Desktop\Concordia\winter24\IP\Project\SSIS-ETL-TASK\InvalidRecords\InValidRows.xlsx;Extended Properties=&quot;Excel 12.0 XML;HDR=YES&quot;;" />
+          DTS:ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\s97ra\OneDrive\Desktop\Concordia\winter24\IP\Project\SSIS-ETL-TASK\InvalidRecords\InValidRows.xlsx;Extended Properties=&quot;EXCEL 12.0 XML;HDR=YES&quot;;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -163,7 +163,7 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{6909F5E8-5372-4E6A-B2BE-B0C137015B13}"
-          SQLTask:SqlStatementSource="DROP TABLE  `InValidAge`&#xA;go&#xA;CREATE TABLE `InValidAge` (&#xA;    `UserID` VARCHAR(50),&#xA;    `FullName` VARCHAR(50),&#xA;    `Age` VARCHAR(50),&#xA;    `Email` VARCHAR(50),&#xA;    `RegistrationDate` VARCHAR(50),&#xA;    `LastLoginDate` VARCHAR(50),&#xA;    `PurchaseTotal` VARCHAR(50)&#xA;)&#xA;go&#xA;DROP TABLE  `InValidUserID`&#xA;go&#xA;CREATE TABLE `InValidUserID` (&#xA;    `UserID` VARCHAR(50),&#xA;    `FullName` VARCHAR(50),&#xA;    `Age` VARCHAR(50),&#xA;    `Email` VARCHAR(50),&#xA;    `RegistrationDate` VARCHAR(50),&#xA;    `LastLoginDate` VARCHAR(50),&#xA;    `PurchaseTotal` VARCHAR(50)&#xA;)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="DROP TABLE  `InValidAge`&#xA;go&#xA;CREATE TABLE `InValidAge` (&#xA;    `UserID` VARCHAR(50),&#xA;    `FullName` VARCHAR(50),&#xA;    `Age` VARCHAR(50),&#xA;    `Email` VARCHAR(50),&#xA;    `RegistrationDate` VARCHAR(50),&#xA;    `LastLoginDate` VARCHAR(50),&#xA;    `PurchaseTotal` VARCHAR(50)&#xA;)&#xA;go&#xA;DROP TABLE  `InValidUserID`&#xA;go&#xA;CREATE TABLE `InValidUserID` (&#xA;    `UserID` VARCHAR(50),&#xA;    `FullName` VARCHAR(50),&#xA;    `Age` VARCHAR(50),&#xA;    `Email` VARCHAR(50),&#xA;    `RegistrationDate` VARCHAR(50),&#xA;    `LastLoginDate` VARCHAR(50),&#xA;    `PurchaseTotal` VARCHAR(50)&#xA;)&#xA;go&#xA;DROP TABLE  `InValidEmail`&#xA;go&#xA;CREATE TABLE `InValidEmail` (&#xA;    `UserID` VARCHAR(50),&#xA;    `FullName` VARCHAR(50),&#xA;    `Age` VARCHAR(50),&#xA;    `Email` VARCHAR(50),&#xA;    `RegistrationDate` VARCHAR(50),&#xA;    `LastLoginDate` VARCHAR(50),&#xA;    `PurchaseTotal` VARCHAR(50)&#xA;)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -218,6 +218,11 @@
                       cachedDataType="i4"
                       cachedName="IsAgeNumeric"
                       lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsAgeNumeric]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Conditional Split.Inputs[Conditional Split Input].Columns[IsEmailValid]"
+                      cachedDataType="bool"
+                      cachedName="IsEmailValid"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsEmailValid]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -237,13 +242,13 @@
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsAgeNumeric]} == 1 &amp;&amp; (DT_I4)#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Age]} &gt;= 0 &amp;&amp; #{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsUserIDNumeric]} == 1</property>
+                      name="Expression">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsAgeNumeric]} == 1 &amp;&amp; (DT_I4)#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Age]} &gt;= 0 &amp;&amp; #{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsUserIDNumeric]} == 1 &amp;&amp; #{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsEmailValid]} ==  TRUE </property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">IsAgeNumeric == 1 &amp;&amp; (DT_I4)Age &gt;= 0 &amp;&amp; IsUserIDNumeric == 1</property>
+                      name="FriendlyExpression">IsAgeNumeric == 1 &amp;&amp; (DT_I4)Age &gt;= 0 &amp;&amp; IsUserIDNumeric == 1 &amp;&amp; IsEmailValid ==  TRUE </property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -304,6 +309,34 @@
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
                       name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\ExtractData From CSV to Staging\Conditional Split.Outputs[InValidEmail]"
+                  description="Output 4 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="IgnoreFailure"
+                  exclusionGroup="1"
+                  name="InValidEmail"
+                  synchronousInputId="Package\ExtractData From CSV to Staging\Conditional Split.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="IgnoreFailure">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsEmailValid]} ==  FALSE </property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">IsEmailValid ==  FALSE </property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">3</property>
                   </properties>
                   <externalMetadataColumns />
                 </output>
@@ -1106,6 +1139,251 @@
               </outputs>
             </component>
             <component
+              refId="Package\ExtractData From CSV to Staging\Data Conversion 3"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion 3"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Inputs[Data Conversion Input].Columns[UserID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="UserID"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[UserID]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Inputs[Data Conversion Input].Columns[FullName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="FullName"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[FullName]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Inputs[Data Conversion Input].Columns[Age]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Age"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Age]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Inputs[Data Conversion Input].Columns[Email]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Email"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Email]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Inputs[Data Conversion Input].Columns[LastLoginDate]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="LastLoginDate"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[LastLoginDate]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Inputs[Data Conversion Input].Columns[PurchaseTotal]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="PurchaseTotal"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[PurchaseTotal]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Inputs[Data Conversion Input].Columns[CleanRegistrationDate]"
+                      cachedDataType="dbDate"
+                      cachedName="CleanRegistrationDate"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[CleanRegistrationDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\ExtractData From CSV to Staging\Data Conversion 3.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of UserID]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of UserID]"
+                      name="Copy of UserID"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[UserID]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of FullName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of FullName]"
+                      name="Copy of FullName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[FullName]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of Age]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of Age]"
+                      name="Copy of Age"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Age]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of Email]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of Email]"
+                      name="Copy of Email"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[Email]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of LastLoginDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of LastLoginDate]"
+                      name="Copy of LastLoginDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[LastLoginDate]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of PurchaseTotal]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of PurchaseTotal]"
+                      name="Copy of PurchaseTotal"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[PurchaseTotal]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of CleanRegistrationDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of CleanRegistrationDate]"
+                      name="Copy of CleanRegistrationDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[CleanRegistrationDate]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\ExtractData From CSV to Staging\Data Conversion 3.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
               refId="Package\ExtractData From CSV to Staging\Derived Column"
               componentClassID="Microsoft.DerivedColumn"
               contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
@@ -1681,6 +1959,184 @@
               </outputs>
             </component>
             <component
+              refId="Package\ExtractData From CSV to Staging\InValidEmail"
+              componentClassID="Microsoft.ExcelDestination"
+              contactInfo="Excel Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Excel Destination"
+              name="InValidEmail"
+              usesDispositions="true">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">InValidEmail</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\ExtractData From CSV to Staging\InValidEmail.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[InvalidRows]"
+                  connectionManagerRefId="Package.ConnectionManagers[InvalidRows]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Excel Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].Columns[Copy of UserID]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of UserID"
+                      externalMetadataColumnId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[UserID]"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of UserID]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].Columns[Copy of FullName]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of FullName"
+                      externalMetadataColumnId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[FullName]"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of FullName]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].Columns[Copy of Age]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of Age"
+                      externalMetadataColumnId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[Age]"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of Age]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].Columns[Copy of Email]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of Email"
+                      externalMetadataColumnId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[Email]"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of Email]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].Columns[Copy of PurchaseTotal]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of PurchaseTotal"
+                      externalMetadataColumnId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[PurchaseTotal]"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of PurchaseTotal]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].Columns[Copy of CleanRegistrationDate]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of CleanRegistrationDate"
+                      externalMetadataColumnId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[RegistrationDate]"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of CleanRegistrationDate]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].Columns[Copy of LastLoginDate]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of LastLoginDate"
+                      externalMetadataColumnId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[LastLoginDate]"
+                      lineageId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output].Columns[Copy of LastLoginDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[UserID]"
+                      dataType="wstr"
+                      length="255"
+                      name="UserID" />
+                    <externalMetadataColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[FullName]"
+                      dataType="wstr"
+                      length="255"
+                      name="FullName" />
+                    <externalMetadataColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[Age]"
+                      dataType="wstr"
+                      length="255"
+                      name="Age" />
+                    <externalMetadataColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[Email]"
+                      dataType="wstr"
+                      length="255"
+                      name="Email" />
+                    <externalMetadataColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[RegistrationDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="RegistrationDate" />
+                    <externalMetadataColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[LastLoginDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="LastLoginDate" />
+                    <externalMetadataColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input].ExternalColumns[PurchaseTotal]"
+                      dataType="wstr"
+                      length="255"
+                      name="PurchaseTotal" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\ExtractData From CSV to Staging\InValidEmail.Outputs[Excel Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Excel Destination Error Output"
+                  synchronousInputId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Outputs[Excel Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\ExtractData From CSV to Staging\InValidEmail.Outputs[Excel Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\InValidEmail.Outputs[Excel Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\ExtractData From CSV to Staging\InValidEmail.Outputs[Excel Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
               refId="Package\ExtractData From CSV to Staging\InValidUserID"
               componentClassID="Microsoft.ExcelDestination"
               contactInfo="Excel Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
@@ -2238,6 +2694,22 @@
                           name="NewSortKeyPosition">0</property>
                       </properties>
                     </inputColumn>
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Inputs[Sort Input].Columns[IsEmailValid]"
+                      cachedDataType="bool"
+                      cachedName="IsEmailValid"
+                      lineageId="Package\ExtractData From CSV to Staging\Script Component.Outputs[Output 0].Columns[IsEmailValid]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -2391,6 +2863,19 @@
                           dataType="System.Int32"
                           description="Specifies the lineage identifier of the input column that is associated with this output column."
                           name="SortColumnId">#{Package\ExtractData From CSV to Staging\Derived Column.Outputs[Derived Column Output].Columns[IsAgeNumeric]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsEmailValid]"
+                      dataType="bool"
+                      lineageId="Package\ExtractData From CSV to Staging\Remove duplicate UserID.Outputs[Sort Output].Columns[IsEmailValid]"
+                      name="IsEmailValid">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\ExtractData From CSV to Staging\Script Component.Outputs[Output 0].Columns[IsEmailValid]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -2776,8 +3261,31 @@ public class ScriptMain : UserComponent
                 }
             }
         }
-    }
 
+        // Check and validate Email
+        if (Row.Email_IsNull || string.IsNullOrWhiteSpace(Row.Email))
+        {
+            Row.IsEmailValid = false;
+        }
+        else
+        {
+            string email = Row.Email.Trim();
+            Row.IsEmailValid = IsValidEmail(email);
+        }
+    }
+    // Method to validate email format using regular expression
+    private bool IsValidEmail(string email)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }
 ]]></arrayElement>
                     <arrayElement
@@ -2820,11 +3328,26 @@ public class Input0Buffer: ScriptBuffer
         }
     }
 
+    public String Email
+    {
+        get
+        {
+            return Buffer.GetString(BufferColumnIndexes[1]);
+        }
+    }
+    public bool Email_IsNull
+    {
+        get
+        {
+            return IsNull(1);
+        }
+    }
+
     public DateTime CleanRegistrationDate
     {
         set
         {
-            this[1] = value;
+            this[2] = value;
         }
     }
     public bool CleanRegistrationDate_IsNull
@@ -2833,7 +3356,29 @@ public class Input0Buffer: ScriptBuffer
         {
             if (value)
             {
-                SetNull(1);
+                SetNull(2);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    public Boolean IsEmailValid
+    {
+        set
+        {
+            this[3] = value;
+        }
+    }
+    public bool IsEmailValid_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(3);
             }
             else
             {
@@ -2900,7 +3445,7 @@ namespace SC_352229efcdd54405872c1725bdd177aa.Properties {
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{325a1877-9373-46dd-8836-0d013c228c02}</ProjectGuid>
+    <ProjectGuid>{325A1877-9373-46DD-8836-0D013C228C02}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SC_352229efcdd54405872c1725bdd177aa</RootNamespace>
@@ -2970,8 +3515,8 @@ namespace SC_352229efcdd54405872c1725bdd177aa.Properties {
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
-        <ProjectProperties HostName="ScriptComponent" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" DebugInfoExeName="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" />
-        <Host Name="ScriptComponent" GeneratedNamespace="SC_352229efcdd54405872c1725bdd177aa" IconIndex="0"></Host>
+        <ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" />
+        <Host Name="ScriptComponent" IconIndex="0" />
         <ProjectClient>
           <HostIdentifier>SSIS_SC160</HostIdentifier>
         </ProjectClient>
@@ -2990,7 +3535,7 @@ namespace SC_352229efcdd54405872c1725bdd177aa.Properties {
     <msb:CodeName>SC_352229efcdd54405872c1725bdd177aa</msb:CodeName>
     <msb:Language>msBuild</msb:Language>
     <msb:DisplayName>SC_352229efcdd54405872c1725bdd177aa</msb:DisplayName>
-    <msb:ProjectId>{47D56C2C-5DA6-4BE6-AD2E-5057BA37BF76}</msb:ProjectId>
+    <msb:ProjectId>{31200D4B-B69C-46FD-92D6-D57FEB78B662}</msb:ProjectId>
   </msb:PropertyGroup>
   <msb:ItemGroup>
     <msb:Project Include="SC_352229efcdd54405872c1725bdd177aa.csproj" />
@@ -3137,139 +3682,148 @@ namespace SC_352229efcdd54405872c1725bdd177aa.Properties {
                     <arrayElement
                       dataType="System.String"><![CDATA[TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
-ZGUuDQ0KJAAAAAAAAABQRQAATAEDALZWoWYAAAAAAAAAAOAAIiALATAAABQAAAAIAAAAAAAAMjMA
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAPjQoWYAAAAAAAAAAOAAIiALATAAABYAAAAIAAAAAAAAMjUA
 AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAGAAAAAAAAAACAAAAAAgAAAAAAAAMAYIUAABAA
-ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAOAyAABPAAAAAEAAAFAEAAAAAAAAAAAAAAAAAAAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAOA0AABPAAAAAEAAAFAEAAAAAAAAAAAAAAAAAAAA
 AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAOBMAAAAgAAAAFAAAAAIA
-AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAFAEAAAAQAAAAAYAAAAWAAAAAAAAAAAAAAAAAABAAABA
-LnJlbG9jAAAMAAAAAGAAAAACAAAAHAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAAU
-MwAAAAAAAEgAAAACAAUAYCIAAMgPAAABAAAAAAAAACgyAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKBAAAAoqHgIoEQAACioTMAUAtgAAAAEAABEDbwcAAAYt
-DQNvBgAABigSAAAKLAgDF28JAAAGKgNvBgAABm8TAAAKCgZyAQAAcG8UAAAKLGYGF40cAAABJRYf
-L51vFQAACgwIjmkZM0YbjRsAAAElFggYmqIlF3IFAABwoiUYCBeaoiUZcgUAAHCiJRoIFpqiKBYA
-AAoSASgXAAAKLAgDB28IAAAGKgMXbwkAAAYqAxdvCQAABioGEgEoFwAACiwIAwdvCAAABioDF28J
-AAAGKh4CKAwAAAYqKgIDBAUoGAAACipSAnsZAAAKAnsaAAAKFpRvGwAACioiAhYoHAAACio6AhcD
-jA4AAAEoHQAACipaAywIAhcoHgAACipyCQAAcHMfAAAKeh4CKCAAAAoqHgIoIQAACip+AigiAAAK
-AgJzEAAABn0BAAAEAgJzEQAABn0CAAAEKpIEcqYAAHAabyMAAAosFQIFAgMoJAAACg4EcwUAAAZv
-DgAABipKKwcCA28PAAAGA28KAAAGLfEqBio6AiglAAAKAgN9AwAABCo6AiglAAAKAgN9BAAABCoe
-AiglAAAKKq5+BQAABC0ecrYAAHDQBwAAAigmAAAKbycAAApzKAAACoAFAAAEfgUAAAQqGn4GAAAE
-Kh4CgAYAAAQqGn4HAAAEKh4CKCkAAAoqLnMXAAAGgAcAAAQqAEJTSkIBAAEAAAAAAAwAAAB2NC4w
-LjMwMzE5AAAAAAUAbAAAAJwFAAAjfgAACAYAAKgGAAAjU3RyaW5ncwAAAACwDAAAKAEAACNVUwDY
-DQAAEAAAACNHVUlEAAAA6A0AAOABAAAjQmxvYgAAAAAAAAACAAABVxWiAQkBAAAA+gEzABYAAAEA
-AAAhAAAACAAAAAcAAAAYAAAADwAAACkAAAAQAAAAAQAAAAMAAAAHAAAACAAAAAEAAAAEAAAAAQAA
-AAAAQQMBAAAAAAAGADgCxwQGAMwCxwQGAIQBtAQPADsFAAAGALEBBAQGABsCBAQGAPwBBAQGALMC
-BAQGAFgCBAQGAHECBAQGAMgBBAQGAOMBBwMKAIwCmQAGAJAAtwMKAIYEmQAOAHcEmQAKAE0EmQAK
-ABcGmQAGANQFtwMGAGcBtAQGAJcE5wQGAEEE7wMSADcBKwMSAJgBKwMSAOcA2gMGAEwBxwQGACQD
-twMGAGUEtwMGABYEtwMGADAEtwMGALoAtwMGAGIAtwMGAJwGBAQAAAAAAQAAAAAAAQABAAEAEADP
-AwAAEAABAAEAAQAQAGoEAAA9AAEABQABABAA+QUAAEkAAQAMAAEAEADBBQAATQADABAAAQAQAHkF
-AABNAAQAEQAAABAA7gRKBU0ABQASAAABEACoBUoFZQAHABYABgDBBaEABgB5BaUAAQAHBqkAAQAH
-BqkAEQDDA60AEQDXALEAEQBSALUAUCAAAAAAxgDqAgYAAQBYIAAAAADGAPUCBgABAGAgAAAAAMYA
-eQa5AAEAIiEAAAAAhhinBAYAAgAqIQAAAACGGKcERgACADUhAAAAAIYICAEoAAUASiEAAAAAhghp
-A2gABQBTIQAAAACGCB0BvwAFAGIhAAAAAIYIhQPFAAYAeSEAAAAAhgCQBmgABwCBIQAAAACGANsF
-aAAHAIkhAAAAAIYYpwQGAAcAqSEAAAAAxgBsBsoABwDOIQAAAADGAWUGuQALAOEhAAAAAMYBeQa5
-AAwA4yEAAAAAhhinBNQADQDyIQAAAACGGKcE1AAOAAEiAAAAAIMYpwQGAA8ACSIAAAAAkwiTBNoA
-DwA1IgAAAACTCL8A3wAPADwiAAAAAJMIywDkAA8ARCIAAAAAlgjtBeoAEABLIgAAAACGGKcEBgAQ
-AFMiAAAAAJEYrQTvABAAAAABAJQGAAABAIwEAAACAIMFAAADAFsEAAABAAEDAAABAAEDAAABAAoA
-AAACAIYAAAADAIwEAAAEAFsEAAABAIwEAAABAJQGAAABAB0GAAABAB0GAAABAAEDCQCnBAEAEQCn
-BAYAGQCnBAoAKQCnBBAAMQCnBBAAOQCnBBAAQQCnBBAASQCnBBAAUQCnBBAAWQCnBBAAYQCnBBAA
-aQCnBAYAoQCnBAYAwQCnBBUA0QCnBAYAkQDqAgYAkQD1AgYA2QA/ACMA2QC+AygA2QC4BSwA2QDn
-BTEA2QDNBTgAcQD/AD4AeQCnBEYAeQCMBFAAeQCDBVQAgQAhA1gAeQCfA10AeQCuA2IAeQCmAwEA
-6QCnBBAAeQCQBmgAeQDbBWgAkQCnBAYA2QCxBWwAkQCXBXMAmQCnBAYA+QB0AHkA+QCYBoEAqQCn
-BIcAyQCnBAYALgALAA8BLgATABgBLgAbADcBLgAjAEABLgArAGkBLgAzAGkBLgA7AG8BLgBDAEAB
-LgBLAHcBLgBTAGkBLgBbAJABQwBjANoBqQBzADcByQBzADcB4QB7ANoB4wBrANoBGwADAAEABwAF
-AAgABwAAACYB8wAAAI4D9wAAACEB+wAAAIkD9wAAAJcEAAEAAN8ABQEAAPEFCgECAAYAAwACAAcA
-BQABAAgABwABAAkACQACABMACwACABQADQABABUADQACABYADwAEgAAAAQAAAAAAAAAAAAAAAAAS
-AAAABAAAAAAAAAAAAAAAjwA2AAAAAAAQAAAAAAAAAAAAAACYACcGAAAAABAAAAAAAAAAAAAAAJgA
-RAYAAAAABAAAAAAAAAAAAAAAjwC3AwAAAAAAAAAAAQAAAPgEAAAAAAAAADxNb2R1bGU+AElucHV0
-SUQAU0NfMzUyMjI5ZWZjZGQ1NDQwNTg3MmMxNzI1YmRkMTc3YWEAbXNjb3JsaWIASXNOdWxsT3JX
-aGl0ZVNwYWNlAGRlZmF1bHRJbnN0YW5jZQBSdW50aW1lVHlwZUhhbmRsZQBHZXRUeXBlRnJvbUhh
-bmRsZQBJbnB1dE5hbWUARGF0ZVRpbWUATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuUGlwZWxpbmUA
-VHlwZQBnZXRfQ3VsdHVyZQBzZXRfQ3VsdHVyZQByZXNvdXJjZUN1bHR1cmUAQXBwbGljYXRpb25T
-ZXR0aW5nc0Jhc2UAVHJ5UGFyc2UAZ2V0X1JlZ2lzdHJhdGlvbkRhdGUAc2V0X0NsZWFuUmVnaXN0
-cmF0aW9uRGF0ZQBFZGl0b3JCcm93c2FibGVTdGF0ZQBDb21waWxlckdlbmVyYXRlZEF0dHJpYnV0
-ZQBEZWJ1Z2dlck5vblVzZXJDb2RlQXR0cmlidXRlAERlYnVnZ2FibGVBdHRyaWJ1dGUARWRpdG9y
-QnJvd3NhYmxlQXR0cmlidXRlAEFzc2VtYmx5VGl0bGVBdHRyaWJ1dGUAQXNzZW1ibHlUcmFkZW1h
-cmtBdHRyaWJ1dGUAVGFyZ2V0RnJhbWV3b3JrQXR0cmlidXRlAEFzc2VtYmx5Q29uZmlndXJhdGlv
-bkF0dHJpYnV0ZQBBc3NlbWJseURlc2NyaXB0aW9uQXR0cmlidXRlAENvbXBpbGF0aW9uUmVsYXhh
-dGlvbnNBdHRyaWJ1dGUAQXNzZW1ibHlQcm9kdWN0QXR0cmlidXRlAEFzc2VtYmx5Q29weXJpZ2h0
-QXR0cmlidXRlAFNTSVNTY3JpcHRDb21wb25lbnRFbnRyeVBvaW50QXR0cmlidXRlAEFzc2VtYmx5
-Q29tcGFueUF0dHJpYnV0ZQBSdW50aW1lQ29tcGF0aWJpbGl0eUF0dHJpYnV0ZQBQcmVFeGVjdXRl
-AFBvc3RFeGVjdXRlAHZhbHVlAFN5c3RlbS5SdW50aW1lLlZlcnNpb25pbmcAR2V0U3RyaW5nAFN5
-c3RlbS5Db21wb25lbnRNb2RlbABTQ18zNTIyMjllZmNkZDU0NDA1ODcyYzE3MjViZGQxNzdhYS5k
-bGwAZ2V0X1JlZ2lzdHJhdGlvbkRhdGVfSXNOdWxsAHNldF9DbGVhblJlZ2lzdHJhdGlvbkRhdGVf
-SXNOdWxsAFNldE51bGwAc2V0X0l0ZW0AU3lzdGVtAFRyaW0AcmVzb3VyY2VNYW4AU2NyaXB0TWFp
-bgBTeXN0ZW0uQ29uZmlndXJhdGlvbgBTeXN0ZW0uR2xvYmFsaXphdGlvbgBTeXN0ZW0uUmVmbGVj
-dGlvbgBJbnZhbGlkT3BlcmF0aW9uRXhjZXB0aW9uAFN0cmluZ0NvbXBhcmlzb24AQ3VsdHVyZUlu
-Zm8AT3V0cHV0TmFtZU1hcABPdXRwdXRNYXAAQ2hhcgBJbnB1dDBCdWZmZXIAUGlwZWxpbmVCdWZm
-ZXIAU2NyaXB0QnVmZmVyAGdldF9SZXNvdXJjZU1hbmFnZXIALmN0b3IALmNjdG9yAFN5c3RlbS5E
-aWFnbm9zdGljcwBTeXN0ZW0uUnVudGltZS5Db21waWxlclNlcnZpY2VzAFN5c3RlbS5SZXNvdXJj
-ZXMAU0NfMzUyMjI5ZWZjZGQ1NDQwNTg3MmMxNzI1YmRkMTc3YWEuUHJvcGVydGllcy5SZXNvdXJj
-ZXMucmVzb3VyY2VzAERlYnVnZ2luZ01vZGVzAFNDXzM1MjIyOWVmY2RkNTQ0MDU4NzJjMTcyNWJk
-ZDE3N2FhLlByb3BlcnRpZXMAVmFyaWFibGVzAEJ1ZmZlckNvbHVtbkluZGV4ZXMAR2V0Q29sdW1u
-SW5kZXhlcwBTZXR0aW5ncwBFcXVhbHMAQ29udGFpbnMAQ29ubmVjdGlvbnMAQ29uY2F0AE9iamVj
-dABFbmRPZlJvd3NldABTcGxpdABnZXRfRGVmYXVsdABVc2VyQ29tcG9uZW50AFBhcmVudENvbXBv
-bmVudABTY3JpcHRDb21wb25lbnQATWljcm9zb2Z0LlNxbFNlcnZlci5UeFNjcmlwdABNaWNyb3Nv
-ZnQuU3FsU2VydmVyLlBpcGVsaW5lSG9zdABJbnB1dDBfUHJvY2Vzc0lucHV0AElucHV0MF9Qcm9j
-ZXNzSW5wdXRSb3cATmV4dFJvdwBnZXRfQXNzZW1ibHkAAAAAAAMvAAADLQABgJtJAHMATgB1AGwA
-bAAgAHAAcgBvAHAAZQByAHQAeQAgAGMAYQBuAG4AbwB0ACAAYgBlACAAcwBlAHQAIAB0AG8AIABG
-AGEAbABzAGUALgAgAEEAcwBzAGkAZwBuACAAYQAgAHYAYQBsAHUAZQAgAHQAbwAgAHQAaABlACAA
-YwBvAGwAdQBtAG4AIABpAG4AcwB0AGUAYQBkAC4AAA9JAG4AcAB1AHQAIAAwAABxUwBDAF8AMwA1
-ADIAMgAyADkAZQBmAGMAZABkADUANAA0ADAANQA4ADcAMgBjADEANwAyADUAYgBkAGQAMQA3ADcA
-YQBhAC4AUAByAG8AcABlAHIAdABpAGUAcwAuAFIAZQBzAG8AdQByAGMAZQBzAAAWTl5aUSl3Rpsp
-4IMXljPcAAQgAQEIAyAAAQUgAQEREQQgAQEOBSABARFdBwcDDhE5HQ4EAAECDgMgAA4EIAECDgYg
-AR0OHQMFAAEOHQ4HAAICDhAROQkgAwESQR0IEkUDBhJBAwYdCAQgAQ4IBCABAggFIAIBCBwDIAAC
-BiACAg4ReQUgAR0ICAcAARJ9EYCBBSAAEoCFByACAQ4SgIUIt3pcVhk04IkIiYRdzYCAzJEDBhIU
-AwYSGAMGEkkDBhJVAwYSWQMGEiAFIAEBEgwFIAEBETkEIAEBAgkgBAEIDhJBEkUFIAEBEkkEAAAS
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAOBUAAAAgAAAAFgAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAFAEAAAAQAAAAAYAAAAYAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAHgAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAAU
+NQAAAAAAAEgAAAACAAUAHCMAAAwRAAABAAAAAAAAACg0AAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKBAAAAoqHgIoEQAACioTMAUA9AAAAAEAABEDbwgAAAYt
+DQNvBwAABigSAAAKLAwDF28MAAAGOJwAAAADbwcAAAZvEwAACgoGcgEAAHBvFAAACixpBheNHAAA
+ASUWHy+dbxUAAAoMCI5pGTNIG40bAAABJRYIGJqiJRdyBQAAcKIlGAgXmqIlGXIFAABwoiUaCBaa
+oigWAAAKEgEoFwAACiwJAwdvCwAABissAxdvDAAABisjAxdvDAAABisaBhIBKBcAAAosCQMHbwsA
+AAYrBwMXbwwAAAYDbwoAAAYtDQNvCQAABigSAAAKLAgDFm8NAAAGKgNvCQAABm8TAAAKDQMCCSgE
+AAAGbw0AAAYqGzACABsAAAACAAARA3MYAAAKbxkAAAoDKBoAAAoK3gUmFgreAAYqAAEQAAAAAAAA
+FBQABQ8AAAEeAigRAAAGKioCAwQFKBsAAAoqUgJ7HAAACgJ7HQAAChaUbx4AAAoqIgIWKB8AAAoq
+UgJ7HAAACgJ7HQAACheUbx4AAAoqIgIXKB8AAAoqOgIYA4wOAAABKCAAAAoqWgMsCAIYKCEAAAoq
+cgkAAHBzIgAACno6AhkDjB8AAAEoIAAACipaAywIAhkoIQAACipyCQAAcHMiAAAKeh4CKCMAAAoq
+HgIoJAAACip+AiglAAAKAgJzFQAABn0BAAAEAgJzFgAABn0CAAAEKpIEcqYAAHAabyYAAAosFQIF
+AgMoJwAACg4EcwYAAAZvEwAABipKKwcCA28UAAAGA28PAAAGLfEqBio6AigoAAAKAgN9AwAABCo6
+AigoAAAKAgN9BAAABCoeAigoAAAKKq5+BQAABC0ecrYAAHDQBwAAAigpAAAKbyoAAApzKwAACoAF
+AAAEfgUAAAQqGn4GAAAEKh4CgAYAAAQqGn4HAAAEKh4CKCwAAAoqLnMcAAAGgAcAAAQqAAAAQlNK
+QgEAAQAAAAAADAAAAHY0LjAuMzAzMTkAAAAABQBsAAAARAYAACN+AACwBgAAOAcAACNTdHJpbmdz
+AAAAAOgNAAAoAQAAI1VTABAPAAAQAAAAI0dVSUQAAAAgDwAA7AEAACNCbG9iAAAAAAAAAAIAAAFX
+FaIBCQEAAAD6ATMAFgAAAQAAACMAAAAIAAAABwAAAB0AAAASAAAALAAAABAAAAACAAAAAwAAAAsA
+AAAMAAAAAQAAAAQAAAABAAAAAAB/AwEAAAAAAAYASQI2BQYA3QI2BQYAlQEjBQ8AqgUAAAYAwgFz
+BAYALAJzBAYADQJzBAYAxAJzBAYAaQJzBAYAggJzBAYA2QFzBAYA9AEYAwoAnQKqAAYAoQAeBAYA
+WwYeBAoA9QSqAA4A5gSqAAoAvASqAAoAngaqAAYAeAEjBQYABgVWBQYAsAReBBIASAE8AxIAqQE8
+AxIA+ABJBAYAXQE2BQYANQMeBAYA1AQeBBIASAZSAwYAhQQeBAYANgQeBAYAnwQeBAYAywAeBAYA
+cwAeBAYAIwdzBAAAAAABAAAAAAABAAEAAQAQAD4EAAAQAAEAAQABABAA2QQAAEEAAQAGAAEAEACA
+BgAATQABABEAAQAQADAGAAA9AAMAFQABABAA6AUAAD0ABAAWAAAAEABdBbkFPQAFABcAAAEQABcG
+uQVlAAcAGwAGADAGrgAGAOgFsgABAI4GtgABAI4GtgARACoEugARAOgAvgARAGMAwgBQIAAAAADG
+APsCBgABAFggAAAAAMYABgMGAAEAYCAAAAAAxgAAB8YAAQBgIQAAAACBAGwDLQACAJghAAAAAIYY
+FgUGAAMAoCEAAAAAhhgWBVEAAwCrIQAAAACGCBkBKQAGAMAhAAAAAIYIvwNzAAYAySEAAAAAhghi
+AykABgDeIQAAAACGCPwDcwAGAOchAAAAAIYILgHMAAYA9iEAAAAAhgjbA9IABwANIgAAAACGCD8A
+0gAIABwiAAAAAIYIpwPSAAkAMyIAAAAAhgAXB3MACgA7IgAAAACGAGIGcwAKAEMiAAAAAIYYFgUG
+AAoAYyIAAAAAxgDzBtcACgCIIgAAAADGAewGxgAOAJsiAAAAAMYBAAfGAA8AnSIAAAAAhhgWBeEA
+EACsIgAAAACGGBYF4QARALsiAAAAAIMYFgUGABIAwyIAAAAAkwgCBecAEgDvIgAAAACTCNAA7AAS
+APYiAAAAAJMI3ADxABIA/iIAAAAAlgh0BvcAEwAFIwAAAACGGBYFBgATAA0jAAAAAJEYHAX8ABMA
+AAABABsHAAABAHkDAAABAPsEAAACAPIFAAADAMoEAAABABIDAAABABIDAAABABIDAAABABIDAAAB
+AAoAAAACAJcAAAADAPsEAAAEAMoEAAABAPsEAAABABsHAAABAKQGAAABAKQGAAABABIDCQAWBQEA
+EQAWBQYAGQAWBQoAKQAWBRAAMQAWBRAAOQAWBRAAQQAWBRAASQAWBRAAUQAWBRAAWQAWBRAAYQAW
+BRAAaQAWBQYAoQAWBQYAwQAWBRUA0QAWBQYAmQD7AgYAmQAGAwYA2QBQACQA2QAlBCkA2QAnBi0A
+2QBuBjIA2QBUBjkAcQAQAT8A6QAWBRAA6QA8BikA2QAsB0sAgQAWBVEAgQD7BFsAgQDyBV8AiQAy
+A2MAgQAGBGgAgQAVBG0AgQANBAEA8QAWBRAAgQAXB3MAgQBiBnMAmQAWBQYA2QAgBncAmQAGBn8A
+eQAWBQYACQGFAIUACQEfB44AqQAWBZQAyQAWBQYALgALABwBLgATACUBLgAbAEQBLgAjAE0BLgAr
+AHYBLgAzAHYBLgA7AHwBLgBDAE0BLgBLAIQBLgBTAHYBLgBbAJ0BQwBjAOcB4QB7AOcB4wBrAOcB
+KQFzAEQBSQFzAEQBGwBHAAMAAQAHAAkACAALAAAANwEAAQAA5AMEAQAAcwMAAQAAAAQEAQAAMgEI
+AQAA3wMEAQAAQwAEAQAAqwMEAQAABgUNAQAA8AASAQAAeAYXAQIABwADAAIACAAFAAIACQAHAAIA
+CgAJAAEACwALAAEADAANAAEADQAPAAEADgARAAIAGAATAAIAGQAVAAEAGgAVAAIAGwAXAASAAAAB
+AAAAAAAAAAAAAAAAABIAAAAEAAAAAAAAAAAAAACcADYAAAAAABAAAAAAAAAAAAAAAKUArgYAAAAA
+EAAAAAAAAAAAAAAApQDLBgAAAAAEAAAAAAAAAAAAAACcAB4EAAAAAAAAAAABAAAAZwUAAAAAAAAA
+PE1vZHVsZT4ASW5wdXRJRABTQ18zNTIyMjllZmNkZDU0NDA1ODcyYzE3MjViZGQxNzdhYQBtc2Nv
+cmxpYgBzZXRfSXNFbWFpbFZhbGlkAElzTnVsbE9yV2hpdGVTcGFjZQBkZWZhdWx0SW5zdGFuY2UA
+UnVudGltZVR5cGVIYW5kbGUAR2V0VHlwZUZyb21IYW5kbGUASW5wdXROYW1lAERhdGVUaW1lAE1p
+Y3Jvc29mdC5TcWxTZXJ2ZXIuRHRzLlBpcGVsaW5lAFR5cGUAZ2V0X0N1bHR1cmUAc2V0X0N1bHR1
+cmUAcmVzb3VyY2VDdWx0dXJlAEFwcGxpY2F0aW9uU2V0dGluZ3NCYXNlAFRyeVBhcnNlAGdldF9S
+ZWdpc3RyYXRpb25EYXRlAHNldF9DbGVhblJlZ2lzdHJhdGlvbkRhdGUARWRpdG9yQnJvd3NhYmxl
+U3RhdGUAQ29tcGlsZXJHZW5lcmF0ZWRBdHRyaWJ1dGUARGVidWdnZXJOb25Vc2VyQ29kZUF0dHJp
+YnV0ZQBEZWJ1Z2dhYmxlQXR0cmlidXRlAEVkaXRvckJyb3dzYWJsZUF0dHJpYnV0ZQBBc3NlbWJs
+eVRpdGxlQXR0cmlidXRlAEFzc2VtYmx5VHJhZGVtYXJrQXR0cmlidXRlAFRhcmdldEZyYW1ld29y
+a0F0dHJpYnV0ZQBBc3NlbWJseUNvbmZpZ3VyYXRpb25BdHRyaWJ1dGUAQXNzZW1ibHlEZXNjcmlw
+dGlvbkF0dHJpYnV0ZQBDb21waWxhdGlvblJlbGF4YXRpb25zQXR0cmlidXRlAEFzc2VtYmx5UHJv
+ZHVjdEF0dHJpYnV0ZQBBc3NlbWJseUNvcHlyaWdodEF0dHJpYnV0ZQBTU0lTU2NyaXB0Q29tcG9u
+ZW50RW50cnlQb2ludEF0dHJpYnV0ZQBBc3NlbWJseUNvbXBhbnlBdHRyaWJ1dGUAUnVudGltZUNv
+bXBhdGliaWxpdHlBdHRyaWJ1dGUAUHJlRXhlY3V0ZQBQb3N0RXhlY3V0ZQB2YWx1ZQBTeXN0ZW0u
+UnVudGltZS5WZXJzaW9uaW5nAEdldFN0cmluZwBTeXN0ZW0uQ29tcG9uZW50TW9kZWwAU3lzdGVt
+Lk5ldC5NYWlsAGdldF9FbWFpbABJc1ZhbGlkRW1haWwAZW1haWwAU0NfMzUyMjI5ZWZjZGQ1NDQw
+NTg3MmMxNzI1YmRkMTc3YWEuZGxsAHNldF9Jc0VtYWlsVmFsaWRfSXNOdWxsAGdldF9SZWdpc3Ry
+YXRpb25EYXRlX0lzTnVsbABzZXRfQ2xlYW5SZWdpc3RyYXRpb25EYXRlX0lzTnVsbABnZXRfRW1h
+aWxfSXNOdWxsAFNldE51bGwAc2V0X0l0ZW0AU3lzdGVtAFRyaW0AcmVzb3VyY2VNYW4AQm9vbGVh
+bgBTY3JpcHRNYWluAFN5c3RlbS5Db25maWd1cmF0aW9uAFN5c3RlbS5HbG9iYWxpemF0aW9uAFN5
+c3RlbS5SZWZsZWN0aW9uAEludmFsaWRPcGVyYXRpb25FeGNlcHRpb24AU3RyaW5nQ29tcGFyaXNv
+bgBDdWx0dXJlSW5mbwBPdXRwdXROYW1lTWFwAE91dHB1dE1hcABDaGFyAElucHV0MEJ1ZmZlcgBQ
+aXBlbGluZUJ1ZmZlcgBTY3JpcHRCdWZmZXIAZ2V0X1Jlc291cmNlTWFuYWdlcgAuY3RvcgAuY2N0
+b3IAU3lzdGVtLkRpYWdub3N0aWNzAFN5c3RlbS5SdW50aW1lLkNvbXBpbGVyU2VydmljZXMAU3lz
+dGVtLlJlc291cmNlcwBTQ18zNTIyMjllZmNkZDU0NDA1ODcyYzE3MjViZGQxNzdhYS5Qcm9wZXJ0
+aWVzLlJlc291cmNlcy5yZXNvdXJjZXMARGVidWdnaW5nTW9kZXMAU0NfMzUyMjI5ZWZjZGQ1NDQw
+NTg3MmMxNzI1YmRkMTc3YWEuUHJvcGVydGllcwBWYXJpYWJsZXMAQnVmZmVyQ29sdW1uSW5kZXhl
+cwBHZXRDb2x1bW5JbmRleGVzAFNldHRpbmdzAEVxdWFscwBDb250YWlucwBDb25uZWN0aW9ucwBn
+ZXRfQWRkcmVzcwBNYWlsQWRkcmVzcwBDb25jYXQAT2JqZWN0AEVuZE9mUm93c2V0AFNwbGl0AGdl
+dF9EZWZhdWx0AFVzZXJDb21wb25lbnQAUGFyZW50Q29tcG9uZW50AFNjcmlwdENvbXBvbmVudABN
+aWNyb3NvZnQuU3FsU2VydmVyLlR4U2NyaXB0AE1pY3Jvc29mdC5TcWxTZXJ2ZXIuUGlwZWxpbmVI
+b3N0AElucHV0MF9Qcm9jZXNzSW5wdXQASW5wdXQwX1Byb2Nlc3NJbnB1dFJvdwBOZXh0Um93AGdl
+dF9Bc3NlbWJseQBvcF9FcXVhbGl0eQAAAy8AAAMtAAGAm0kAcwBOAHUAbABsACAAcAByAG8AcABl
+AHIAdAB5ACAAYwBhAG4AbgBvAHQAIABiAGUAIABzAGUAdAAgAHQAbwAgAEYAYQBsAHMAZQAuACAA
+QQBzAHMAaQBnAG4AIABhACAAdgBhAGwAdQBlACAAdABvACAAdABoAGUAIABjAG8AbAB1AG0AbgAg
+AGkAbgBzAHQAZQBhAGQALgAAD0kAbgBwAHUAdAAgADAAAHFTAEMAXwAzADUAMgAyADIAOQBlAGYA
+YwBkAGQANQA0ADQAMAA1ADgANwAyAGMAMQA3ADIANQBiAGQAZAAxADcANwBhAGEALgBQAHIAbwBw
+AGUAcgB0AGkAZQBzAC4AUgBlAHMAbwB1AHIAYwBlAHMAAP/w5AfHzKNAmzzXj86kRpkABCABAQgD
+IAABBSABARERBCABAQ4FIAEBEV0IBwQOETkdDg4EAAECDgMgAA4EIAECDgYgAR0OHQMFAAEOHQ4H
+AAICDhAROQMHAQIFAAICDg4JIAMBEkUdCBJJAwYSRQMGHQgEIAEOCAQgAQIIBSACAQgcAyAAAgcg
+AgIOEYCBBSABHQgICAABEoCFEYCJBSAAEoCNByACAQ4SgI0It3pcVhk04IkIiYRdzYCAzJEDBhIU
+AwYSGAMGEk0DBhJVAwYSWQMGEiAFIAEBEgwFIAEBETkEIAEBAgkgBAEIDhJFEkkFIAEBEk0EAAAS
 VQQAABJZBQABARJZBAAAEiADAAABAygADgMoAAIEKAAROQQIABJVBAgAElkECAASIAgBAAgAAAAA
 AB4BAAEAVAIWV3JhcE5vbkV4Y2VwdGlvblRocm93cwEIAQACAAAAAAAoAQAjU0NfMzUyMjI5ZWZj
 ZGQ1NDQwNTg3MmMxNzI1YmRkMTc3YWEAAAUBAAAAAAcBAAJIUAAAGAEAE0NvcHlyaWdodCBAIEhQ
 IDIwMjQAAEkBABouTkVURnJhbWV3b3JrLFZlcnNpb249djQuNwEAVA4URnJhbWV3b3JrRGlzcGxh
-eU5hbWUSLk5FVCBGcmFtZXdvcmsgNC43BAEAAAAAtAAAAM7K774BAAAAkQAAAGxTeXN0ZW0uUmVz
-b3VyY2VzLlJlc291cmNlUmVhZGVyLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJl
-PW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkjU3lzdGVtLlJlc291cmNl
-cy5SdW50aW1lUmVzb3VyY2VTZXQCAAAAAAAAAAAAAABQQURQQURQtAAAAAgzAAAAAAAAAAAAACIz
-AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUMwAAAAAAAAAAAAAAAF9Db3JEbGxNYWluAG1zY29y
-ZWUuZGxsAAAAAAD/JQAgABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+eU5hbWUSLk5FVCBGcmFtZXdvcmsgNC43BAEAAAC0AAAAzsrvvgEAAACRAAAAbFN5c3RlbS5SZXNv
+dXJjZXMuUmVzb3VyY2VSZWFkZXIsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9
+bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSNTeXN0ZW0uUmVzb3VyY2Vz
+LlJ1bnRpbWVSZXNvdXJjZVNldAIAAAAAAAAAAAAAAFBBRFBBRFC0AAAACDUAAAAAAAAAAAAAIjUA
+AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ1AAAAAAAAAAAAAAAAX0NvckRsbE1haW4AbXNjb3Jl
+ZS5kbGwAAAAAAP8lACAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAQAQAAAAGAAAgAAAAAAAAAAAAAAAAAAAAQABAAAAMAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAA
-SAAAAFhAAAD0AwAAAAAAAAAAAAD0AzQAAABWAFMAXwBWAEUAUgBTAEkATwBOAF8ASQBOAEYATwAA
-AAAAvQTv/gAAAQAAAAEAAAAAAAAAAQAAAAAAPwAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAEQA
-AAABAFYAYQByAEYAaQBsAGUASQBuAGYAbwAAAAAAJAAEAAAAVAByAGEAbgBzAGwAYQB0AGkAbwBu
-AAAAAAAAALAEVAMAAAEAUwB0AHIAaQBuAGcARgBpAGwAZQBJAG4AZgBvAAAAMAMAAAEAMAAwADAA
-MAAwADQAYgAwAAAAGgABAAEAQwBvAG0AbQBlAG4AdABzAAAAAAAAACYAAwABAEMAbwBtAHAAYQBu
-AHkATgBhAG0AZQAAAAAASABQAAAAAABwACQAAQBGAGkAbABlAEQAZQBzAGMAcgBpAHAAdABpAG8A
-bgAAAAAAUwBDAF8AMwA1ADIAMgAyADkAZQBmAGMAZABkADUANAA0ADAANQA4ADcAMgBjADEANwAy
-ADUAYgBkAGQAMQA3ADcAYQBhAAAAMAAIAAEARgBpAGwAZQBWAGUAcgBzAGkAbwBuAAAAAAAxAC4A
-MAAuADAALgAwAAAAcAAoAAEASQBuAHQAZQByAG4AYQBsAE4AYQBtAGUAAABTAEMAXwAzADUAMgAy
-ADIAOQBlAGYAYwBkAGQANQA0ADQAMAA1ADgANwAyAGMAMQA3ADIANQBiAGQAZAAxADcANwBhAGEA
-LgBkAGwAbAAAAEwAFAABAEwAZQBnAGEAbABDAG8AcAB5AHIAaQBnAGgAdAAAAEMAbwBwAHkAcgBp
-AGcAaAB0ACAAQAAgAEgAUAAgADIAMAAyADQAAAAqAAEAAQBMAGUAZwBhAGwAVAByAGEAZABlAG0A
-YQByAGsAcwAAAAAAAAAAAHgAKAABAE8AcgBpAGcAaQBuAGEAbABGAGkAbABlAG4AYQBtAGUAAABT
-AEMAXwAzADUAMgAyADIAOQBlAGYAYwBkAGQANQA0ADQAMAA1ADgANwAyAGMAMQA3ADIANQBiAGQA
-ZAAxADcANwBhAGEALgBkAGwAbAAAAGgAJAABAFAAcgBvAGQAdQBjAHQATgBhAG0AZQAAAAAAUwBD
-AF8AMwA1ADIAMgAyADkAZQBmAGMAZABkADUANAA0ADAANQA4ADcAMgBjADEANwAyADUAYgBkAGQA
-MQA3ADcAYQBhAAAANAAIAAEAUAByAG8AZAB1AGMAdABWAGUAcgBzAGkAbwBuAAAAMQAuADAALgAw
-AC4AMAAAADgACAABAEEAcwBzAGUAbQBiAGwAeQAgAFYAZQByAHMAaQBvAG4AAAAxAC4AMAAuADAA
-LgAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAMAAAANDMAAAAA
+AAABABAAAAAYAACAAAAAAAAAAAAAAAAAAAABAAEAAAAwAACAAAAAAAAAAAAAAAAAAAABAAAAAABI
+AAAAWEAAAPQDAAAAAAAAAAAAAPQDNAAAAFYAUwBfAFYARQBSAFMASQBPAE4AXwBJAE4ARgBPAAAA
+AAC9BO/+AAABAAAAAQAAAAAAAAABAAAAAAA/AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAA
+AAEAVgBhAHIARgBpAGwAZQBJAG4AZgBvAAAAAAAkAAQAAABUAHIAYQBuAHMAbABhAHQAaQBvAG4A
+AAAAAAAAsARUAwAAAQBTAHQAcgBpAG4AZwBGAGkAbABlAEkAbgBmAG8AAAAwAwAAAQAwADAAMAAw
+ADAANABiADAAAAAaAAEAAQBDAG8AbQBtAGUAbgB0AHMAAAAAAAAAJgADAAEAQwBvAG0AcABhAG4A
+eQBOAGEAbQBlAAAAAABIAFAAAAAAAHAAJAABAEYAaQBsAGUARABlAHMAYwByAGkAcAB0AGkAbwBu
+AAAAAABTAEMAXwAzADUAMgAyADIAOQBlAGYAYwBkAGQANQA0ADQAMAA1ADgANwAyAGMAMQA3ADIA
+NQBiAGQAZAAxADcANwBhAGEAAAAwAAgAAQBGAGkAbABlAFYAZQByAHMAaQBvAG4AAAAAADEALgAw
+AC4AMAAuADAAAABwACgAAQBJAG4AdABlAHIAbgBhAGwATgBhAG0AZQAAAFMAQwBfADMANQAyADIA
+MgA5AGUAZgBjAGQAZAA1ADQANAAwADUAOAA3ADIAYwAxADcAMgA1AGIAZABkADEANwA3AGEAYQAu
+AGQAbABsAAAATAAUAAEATABlAGcAYQBsAEMAbwBwAHkAcgBpAGcAaAB0AAAAQwBvAHAAeQByAGkA
+ZwBoAHQAIABAACAASABQACAAMgAwADIANAAAACoAAQABAEwAZQBnAGEAbABUAHIAYQBkAGUAbQBh
+AHIAawBzAAAAAAAAAAAAeAAoAAEATwByAGkAZwBpAG4AYQBsAEYAaQBsAGUAbgBhAG0AZQAAAFMA
+QwBfADMANQAyADIAMgA5AGUAZgBjAGQAZAA1ADQANAAwADUAOAA3ADIAYwAxADcAMgA1AGIAZABk
+ADEANwA3AGEAYQAuAGQAbABsAAAAaAAkAAEAUAByAG8AZAB1AGMAdABOAGEAbQBlAAAAAABTAEMA
+XwAzADUAMgAyADIAOQBlAGYAYwBkAGQANQA0ADQAMAA1ADgANwAyAGMAMQA3ADIANQBiAGQAZAAx
+ADcANwBhAGEAAAA0AAgAAQBQAHIAbwBkAHUAYwB0AFYAZQByAHMAaQBvAG4AAAAxAC4AMAAuADAA
+LgAwAAAAOAAIAAEAQQBzAHMAZQBtAGIAbAB5ACAAVgBlAHIAcwBpAG8AbgAAADEALgAwAC4AMAAu
+ADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAwAAAA0NQAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
                   </arrayElements>
                 </property>
                 <property
@@ -3305,7 +3859,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
                   dataType="System.String"
                   description="Checksum to match component metedata against compiled codes."
                   name="MetadataChecksum140"
-                  typeConverter="NOTBROWSABLE">C8</property>
+                  typeConverter="NOTBROWSABLE">BA</property>
                 <property
                   dataType="System.String"
                   name="UserComponentTypeName">Microsoft.ScriptComponentHost</property>
@@ -3323,6 +3877,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
                       cachedLength="50"
                       cachedName="RegistrationDate"
                       lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[RegistrationDate]" />
+                    <inputColumn
+                      refId="Package\ExtractData From CSV to Staging\Script Component.Inputs[Input 0].Columns[Email]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Email"
+                      lineageId="Package\ExtractData From CSV to Staging\Flat File Source.Outputs[Flat File Source Output].Columns[Email]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -3338,6 +3899,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
                       dataType="dbDate"
                       lineageId="Package\ExtractData From CSV to Staging\Script Component.Outputs[Output 0].Columns[CleanRegistrationDate]"
                       name="CleanRegistrationDate" />
+                    <outputColumn
+                      refId="Package\ExtractData From CSV to Staging\Script Component.Outputs[Output 0].Columns[IsEmailValid]"
+                      dataType="bool"
+                      lineageId="Package\ExtractData From CSV to Staging\Script Component.Outputs[Output 0].Columns[IsEmailValid]"
+                      name="IsEmailValid" />
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
@@ -3361,6 +3927,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
               name="Data Conversion Output"
               startId="Package\ExtractData From CSV to Staging\Data Conversion 2.Outputs[Data Conversion Output]" />
             <path
+              refId="Package\ExtractData From CSV to Staging.Paths[Data Conversion Output3]"
+              endId="Package\ExtractData From CSV to Staging\InValidEmail.Inputs[Excel Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\ExtractData From CSV to Staging\Data Conversion 3.Outputs[Data Conversion Output]" />
+            <path
               refId="Package\ExtractData From CSV to Staging.Paths[Derived Column Output]"
               endId="Package\ExtractData From CSV to Staging\Script Component.Inputs[Input 0]"
               name="Derived Column Output"
@@ -3375,6 +3946,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
               endId="Package\ExtractData From CSV to Staging\Data Conversion 2.Inputs[Data Conversion Input]"
               name="InValidAge"
               startId="Package\ExtractData From CSV to Staging\Conditional Split.Outputs[InValidAge]" />
+            <path
+              refId="Package\ExtractData From CSV to Staging.Paths[InValidEmail]"
+              endId="Package\ExtractData From CSV to Staging\Data Conversion 3.Inputs[Data Conversion Input]"
+              name="InValidEmail"
+              startId="Package\ExtractData From CSV to Staging\Conditional Split.Outputs[InValidEmail]" />
             <path
               refId="Package\ExtractData From CSV to Staging.Paths[InValidUserID]"
               endId="Package\ExtractData From CSV to Staging\Data Conversion 1.Inputs[Data Conversion Input]"
@@ -3423,13 +3999,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="233.6,41.6"
-          Id="Package\ExtractData From CSV to Staging"
-          TopLeft="144.999992077549,211.466665196154" />
-        <NodeLayout
           Size="185.6,41.6"
           Id="Package\Clear Old InValid Rows"
           TopLeft="163.333324409194,94.4666660097572" />
+        <NodeLayout
+          Size="233.6,41.6"
+          Id="Package\ExtractData From CSV to Staging"
+          TopLeft="144.999992077549,211.466665196154" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
           TopLeft="258.966658243371,136.066666009757">
@@ -3461,13 +4037,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="171.2,63.2"
-          Id="Package\ExtractData From CSV to Staging\OLE DB Destination"
-          TopLeft="61.333330282735,639.433331929114" />
-        <NodeLayout
-          Size="196.8,41.6"
-          Id="Package\ExtractData From CSV to Staging\Remove duplicate UserID"
-          TopLeft="215.833321540721,301.066665919356" />
+          Size="128.8,41.6"
+          Id="Package\ExtractData From CSV to Staging\InValidAge"
+          TopLeft="428.333309930233,643.866663930549" />
         <NodeLayout
           Size="152.8,41.6"
           Id="Package\ExtractData From CSV to Staging\Derived Column"
@@ -3475,27 +4047,181 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
         <NodeLayout
           Size="164,41.6"
           Id="Package\ExtractData From CSV to Staging\Data Conversion 2"
-          TopLeft="468.333307744729,514.333331459032" />
+          TopLeft="414.166644037599,555.066664509111" />
         <NodeLayout
           Size="164,41.6"
           Id="Package\ExtractData From CSV to Staging\Data Conversion 1"
-          TopLeft="255.833319355217,515.933331314392" />
-        <NodeLayout
-          Size="156,41.6"
-          Id="Package\ExtractData From CSV to Staging\Data Conversion"
-          TopLeft="70.10000928839,515.299998752475" />
-        <NodeLayout
-          Size="153.6,41.6"
-          Id="Package\ExtractData From CSV to Staging\Conditional Split"
-          TopLeft="242.499986750385,402.999998788635" />
+          TopLeft="227.499987569948,556.666664364471" />
         <NodeLayout
           Size="161.6,41.6"
           Id="Package\ExtractData From CSV to Staging\Script Component"
           TopLeft="235.833320447969,197.666665431195" />
         <NodeLayout
+          Size="142.4,41.6"
+          Id="Package\ExtractData From CSV to Staging\InValidUserID"
+          TopLeft="242.499986750385,642.533330356147" />
+        <NodeLayout
+          Size="156,41.6"
+          Id="Package\ExtractData From CSV to Staging\Data Conversion"
+          TopLeft="57.6000099713598,560.366665105754" />
+        <NodeLayout
+          Size="171.2,63.2"
+          Id="Package\ExtractData From CSV to Staging\OLE DB Destination"
+          TopLeft="43.8333312388928,636.833331947194" />
+        <NodeLayout
+          Size="196.8,41.6"
+          Id="Package\ExtractData From CSV to Staging\Remove duplicate UserID"
+          TopLeft="215.833321540721,301.066665919356" />
+        <NodeLayout
+          Size="153.6,41.6"
+          Id="Package\ExtractData From CSV to Staging\Conditional Split"
+          TopLeft="242.499986750385,402.999998788635" />
+        <NodeLayout
           Size="151.2,41.6"
           Id="Package\ExtractData From CSV to Staging\Flat File Source"
           TopLeft="242.5,5.49999999999995" />
+        <EdgeLayout
+          Id="Package\ExtractData From CSV to Staging.Paths[ValidAge]"
+          TopLeft="275.619986750385,444.599998788635">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-140.019976779025,115.766666317119"
+              Start="0,0"
+              End="-140.019976779025,108.266666317119">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,30.8816592833239" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,30.8816592833239"
+                    Point2="0,34.8816592833239"
+                    Point3="-4,34.8816592833239" />
+                  <mssgle:LineSegment
+                    End="-136.019976779025,34.8816592833239" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-136.019976779025,34.8816592833239"
+                    Point2="-140.019976779025,34.8816592833239"
+                    Point3="-140.019976779025,38.8816592833239" />
+                  <mssgle:LineSegment
+                    End="-140.019976779025,108.266666317119" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-81.3611602645126,39.8816592833239,22.70234375,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ExtractData From CSV to Staging.Paths[Sort Output]"
+          TopLeft="316.766654145553,342.666665919356">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.333332869279"
+              Start="0,0"
+              End="0,52.833332869279">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.833332869279" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ExtractData From CSV to Staging.Paths[Output 0]"
+          TopLeft="315.433320994345,239.266665431195">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,61.8000004881611"
+              Start="0,0"
+              End="0,54.3000004881611">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,54.3000004881611" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-8,19.1500002440806,16,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ExtractData From CSV to Staging.Paths[InValidUserID]"
+          TopLeft="307.119987160167,444.599998788635">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,112.066665575836"
+              Start="0,0"
+              End="0,104.566665575836">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,104.566665575836" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-31.1328125,47.4088210691679,62.265625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ExtractData From CSV to Staging.Paths[InValidAge]"
+          TopLeft="333.859986750385,444.599998788635">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="162.306657287214,110.466665720476"
+              Start="0,0"
+              End="162.306657287214,102.966665720476">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,45.4494050233199" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,45.4494050233199"
+                    Point2="0,49.4494050233199"
+                    Point3="4,49.4494050233199" />
+                  <mssgle:LineSegment
+                    End="158.306657287214,49.4494050233199" />
+                  <mssgle:CubicBezierSegment
+                    Point1="158.306657287214,49.4494050233199"
+                    Point2="162.306657287214,49.4494050233199"
+                    Point3="162.306657287214,53.4494050233199" />
+                  <mssgle:LineSegment
+                    End="162.306657287214,102.966665720476" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="56.7953794248568,54.4494050233199,48.7158984375,11.6630859375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\ExtractData From CSV to Staging.Paths[Flat File Source Output]"
           TopLeft="314.333326936182,47.1">
@@ -3543,79 +4269,19 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ExtractData From CSV to Staging.Paths[Data Conversion Output]"
-          TopLeft="147.516669785562,556.899998752475">
+          Id="Package\ExtractData From CSV to Staging.Paths[Data Conversion Output2]"
+          TopLeft="494.449976983916,596.666664509111">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,82.5333331766391"
+              EndConnector="0,47.1999994214387"
               Start="0,0"
-              End="0,75.0333331766391">
+              End="0,39.6999994214387">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,75.0333331766391" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-8,29.5166665883196,16,16"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ExtractData From CSV to Staging.Paths[ValidAge]"
-          TopLeft="295.033320083718,444.599998788635">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-146.933310795328,70.6999999638401"
-              Start="0,0"
-              End="-146.933310795328,63.1999999638401">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,24.7173195729412" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,24.7173195729412"
-                    Point2="0,28.7173195729412"
-                    Point3="-4,28.7173195729412" />
-                  <mssgle:LineSegment
-                    End="-142.933310795328,28.7173195729412" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-142.933310795328,28.7173195729412"
-                    Point2="-146.933310795328,28.7173195729412"
-                    Point3="-146.933310795328,32.7173195729412" />
-                  <mssgle:LineSegment
-                    End="-146.933310795328,63.1999999638401" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-84.817827272664,33.7173195729412,22.70234375,9.7490234375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ExtractData From CSV to Staging.Paths[Sort Output]"
-          TopLeft="316.766654145553,342.666665919356">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,60.3333328692786"
-              Start="0,0"
-              End="0,52.8333328692786">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,52.8333328692786" />
+                    End="0,39.6999994214387" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3624,106 +4290,20 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ExtractData From CSV to Staging.Paths[Output 0]"
-          TopLeft="315.433320994345,239.266665431195">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,61.8000004881611"
-              Start="0,0"
-              End="0,54.3000004881611">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,54.3000004881611" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ExtractData From CSV to Staging.Paths[InValidUserID]"
-          TopLeft="340.699986386134,444.599998788635">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,71.3333325257568"
-              Start="0,0"
-              End="0,63.8333325257568">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,63.8333325257568" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-31.1328125,27.0421545441284,62.265625,9.7490234375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ExtractData From CSV to Staging.Paths[InValidAge]"
-          TopLeft="355.699986750385,444.599998788635">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="194.633320994344,69.7333326703971"
-              Start="0,0"
-              End="194.633320994344,62.2333326703971">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,20.0377699648809" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,20.0377699648809"
-                    Point2="0,24.0377699648809"
-                    Point3="4,24.0377699648809" />
-                  <mssgle:LineSegment
-                    End="190.633320994344,24.0377699648809" />
-                  <mssgle:CubicBezierSegment
-                    Point1="190.633320994344,24.0377699648809"
-                    Point2="194.633320994344,24.0377699648809"
-                    Point3="194.633320994344,28.0377699648809" />
-                  <mssgle:LineSegment
-                    End="194.633320994344,62.2333326703971" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="72.958711278422,29.0377699648809,48.7158984375,11.6630859375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="142.4,41.6"
-          Id="Package\ExtractData From CSV to Staging\InValidUserID"
-          TopLeft="265.833318808841,657.266663587027" />
         <EdgeLayout
           Id="Package\ExtractData From CSV to Staging.Paths[Data Conversion Output1]"
-          TopLeft="337.433319082029,557.533331314392">
+          TopLeft="311.599987160167,598.266664364471">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,99.7333322726353"
+              EndConnector="0,44.2666659916765"
               Start="0,0"
-              End="0,92.2333322726353">
+              End="0,36.7666659916765">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,92.2333322726353" />
+                    End="0,36.7666659916765" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3732,24 +4312,88 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="128.8,41.6"
-          Id="Package\ExtractData From CSV to Staging\InValidAge"
-          TopLeft="490.833306515384,651.666663876309" />
         <EdgeLayout
-          Id="Package\ExtractData From CSV to Staging.Paths[Data Conversion Output2]"
-          TopLeft="552.783307130056,555.933331459032">
+          Id="Package\ExtractData From CSV to Staging.Paths[Data Conversion Output]"
+          TopLeft="132.516670605126,601.966665105754">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,95.7333324172766"
+              EndConnector="0,34.8666668414405"
               Start="0,0"
-              End="0,88.2333324172766">
+              End="0,27.3666668414405">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,88.2333324172766" />
+                    End="0,27.3666668414405" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-8,5.68333342072026,16,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="164,41.6"
+          Id="Package\ExtractData From CSV to Staging\Data Conversion 3"
+          TopLeft="604.999966944259,550.266664581431" />
+        <EdgeLayout
+          Id="Package\ExtractData From CSV to Staging.Paths[InValidEmail]"
+          TopLeft="362.979986750385,444.599998788635">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="324.019980193874,105.666665792796"
+              Start="0,0"
+              End="324.019980193874,98.1666657927963">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.8384276842923" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,27.8384276842923"
+                    Point2="0,31.8384276842923"
+                    Point3="4,31.8384276842923" />
+                  <mssgle:LineSegment
+                    End="320.019980193874,31.8384276842923" />
+                  <mssgle:CubicBezierSegment
+                    Point1="320.019980193874,31.8384276842923"
+                    Point2="324.019980193874,31.8384276842923"
+                    Point3="324.019980193874,35.8384276842923" />
+                  <mssgle:LineSegment
+                    End="324.019980193874,98.1666657927963" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="134.341259628187,36.8384276842923,55.3374609375,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="136.8,41.6"
+          Id="Package\ExtractData From CSV to Staging\InValidEmail"
+          TopLeft="611.666633246675,637.066663966709" />
+        <EdgeLayout
+          Id="Package\ExtractData From CSV to Staging.Paths[Data Conversion Output3]"
+          TopLeft="683.533300095467,591.866664581431">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,45.1999993852776"
+              Start="0,0"
+              End="0,37.6999993852776">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,37.6999993852776" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3762,7 +4406,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\ExtractData From CSV to Staging\OLE DB Destination">
+    design-time-name="Package\ExtractData From CSV to Staging\InValidAge">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -3788,7 +4432,20 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\ExtractData From CSV to Staging\InValidAge">
+    design-time-name="Package\ExtractData From CSV to Staging\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\ExtractData From CSV to Staging\InValidEmail">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
