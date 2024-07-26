@@ -11,8 +11,8 @@
   DTS:LocaleID="4105"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="241"
-  DTS:VersionGUID="{AB1FB4D9-67EA-4DA0-90C9-7BFC2282086E}">
+  DTS:VersionBuild="242"
+  DTS:VersionGUID="{5D91CE1C-8A58-4B9A-A384-3F91DFFD1F25}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -4878,19 +4878,23 @@ public class ScriptMain : UserComponent
         /*
          * Add your code here
          */
+
+        // Check if the user IDs from OLEDB source and lookup match
         bool isRecordUpdated = false;
         if (Row.OLEDBSourceUserID == Row.LookupUserID)
         {
-            if (!Row.OLEDBSourceFullName.Equals( Row.LookupFullName) ||
-                Row.OLEDBSourceAge != Row.LookupAge ||
-                !Row.OLEDBSourceEmail.Equals( Row.LookupEmail) ||
-                Row.OLEDBSourceRegistrationDate != Row.LookupRegistrationDate||
-                Row.OLEDBSourceLastLoginDate != Row.LookupLastLoginDate||
-                Row.OLEDBSourcePurchaseTotal != Convert.ToDouble(Row.PurchaseTotalString))
+            // Compare each field from OLEDB source and lookup to check for updates
+            if (!Row.OLEDBSourceFullName.Equals( Row.LookupFullName) || // Check if FullName has changed
+                Row.OLEDBSourceAge != Row.LookupAge || // Check if Age has changed
+                !Row.OLEDBSourceEmail.Equals( Row.LookupEmail) ||   // Check if Email has changed
+                Row.OLEDBSourceRegistrationDate != Row.LookupRegistrationDate || // Check if RegistrationDate has changed
+                Row.OLEDBSourceLastLoginDate != Row.LookupLastLoginDate || // Check if LastLoginDate has changed
+                Row.OLEDBSourcePurchaseTotal != Convert.ToDouble(Row.PurchaseTotalString)) // Check if PurchaseTotal has changed
             {
-                    isRecordUpdated = true;
+                    isRecordUpdated = true; // Set the flag to true if any field has changed
             }
         }
+        // Set the IsRecordUpdated flag for the current row
         Row.IsRecordUpdated = isRecordUpdated;
     }
 
@@ -5525,7 +5529,7 @@ public class Variables
     <msb:CodeName>SC_ca19f3ba499343cdac2bfd7376a5d629</msb:CodeName>
     <msb:Language>msBuild</msb:Language>
     <msb:DisplayName>SC_ca19f3ba499343cdac2bfd7376a5d629</msb:DisplayName>
-    <msb:ProjectId>{257A8F16-F4C9-4E35-BBA5-50D16DEFA12B}</msb:ProjectId>
+    <msb:ProjectId>{47E87A58-BB94-4C7F-8311-A9E235763AF6}</msb:ProjectId>
   </msb:PropertyGroup>
   <msb:ItemGroup>
     <msb:Project Include="SC_ca19f3ba499343cdac2bfd7376a5d629.csproj" />
@@ -5672,7 +5676,7 @@ namespace SC_ca19f3ba499343cdac2bfd7376a5d629.Properties {
                     <arrayElement
                       dataType="System.String"><![CDATA[TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
-ZGUuDQ0KJAAAAAAAAABQRQAATAEDAExIo2YAAAAAAAAAAOAAIiALATAAABwAAAAIAAAAAAAA6joA
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAJ3Bo2YAAAAAAAAAAOAAIiALATAAABwAAAAIAAAAAAAA6joA
 AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAGAAAAAAAAAACAAAAAAgAAAAAAAAMAYIUAABAA
 ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAJg6AABPAAAAAEAAAFAEAAAAAAAAAAAAAAAAAAAA
 AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -5786,7 +5790,7 @@ AGIAZQAgAHMAZQB0ACAAdABvACAARgBhAGwAcwBlAC4AIABBAHMAcwBpAGcAbgAgAGEAIAB2AGEA
 bAB1AGUAIAB0AG8AIAB0AGgAZQAgAGMAbwBsAHUAbQBuACAAaQBuAHMAdABlAGEAZAAuAAAPSQBu
 AHAAdQB0ACAAMAAAcVMAQwBfAGMAYQAxADkAZgAzAGIAYQA0ADkAOQAzADQAMwBjAGQAYQBjADIA
 YgBmAGQANwAzADcANgBhADUAZAA2ADIAOQAuAFAAcgBvAHAAZQByAHQAaQBlAHMALgBSAGUAcwBv
-AHUAcgBjAGUAcwAAaoTmLds8uEeq6lItigIEVwAEIAEBCAMgAAEFIAEBEREEIAEBDgUgAQERXQMH
+AHUAcgBjAGUAcwAA9pGjFhE0ok+NdkKqoOpldQAEIAEBCAMgAAEFIAEBEREEIAEBDgUgAQERXQMH
 AQIEIAECDgcAAgIRRRFFBAABDQ4JIAMBEj0dCBJBAwYSPQMGHQgEIAEICAQgAQIIBCABDggFIAER
 RQgEIAENCAUgAgEIHAMgAAIGIAICDhF9BSABHQgICAABEoCBEYCFBSAAEoCJByACAQ4SgIkIt3pc
 Vhk04IkIiYRdzYCAzJEDBhIUAwYSGAMGEkkDBhJVAwYSWQMGEiAFIAEBEgwDIAAIAyAADgQgABFF
@@ -7048,25 +7052,9 @@ WHERE UserID = ?</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="181.6,41.6"
-          Id="Package\Load Data from stage table to target table\ConvertPurchaseTotal"
-          TopLeft="132.999998018146,123.799998882413" />
-        <NodeLayout
-          Size="141.6,41.6"
-          Id="Package\Load Data from stage table to target table\AmmendData"
-          TopLeft="313.999995321035,325.799995872378" />
-        <NodeLayout
           Size="198.4,41.6"
           Id="Package\Load Data from stage table to target table\RecordUpToDateChecker"
           TopLeft="65.9999990165232,321.799995931983" />
-        <NodeLayout
-          Size="133.6,41.6"
-          Id="Package\Load Data from stage table to target table\UpdateData"
-          TopLeft="89.9999986588956,551.799992504716" />
-        <NodeLayout
-          Size="112.8,41.6"
-          Id="Package\Load Data from stage table to target table\Lookup"
-          TopLeft="165.499997615814,205.299997749925" />
         <NodeLayout
           Size="136,41.6"
           Id="Package\Load Data from stage table to target table\Staged Data"
@@ -7075,6 +7063,22 @@ WHERE UserID = ?</property>
           Size="176,41.6"
           Id="Package\Load Data from stage table to target table\Filter OutOfDateData"
           TopLeft="71.9999989271164,412.799994575977" />
+        <NodeLayout
+          Size="181.6,41.6"
+          Id="Package\Load Data from stage table to target table\ConvertPurchaseTotal"
+          TopLeft="132.999998018146,123.799998882413" />
+        <NodeLayout
+          Size="112.8,41.6"
+          Id="Package\Load Data from stage table to target table\Lookup"
+          TopLeft="165.499997615814,205.299997749925" />
+        <NodeLayout
+          Size="133.6,41.6"
+          Id="Package\Load Data from stage table to target table\UpdateData"
+          TopLeft="89.9999986588956,551.799992504716" />
+        <NodeLayout
+          Size="141.6,41.6"
+          Id="Package\Load Data from stage table to target table\AmmendData"
+          TopLeft="313.999995321035,325.799995872378" />
         <EdgeLayout
           Id="Package\Load Data from stage table to target table.Paths[UpdatedRecord]"
           TopLeft="158.399998793006,454.399994575977">
