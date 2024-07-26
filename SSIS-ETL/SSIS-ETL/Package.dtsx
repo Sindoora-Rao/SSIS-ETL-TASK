@@ -11,8 +11,8 @@
   DTS:LocaleID="4105"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="184"
-  DTS:VersionGUID="{C4483FF6-C170-4FCB-A8B4-1168E692DCA6}">
+  DTS:VersionBuild="222"
+  DTS:VersionGUID="{69380C04-384E-43EC-A848-49D16AB049B7}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -164,6 +164,25 @@
         <SQLTask:SqlTaskData
           SQLTask:Connection="{6909F5E8-5372-4E6A-B2BE-B0C137015B13}"
           SQLTask:SqlStatementSource="DROP TABLE  `InValidAge`&#xA;go&#xA;CREATE TABLE `InValidAge` (&#xA;    `UserID` VARCHAR(50),&#xA;    `FullName` VARCHAR(50),&#xA;    `Age` VARCHAR(50),&#xA;    `Email` VARCHAR(50),&#xA;    `RegistrationDate` VARCHAR(50),&#xA;    `LastLoginDate` VARCHAR(50),&#xA;    `PurchaseTotal` VARCHAR(50)&#xA;)&#xA;go&#xA;DROP TABLE  `InValidUserID`&#xA;go&#xA;CREATE TABLE `InValidUserID` (&#xA;    `UserID` VARCHAR(50),&#xA;    `FullName` VARCHAR(50),&#xA;    `Age` VARCHAR(50),&#xA;    `Email` VARCHAR(50),&#xA;    `RegistrationDate` VARCHAR(50),&#xA;    `LastLoginDate` VARCHAR(50),&#xA;    `PurchaseTotal` VARCHAR(50)&#xA;)&#xA;go&#xA;DROP TABLE  `InValidEmail`&#xA;go&#xA;CREATE TABLE `InValidEmail` (&#xA;    `UserID` VARCHAR(50),&#xA;    `FullName` VARCHAR(50),&#xA;    `Age` VARCHAR(50),&#xA;    `Email` VARCHAR(50),&#xA;    `RegistrationDate` VARCHAR(50),&#xA;    `LastLoginDate` VARCHAR(50),&#xA;    `PurchaseTotal` VARCHAR(50)&#xA;)" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Execute SQL Task"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{91695ADA-908F-42F6-B79F-B199FDB76602}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Execute SQL Task"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{EBC0FD1A-B0AB-4EFD-96AE-A244E5512FE3}"
+          SQLTask:BypassPrepare="False"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE stg.Users;"
+          SQLTask:TypeConversionMode="None" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -4086,22 +4105,22 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Incremental Load\Conditional Split.Inputs[Conditional Split Input].Columns[UserID]"
-                      cachedDataType="i4"
-                      cachedName="UserID"
-                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[UserID]" />
+                      refId="Package\Incremental Load\Conditional Split.Inputs[Conditional Split Input].Columns[IsRecordUpdated]"
+                      cachedDataType="bool"
+                      cachedName="IsRecordUpdated"
+                      lineageId="Package\Incremental Load\Script Component.Outputs[Output 0].Columns[IsRecordUpdated]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\Incremental Load\Conditional Split.Outputs[NewRecords]"
+                  refId="Package\Incremental Load\Conditional Split.Outputs[UpdatedRecord]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="NewRecords"
+                  name="UpdatedRecord"
                   synchronousInputId="Package\Incremental Load\Conditional Split.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
@@ -4109,45 +4128,17 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[UserID]})</property>
+                      name="Expression">#{Package\Incremental Load\Script Component.Outputs[Output 0].Columns[IsRecordUpdated]} ==  TRUE </property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">ISNULL(Lookup.UserID)</property>
+                      name="FriendlyExpression">IsRecordUpdated ==  TRUE </property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
                       name="EvaluationOrder">0</property>
-                  </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\Incremental Load\Conditional Split.Outputs[ExistingRecords]"
-                  description="Output 2 of the Conditional Split Transformation"
-                  errorOrTruncationOperation="Computation"
-                  errorRowDisposition="FailComponent"
-                  exclusionGroup="1"
-                  name="ExistingRecords"
-                  synchronousInputId="Package\Incremental Load\Conditional Split.Inputs[Conditional Split Input]"
-                  truncationRowDisposition="FailComponent">
-                  <properties>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[UserID]})</property>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the friendly version of the expression. This expression version uses column names."
-                      expressionType="Notify"
-                      name="FriendlyExpression">!ISNULL(Lookup.UserID)</property>
-                    <property
-                      dataType="System.Int32"
-                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
-                      name="EvaluationOrder">1</property>
                   </properties>
                   <externalMetadataColumns />
                 </output>
@@ -4267,79 +4258,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
               </outputs>
             </component>
             <component
-              refId="Package\Incremental Load\Derived Column"
-              componentClassID="Microsoft.DerivedColumn"
-              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
-              name="Derived Column"
-              usesDispositions="true">
-              <inputs>
-                <input
-                  refId="Package\Incremental Load\Derived Column.Inputs[Derived Column Input]"
-                  description="Input to the Derived Column Transformation"
-                  name="Derived Column Input">
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\Incremental Load\Derived Column.Outputs[Derived Column Output]"
-                  description="Default Output of the Derived Column Transformation"
-                  exclusionGroup="1"
-                  name="Derived Column Output"
-                  synchronousInputId="Package\Incremental Load\Derived Column.Inputs[Derived Column Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Incremental Load\Derived Column.Outputs[Derived Column Output].Columns[LastUpdated]"
-                      dataType="dbTimeStamp"
-                      errorOrTruncationOperation="Computation"
-                      errorRowDisposition="FailComponent"
-                      lineageId="Package\Incremental Load\Derived Column.Outputs[Derived Column Output].Columns[LastUpdated]"
-                      name="LastUpdated"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.String"
-                          description="Derived Column Expression"
-                          name="Expression">[GETDATE]()</property>
-                        <property
-                          containsID="true"
-                          dataType="System.String"
-                          description="Derived Column Friendly Expression"
-                          expressionType="Notify"
-                          name="FriendlyExpression">GETDATE()</property>
-                      </properties>
-                    </outputColumn>
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\Incremental Load\Derived Column.Outputs[Derived Column Error Output]"
-                  description="Error Output of the Derived Column Transformation"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Derived Column Error Output"
-                  synchronousInputId="Package\Incremental Load\Derived Column.Inputs[Derived Column Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Incremental Load\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\Incremental Load\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\Incremental Load\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\Incremental Load\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
               refId="Package\Incremental Load\Lookup"
               componentClassID="Microsoft.Lookup"
               contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
@@ -4377,7 +4295,7 @@ where [refTable].[UserID] = ?</property>
                   dataType="System.Int32"
                   description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
                   name="NoMatchBehavior"
-                  typeConverter="LookupNoMatchBehavior">0</property>
+                  typeConverter="LookupNoMatchBehavior">1</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
@@ -4445,7 +4363,6 @@ where [refTable].[UserID] = ?</property>
                 <output
                   refId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output]"
                   errorOrTruncationOperation="Lookup"
-                  errorRowDisposition="IgnoreFailure"
                   exclusionGroup="1"
                   name="Lookup Match Output"
                   synchronousInputId="Package\Incremental Load\Lookup.Inputs[Lookup Input]">
@@ -4619,16 +4536,8 @@ where [refTable].[UserID] = ?</property>
                   description="The SQL command to be executed."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">UPDATE prod.Users
-SET 
-    FullName = ?,
-    Age = ?,
-    Email = ?,
-    RegistrationDate = ?,
-    LastLoginDate = ?,
-    PurchaseTotal = ?,
-    RecordLastUpdated = GETDATE()
-WHERE UserID = ?
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">INSERT INTO prod.Users (UserID, FullName, Age, Email, RegistrationDate, LastLoginDate, PurchaseTotal, RecordLastUpdated)
+VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE())
 </property>
                 <property
                   dataType="System.Int32"
@@ -4652,56 +4561,57 @@ WHERE UserID = ?
                   name="OLE DB Command Input">
                   <inputColumns>
                     <inputColumn
+                      refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].Columns[UserID]"
+                      cachedDataType="i4"
+                      cachedName="UserID"
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[UserID]" />
+                    <inputColumn
                       refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].Columns[FullName]"
                       cachedDataType="wstr"
                       cachedLength="255"
                       cachedName="FullName"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
                       lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[FullName]" />
                     <inputColumn
                       refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].Columns[Age]"
                       cachedDataType="i4"
                       cachedName="Age"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
                       lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Age]" />
                     <inputColumn
                       refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].Columns[Email]"
                       cachedDataType="wstr"
                       cachedLength="255"
                       cachedName="Email"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
                       lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Email]" />
                     <inputColumn
                       refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].Columns[RegistrationDate]"
                       cachedDataType="dbDate"
                       cachedName="RegistrationDate"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
                       lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[RegistrationDate]" />
                     <inputColumn
                       refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].Columns[LastLoginDate]"
                       cachedDataType="dbDate"
                       cachedName="LastLoginDate"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
                       lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[LastLoginDate]" />
                     <inputColumn
                       refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].Columns[PurchaseTotal]"
-                      cachedDataType="r8"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
                       cachedName="PurchaseTotal"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
-                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[PurchaseTotal]" />
-                    <inputColumn
-                      refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].Columns[UserID]"
-                      cachedDataType="i4"
-                      cachedName="UserID"
                       externalMetadataColumnId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
-                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[UserID]" />
+                      lineageId="Package\Incremental Load\Data Conversion.Outputs[Data Conversion Output].Columns[PurchaseTotal]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
                       refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
-                      dataType="wstr"
-                      length="255"
+                      dataType="i4"
                       name="Param_0">
                       <properties>
                         <property
@@ -4712,7 +4622,8 @@ WHERE UserID = ?
                     </externalMetadataColumn>
                     <externalMetadataColumn
                       refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
-                      dataType="i4"
+                      dataType="wstr"
+                      length="255"
                       name="Param_1">
                       <properties>
                         <property
@@ -4723,8 +4634,7 @@ WHERE UserID = ?
                     </externalMetadataColumn>
                     <externalMetadataColumn
                       refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
-                      dataType="wstr"
-                      length="255"
+                      dataType="i4"
                       name="Param_2">
                       <properties>
                         <property
@@ -4735,7 +4645,8 @@ WHERE UserID = ?
                     </externalMetadataColumn>
                     <externalMetadataColumn
                       refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
-                      dataType="dbDate"
+                      dataType="wstr"
+                      length="255"
                       name="Param_3">
                       <properties>
                         <property
@@ -4757,7 +4668,7 @@ WHERE UserID = ?
                     </externalMetadataColumn>
                     <externalMetadataColumn
                       refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
-                      dataType="r8"
+                      dataType="dbDate"
                       name="Param_5">
                       <properties>
                         <property
@@ -4768,7 +4679,7 @@ WHERE UserID = ?
                     </externalMetadataColumn>
                     <externalMetadataColumn
                       refId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
-                      dataType="i4"
+                      dataType="r8"
                       name="Param_6">
                       <properties>
                         <property
@@ -4813,13 +4724,13 @@ WHERE UserID = ?
               </outputs>
             </component>
             <component
-              refId="Package\Incremental Load\OLE DB Destination"
-              componentClassID="Microsoft.OLEDBDestination"
-              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
-              description="OLE DB Destination"
-              name="OLE DB Destination"
+              refId="Package\Incremental Load\OLE DB Command 1"
+              componentClassID="Microsoft.OLEDBCommand"
+              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+              name="OLE DB Command 1"
               usesDispositions="true"
-              version="4">
+              version="2">
               <properties>
                 <property
                   dataType="System.Int32"
@@ -4827,50 +4738,27 @@ WHERE UserID = ?
                   name="CommandTimeout">0</property>
                 <property
                   dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[prod].[Users]</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
                   description="The SQL command to be executed."
+                  expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">UPDATE prod.Users
+SET 
+    FullName = ?,
+    Age = ?,
+    Email = ?,
+    RegistrationDate = ?,
+    LastLoginDate = ?,
+    PurchaseTotal = ?,
+    RecordLastUpdated = GETDATE()
+WHERE UserID = ?</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
                   name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Forces the use of the DefaultCodePage property value when describing character data."
-                  name="AlwaysUseDefaultCodePage">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">0</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
-                  name="FastLoadKeepIdentity">false</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
-                  name="FastLoadKeepNulls">false</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
-                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
-                  name="FastLoadMaxInsertCommitSize">2147483647</property>
               </properties>
               <connections>
                 <connection
-                  refId="Package\Incremental Load\OLE DB Destination.Connections[OleDbConnection]"
+                  refId="Package\Incremental Load\OLE DB Command 1.Connections[OleDbConnection]"
                   connectionManagerID="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
                   connectionManagerRefId="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
                   description="The OLE DB runtime connection used to access the database."
@@ -4878,124 +4766,168 @@ WHERE UserID = ?
               </connections>
               <inputs>
                 <input
-                  refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input]"
-                  errorOrTruncationOperation="Insert"
+                  refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
-                  name="OLE DB Destination Input">
+                  name="OLE DB Command Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[UserID]"
-                      cachedDataType="i4"
-                      cachedName="UserID"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[UserID]"
-                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[UserID]" />
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[RegistrationDate]"
+                      cachedDataType="dbDate"
+                      cachedName="RegistrationDate"
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[RegistrationDate]" />
                     <inputColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[FullName]"
-                      cachedDataType="wstr"
-                      cachedLength="255"
-                      cachedName="FullName"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FullName]"
-                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[FullName]" />
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[LastLoginDate]"
+                      cachedDataType="dbDate"
+                      cachedName="LastLoginDate"
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[LastLoginDate]" />
                     <inputColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Age]"
-                      cachedDataType="i4"
-                      cachedName="Age"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Age]"
-                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Age]" />
-                    <inputColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Email]"
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[Email]"
                       cachedDataType="wstr"
                       cachedLength="255"
                       cachedName="Email"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Email]"
-                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Email]" />
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[Email]" />
                     <inputColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RegistrationDate]"
-                      cachedDataType="dbDate"
-                      cachedName="RegistrationDate"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RegistrationDate]"
-                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[RegistrationDate]" />
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[Age]"
+                      cachedDataType="i4"
+                      cachedName="Age"
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[Age]" />
                     <inputColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[LastLoginDate]"
-                      cachedDataType="dbDate"
-                      cachedName="LastLoginDate"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LastLoginDate]"
-                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[LastLoginDate]" />
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[FullName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FullName"
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[FullName]" />
                     <inputColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[PurchaseTotal]"
-                      cachedDataType="r8"
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[PurchaseTotal]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
                       cachedName="PurchaseTotal"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PurchaseTotal]"
-                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[PurchaseTotal]" />
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
+                      lineageId="Package\Incremental Load\Data Conversion.Outputs[Data Conversion Output].Columns[PurchaseTotal]" />
                     <inputColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[LastUpdated]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="LastUpdated"
-                      externalMetadataColumnId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RecordLastUpdated]"
-                      lineageId="Package\Incremental Load\Derived Column.Outputs[Derived Column Output].Columns[LastUpdated]" />
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[UserID]"
+                      cachedDataType="i4"
+                      cachedName="UserID"
+                      externalMetadataColumnId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[UserID]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
-                      dataType="i4"
-                      name="ID" />
-                    <externalMetadataColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[UserID]"
-                      dataType="i4"
-                      name="UserID" />
-                    <externalMetadataColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FullName]"
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
                       dataType="wstr"
                       length="255"
-                      name="FullName" />
+                      name="Param_0">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
                     <externalMetadataColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Age]"
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
                       dataType="i4"
-                      name="Age" />
+                      name="Param_1">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
                     <externalMetadataColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Email]"
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
                       dataType="wstr"
                       length="255"
-                      name="Email" />
+                      name="Param_2">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
                     <externalMetadataColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RegistrationDate]"
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
                       dataType="dbDate"
-                      name="RegistrationDate" />
+                      name="Param_3">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
                     <externalMetadataColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LastLoginDate]"
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
                       dataType="dbDate"
-                      name="LastLoginDate" />
+                      name="Param_4">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
                     <externalMetadataColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PurchaseTotal]"
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
                       dataType="r8"
-                      name="PurchaseTotal" />
+                      name="Param_5">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
                     <externalMetadataColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RecordLastUpdated]"
-                      dataType="dbTimeStamp"
-                      name="RecordLastUpdated" />
+                      refId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
+                      dataType="i4"
+                      name="Param_6">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\Incremental Load\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\Incremental Load\OLE DB Command 1.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Incremental Load\OLE DB Command 1.Outputs[OLE DB Command Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
-                  name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\Incremental Load\OLE DB Command 1.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\Incremental Load\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\Incremental Load\OLE DB Command 1.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\Incremental Load\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\Incremental Load\OLE DB Command 1.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\Incremental Load\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\Incremental Load\OLE DB Command 1.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -5241,6 +5173,1274 @@ WHERE UserID = ?
                 </output>
               </outputs>
             </component>
+            <component
+              refId="Package\Incremental Load\Script Component"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum.;Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;13"
+              description="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum."
+              name="Script Component"
+              version="13">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Stores the source code of the component"
+                  isArray="true"
+                  name="SourceCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="30">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[main.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[#region Help:  Introduction to the Script Component
+/* The Script Component allows you to perform virtually any operation that can be accomplished in
+ * a .Net application within the context of an Integration Services data flow.
+ *
+ * Expand the other regions which have "Help" prefixes for examples of specific ways to use
+ * Integration Services features within this script component. */
+#endregion
+
+#region Namespaces
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime.Wrapper;
+#endregion
+
+/// <summary>
+/// This is the class to which to add your code.  Do not change the name, attributes, or parent
+/// of this class.
+/// </summary>
+[Microsoft.SqlServer.Dts.Pipeline.SSISScriptComponentEntryPointAttribute]
+public class ScriptMain : UserComponent
+{
+    #region Help:  Using Integration Services variables and parameters
+    /* To use a variable in this script, first ensure that the variable has been added to
+     * either the list contained in the ReadOnlyVariables property or the list contained in
+     * the ReadWriteVariables property of this script component, according to whether or not your
+     * code needs to write into the variable.  To do so, save this script, close this instance of
+     * Visual Studio, and update the ReadOnlyVariables and ReadWriteVariables properties in the
+     * Script Transformation Editor window.
+     * To use a parameter in this script, follow the same steps. Parameters are always read-only.
+     *
+     * Example of reading from a variable or parameter:
+     *  DateTime startTime = Variables.MyStartTime;
+     *
+     * Example of writing to a variable:
+     *  Variables.myStringVariable = "new value";
+     */
+    #endregion
+
+    #region Help:  Using Integration Services Connnection Managers
+    /* Some types of connection managers can be used in this script component.  See the help topic
+     * "Working with Connection Managers Programatically" for details.
+     *
+     * To use a connection manager in this script, first ensure that the connection manager has
+     * been added to either the list of connection managers on the Connection Managers page of the
+     * script component editor.  To add the connection manager, save this script, close this instance of
+     * Visual Studio, and add the Connection Manager to the list.
+     *
+     * If the component needs to hold a connection open while processing rows, override the
+     * AcquireConnections and ReleaseConnections methods.
+     * 
+     * Example of using an ADO.Net connection manager to acquire a SqlConnection:
+     *  object rawConnection = Connections.SalesDB.AcquireConnection(transaction);
+     *  SqlConnection salesDBConn = (SqlConnection)rawConnection;
+     *
+     * Example of using a File connection manager to acquire a file path:
+     *  object rawConnection = Connections.Prices_zip.AcquireConnection(transaction);
+     *  string filePath = (string)rawConnection;
+     *
+     * Example of releasing a connection manager:
+     *  Connections.SalesDB.ReleaseConnection(rawConnection);
+     */
+    #endregion
+
+    #region Help:  Firing Integration Services Events
+    /* This script component can fire events.
+     *
+     * Example of firing an error event:
+     *  ComponentMetaData.FireError(10, "Process Values", "Bad value", "", 0, out cancel);
+     *
+     * Example of firing an information event:
+     *  ComponentMetaData.FireInformation(10, "Process Values", "Processing has started", "", 0, fireAgain);
+     *
+     * Example of firing a warning event:
+     *  ComponentMetaData.FireWarning(10, "Process Values", "No rows were received", "", 0);
+     */
+    #endregion
+
+    /// <summary>
+    /// This method is called once, before rows begin to be processed in the data flow.
+    ///
+    /// You can remove this method if you don't need to do anything here.
+    /// </summary>
+    public override void PreExecute()
+    {
+        base.PreExecute();
+        /*
+         * Add your code here
+         */
+    }
+
+    /// <summary>
+    /// This method is called after all the rows have passed through this component.
+    ///
+    /// You can delete this method if you don't need to do anything here.
+    /// </summary>
+    public override void PostExecute()
+    {
+        base.PostExecute();
+        /*
+         * Add your code here
+         */
+    }
+
+    /// <summary>
+    /// This method is called once for every row that passes through the component from Input0.
+    ///
+    /// Example of reading a value from a column in the the row:
+    ///  string zipCode = Row.ZipCode
+    ///
+    /// Example of writing a value to a column in the row:
+    ///  Row.ZipCode = zipCode
+    /// </summary>
+    /// <param name="Row">The row that is currently passing through the component</param>
+    public override void Input0_ProcessInputRow(Input0Buffer Row)
+    {
+        /*
+         * Add your code here
+         */
+        bool isRecordUpdated = false;
+        if (Row.OLEDBSourceUserID == Row.LookupUserID)
+        {
+            if (!Row.OLEDBSourceFullName.Equals( Row.LookupFullName) ||
+                Row.OLEDBSourceAge != Row.LookupAge ||
+                !Row.OLEDBSourceEmail.Equals( Row.LookupEmail) ||
+                Row.OLEDBSourceRegistrationDate != Row.LookupRegistrationDate||
+                Row.OLEDBSourceLastLoginDate != Row.LookupLastLoginDate||
+                Row.OLEDBSourcePurchaseTotal != Convert.ToDouble(Row.PurchaseTotalString))
+            {
+                    isRecordUpdated = true;
+            }
+        }
+        Row.IsRecordUpdated = isRecordUpdated;
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[SC_ca19f3ba499343cdac2bfd7376a5d629.csproj]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F7395BE1-831D-423B-AB9F-94B2E26A6EF2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SC_ca19f3ba499343cdac2bfd7376a5d629</RootNamespace>
+    <AssemblyName>SC_ca19f3ba499343cdac2bfd7376a5d629</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.TxScript, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSRuntimeWrap, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSPipelineWrap, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.PipelineHost, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Compile Include="main.cs" />
+    <Compile Include="BufferWrapper.cs" />
+    <Compile Include="ComponentWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- This section defines VSTA properties that describe the host-changable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" />
+        <Host Name="ScriptComponent" IconIndex="0" />
+        <ProjectClient>
+          <HostIdentifier>SSIS_SC160</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Resources.resx]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[BufferWrapper.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+*  Microsoft SQL Server Integration Services buffer wrappers
+*  This module defines classes for accessing data flow buffers
+*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
+
+
+
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+
+public class Input0Buffer: ScriptBuffer
+
+{
+    public Input0Buffer(PipelineBuffer Buffer, int[] BufferColumnIndexes, OutputNameMap OutputMap)
+        : base(Buffer, BufferColumnIndexes, OutputMap)
+    {
+    }
+
+    public Int32 StgID
+    {
+        get
+        {
+            return Buffer.GetInt32(BufferColumnIndexes[0]);
+        }
+    }
+    public bool StgID_IsNull
+    {
+        get
+        {
+            return IsNull(0);
+        }
+    }
+
+    public String LookupFullName
+    {
+        get
+        {
+            return Buffer.GetString(BufferColumnIndexes[1]);
+        }
+    }
+    public bool LookupFullName_IsNull
+    {
+        get
+        {
+            return IsNull(1);
+        }
+    }
+
+    public Int32 LookupAge
+    {
+        get
+        {
+            return Buffer.GetInt32(BufferColumnIndexes[2]);
+        }
+    }
+    public bool LookupAge_IsNull
+    {
+        get
+        {
+            return IsNull(2);
+        }
+    }
+
+    public String LookupEmail
+    {
+        get
+        {
+            return Buffer.GetString(BufferColumnIndexes[3]);
+        }
+    }
+    public bool LookupEmail_IsNull
+    {
+        get
+        {
+            return IsNull(3);
+        }
+    }
+
+    public DateTime LookupRegistrationDate
+    {
+        get
+        {
+            return Buffer.GetDate(BufferColumnIndexes[4]);
+        }
+    }
+    public bool LookupRegistrationDate_IsNull
+    {
+        get
+        {
+            return IsNull(4);
+        }
+    }
+
+    public DateTime LookupLastLoginDate
+    {
+        get
+        {
+            return Buffer.GetDate(BufferColumnIndexes[5]);
+        }
+    }
+    public bool LookupLastLoginDate_IsNull
+    {
+        get
+        {
+            return IsNull(5);
+        }
+    }
+
+    public DateTime RecordLastUpdated
+    {
+        get
+        {
+            return Buffer.GetDateTime(BufferColumnIndexes[6]);
+        }
+    }
+    public bool RecordLastUpdated_IsNull
+    {
+        get
+        {
+            return IsNull(6);
+        }
+    }
+
+    public Int32 LookupUserID
+    {
+        get
+        {
+            return Buffer.GetInt32(BufferColumnIndexes[7]);
+        }
+    }
+    public bool LookupUserID_IsNull
+    {
+        get
+        {
+            return IsNull(7);
+        }
+    }
+
+    public String PurchaseTotalString
+    {
+        get
+        {
+            return Buffer.GetString(BufferColumnIndexes[8]);
+        }
+    }
+    public bool PurchaseTotalString_IsNull
+    {
+        get
+        {
+            return IsNull(8);
+        }
+    }
+
+    public Int32 OLEDBSourceUserID
+    {
+        get
+        {
+            return Buffer.GetInt32(BufferColumnIndexes[9]);
+        }
+    }
+    public bool OLEDBSourceUserID_IsNull
+    {
+        get
+        {
+            return IsNull(9);
+        }
+    }
+
+    public String OLEDBSourceFullName
+    {
+        get
+        {
+            return Buffer.GetString(BufferColumnIndexes[10]);
+        }
+    }
+    public bool OLEDBSourceFullName_IsNull
+    {
+        get
+        {
+            return IsNull(10);
+        }
+    }
+
+    public Int32 OLEDBSourceAge
+    {
+        get
+        {
+            return Buffer.GetInt32(BufferColumnIndexes[11]);
+        }
+    }
+    public bool OLEDBSourceAge_IsNull
+    {
+        get
+        {
+            return IsNull(11);
+        }
+    }
+
+    public String OLEDBSourceEmail
+    {
+        get
+        {
+            return Buffer.GetString(BufferColumnIndexes[12]);
+        }
+    }
+    public bool OLEDBSourceEmail_IsNull
+    {
+        get
+        {
+            return IsNull(12);
+        }
+    }
+
+    public DateTime OLEDBSourceRegistrationDate
+    {
+        get
+        {
+            return Buffer.GetDate(BufferColumnIndexes[13]);
+        }
+    }
+    public bool OLEDBSourceRegistrationDate_IsNull
+    {
+        get
+        {
+            return IsNull(13);
+        }
+    }
+
+    public DateTime OLEDBSourceLastLoginDate
+    {
+        get
+        {
+            return Buffer.GetDate(BufferColumnIndexes[14]);
+        }
+    }
+    public bool OLEDBSourceLastLoginDate_IsNull
+    {
+        get
+        {
+            return IsNull(14);
+        }
+    }
+
+    public Double OLEDBSourcePurchaseTotal
+    {
+        get
+        {
+            return Buffer.GetDouble(BufferColumnIndexes[15]);
+        }
+    }
+    public bool OLEDBSourcePurchaseTotal_IsNull
+    {
+        get
+        {
+            return IsNull(15);
+        }
+    }
+
+    public Boolean IsRecordUpdated
+    {
+        set
+        {
+            this[16] = value;
+        }
+    }
+    public bool IsRecordUpdated_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(16);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    new public bool NextRow()
+    {
+        return base.NextRow();
+    }
+
+    new public bool EndOfRowset()
+    {
+        return base.EndOfRowset();
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Settings.Designer.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_ca19f3ba499343cdac2bfd7376a5d629.Properties.Settings.get_Default():SC_ca19f3ba499343cdac2bfd7376a5d629.Properties.Sett" +
+    "ings")]
+
+namespace SC_ca19f3ba499343cdac2bfd7376a5d629.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[ComponentWrapper.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+*  Microsoft SQL Server Integration Services component wrapper
+*  This module defines the base class for your component
+*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
+
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime.Wrapper;
+
+public class UserComponent: ScriptComponent
+{
+    public Connections Connections;
+    public Variables Variables;
+    public UserComponent()
+    {
+        Connections = new Connections(this);
+        Variables = new Variables(this);
+    }
+
+    public override void ProcessInput(int InputID, string InputName, PipelineBuffer Buffer, OutputNameMap OutputMap)
+    {
+
+        if (InputName.Equals(@"Input 0", StringComparison.Ordinal))
+        {
+            Input0_ProcessInput(new Input0Buffer(Buffer, GetColumnIndexes(InputID), OutputMap));
+        }
+
+    }
+
+    public virtual void Input0_ProcessInput(Input0Buffer Buffer)
+    {
+        while (Buffer.NextRow())
+        {
+            Input0_ProcessInputRow(Buffer);
+        }
+    }
+
+    public virtual void Input0_ProcessInputRow(Input0Buffer Row)
+    {
+    }
+
+}
+
+public class Connections
+{
+    ScriptComponent ParentComponent;
+
+    public Connections(ScriptComponent Component)
+    {
+        ParentComponent = Component;
+    }
+
+}
+
+public class Variables
+{
+    ScriptComponent ParentComponent;
+
+    public Variables(ScriptComponent Component)
+    {
+        ParentComponent = Component;
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Project]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF16LE]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+  <msb:PropertyGroup>
+    <msb:CodeName>SC_ca19f3ba499343cdac2bfd7376a5d629</msb:CodeName>
+    <msb:Language>msBuild</msb:Language>
+    <msb:DisplayName>SC_ca19f3ba499343cdac2bfd7376a5d629</msb:DisplayName>
+    <msb:ProjectId>{257A8F16-F4C9-4E35-BBA5-50D16DEFA12B}</msb:ProjectId>
+  </msb:PropertyGroup>
+  <msb:ItemGroup>
+    <msb:Project Include="SC_ca19f3ba499343cdac2bfd7376a5d629.csproj" />
+    <msb:File Include="ComponentWrapper.cs" />
+    <msb:File Include="main.cs" />
+    <msb:File Include="BufferWrapper.cs" />
+    <msb:File Include="Properties\Settings.settings" />
+    <msb:File Include="Properties\AssemblyInfo.cs" />
+    <msb:File Include="Properties\Resources.resx" />
+    <msb:File Include="Properties\Resources.Designer.cs" />
+    <msb:File Include="Properties\Settings.Designer.cs" />
+  </msb:ItemGroup>
+</c:Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\AssemblyInfo.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("SC_ca19f3ba499343cdac2bfd7376a5d629")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("HP")]
+[assembly: AssemblyProduct("SC_ca19f3ba499343cdac2bfd7376a5d629")]
+[assembly: AssemblyCopyright("Copyright @ HP 2024")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.0.0")]
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Settings.settings]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Resources.Designer.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_ca19f3ba499343cdac2bfd7376a5d629.Properties.Resources.get_ResourceManager():System.Resources.Resou" +
+    "rceManager")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_ca19f3ba499343cdac2bfd7376a5d629.Properties.Resources.get_Culture():System.Globalization.CultureIn" +
+    "fo")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_ca19f3ba499343cdac2bfd7376a5d629.Properties.Resources.set_Culture(System.Globalization.CultureInfo" +
+    "):Void")]
+
+namespace SC_ca19f3ba499343cdac2bfd7376a5d629.Properties {
+    
+    
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    internal class Resources {
+        
+        private static global::System.Resources.ResourceManager resourceMan;
+        
+        private static global::System.Globalization.CultureInfo resourceCulture;
+        
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal Resources() {
+        }
+        
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if ((resourceMan == null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SC_ca19f3ba499343cdac2bfd7376a5d629.Properties.Resources", typeof(Resources).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+        
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+    }
+}
+]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Stores the binary representation of the component"
+                  isArray="true"
+                  name="BinaryCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="2">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[SC_ca19f3ba499343cdac2bfd7376a5d629.dll]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAExIo2YAAAAAAAAAAOAAIiALATAAABwAAAAIAAAAAAAA6joA
+AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAGAAAAAAAAAACAAAAAAgAAAAAAAAMAYIUAABAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAJg6AABPAAAAAEAAAFAEAAAAAAAAAAAAAAAAAAAA
+AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAA8BoAAAAgAAAAHAAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAFAEAAAAQAAAAAYAAAAeAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAJAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAADM
+OgAAAAAAAEgAAAACAAUABCQAANwVAAABAAAAAAAAAOA5AAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKBAAAAoqHgIoEQAACioTMAIAhwAAAAEAABEWCgNvGAAA
+BgNvFAAABjNvA28aAAAGA28IAAAGbxIAAAosWgNvHAAABgNvCgAABjNMA28eAAAGA28MAAAGbxIA
+AAosOQNvIAAABgNvDgAABigTAAAKLSYDbyIAAAYDbxAAAAYoEwAACi0TA28kAAAGA28WAAAGKBQA
+AAouAhcKAwZvJgAABioeAigqAAAGKioCAwQFKBUAAAoqUgJ7FgAACgJ7FwAAChaUbxgAAAoqIgIW
+KBkAAAoqUgJ7FgAACgJ7FwAACheUbxoAAAoqIgIXKBkAAAoqUgJ7FgAACgJ7FwAAChiUbxgAAAoq
+IgIYKBkAAAoqUgJ7FgAACgJ7FwAAChmUbxoAAAoqIgIZKBkAAAoqUgJ7FgAACgJ7FwAAChqUbxsA
+AAoqIgIaKBkAAAoqUgJ7FgAACgJ7FwAAChuUbxsAAAoqIgIbKBkAAAoqUgJ7FgAACgJ7FwAAChyU
+bxwAAAoqIgIcKBkAAAoqUgJ7FgAACgJ7FwAACh2UbxgAAAoqIgIdKBkAAAoqUgJ7FgAACgJ7FwAA
+Ch6UbxoAAAoqIgIeKBkAAAoqVgJ7FgAACgJ7FwAACh8JlG8YAAAKKiYCHwkoGQAACipWAnsWAAAK
+AnsXAAAKHwqUbxoAAAoqJgIfCigZAAAKKlYCexYAAAoCexcAAAofC5RvGAAACiomAh8LKBkAAAoq
+VgJ7FgAACgJ7FwAACh8MlG8aAAAKKiYCHwwoGQAACipWAnsWAAAKAnsXAAAKHw2UbxsAAAoqJgIf
+DSgZAAAKKlYCexYAAAoCexcAAAofDpRvGwAACiomAh8OKBkAAAoqVgJ7FgAACgJ7FwAACh8PlG8d
+AAAKKiYCHw8oGQAACio+Ah8QA4wdAAABKB4AAAoqXgMsCQIfECgfAAAKKnIBAABwcyAAAAp6HgIo
+IQAACioeAigiAAAKKn4CKCMAAAoCAnMuAAAGfQEAAAQCAnMvAAAGfQIAAAQqkgRyngAAcBpvJAAA
+CiwVAgUCAyglAAAKDgRzBQAABm8sAAAGKkorBwIDby0AAAYDbygAAAYt8SoGKjoCKCYAAAoCA30D
+AAAEKjoCKCYAAAoCA30EAAAEKh4CKCYAAAoqrn4FAAAELR5yrgAAcNAHAAACKCcAAApvKAAACnMp
+AAAKgAUAAAR+BQAABCoafgYAAAQqHgKABgAABCoafgcAAAQqHgIoKgAACiouczUAAAaABwAABCoA
+AEJTSkIBAAEAAAAAAAwAAAB2NC4wLjMwMzE5AAAAAAUAbAAAALQIAAAjfgAAIAkAAJwJAAAjU3Ry
+aW5ncwAAAAC8EgAAIAEAACNVUwDcEwAAEAAAACNHVUlEAAAA7BMAAPABAAAjQmxvYgAAAAAAAAAC
+AAABVxWiAQkBAAAA+gEzABYAAAEAAAAiAAAACAAAAAcAAAA2AAAADwAAACoAAAAQAAAAAQAAAAMA
+AAAlAAAAJgAAAAEAAAAEAAAAAQAAAAAAjgQBAAAAAAAGACsDvQcGAL8DvQcGAHcCqgcPADEIAAAG
+AKQC/wYGAA4D/wYGAO8C/wYGAKYD/wYGAEsD/wYGAGQD/wYGALsC/wYGANYC+gMKAH8DTAEKAHwH
+TAEOAG0HTAEKAEgHTAEGAEMBrwYKAPcITAEGALoIrwYGAFoCqgcGAI0H3QcGADwH6gYSACoCUwQS
+AIsCUwQSAJoB1QYGAD8CvQcGAC8ErwYGACQJrwYGAMIGrwYGABEHrwYGACsHrwYGAG0BrwYGAOcA
+rwYGAIQJ/wYAAAAALgAAAAAAAQABAAEAEADKBgAAEAABAAEAAQAQAGAHAAA5AAEABQABABAA2QgA
+AEkAAQAqAAEAEACuCAAATQADAC4AAQAQAG8IAABNAAQALwAAABAA5AdACE0ABQAwAAABEACeCEAI
+ZQAHADQABgCuCJ0ABgBvCKEAAQDnCKUAAQDnCKUAEQC2BqkAEQCKAa0AEQCjALEAUCAAAAAAxgDd
+AwYAAQBYIAAAAADGAOgDBgABAGAgAAAAAMYAYQm1AAEA8yAAAAAAhhidBwYAAgD7IAAAAACGGJ0H
+MQACAAYhAAAAAIYINwC7AAUAGyEAAAAAhgi2BGMABQAkIQAAAACGCCMBvwAFADkhAAAAAIYIggVj
+AAUAQiEAAAAAhgjGALsABQBXIQAAAACGCE4FYwAFAGAhAAAAAIYIfgS/AAUAdSEAAAAAhgiHBmMA
+BQB+IQAAAACGCAcCwwAFAJMhAAAAAIYIBgZjAAUAnCEAAAAAhgjPAcMABQCxIQAAAACGCMAFYwAF
+ALohAAAAAIYIjQDDAAUAzyEAAAAAhggXBWMABQDYIQAAAACGCFcAuwAFAO0hAAAAAIYI5ARjAAUA
+9iEAAAAAhggUBL8ABQALIgAAAACGCCgGYwAFABQiAAAAAIYIQQC7AAUAKiIAAAAAhgjHBGMABQA0
+IgAAAACGCAsBvwAFAEoiAAAAAIYIYwVjAAUAVCIAAAAAhgizALsABQBqIgAAAACGCDQFYwAFAHQi
+AAAAAIYIaQS/AAUAiiIAAAAAhghrBmMABQCUIgAAAACGCOcBwwAFAKoiAAAAAIYI3wVjAAUAtCIA
+AAAAhgiyAcMABQDKIgAAAACGCJwFYwAFANQiAAAAAIYINgTIAAUA6iIAAAAAhghHBmMABQD0IgAA
+AACGCHkAzAAFAAQjAAAAAIYI/ATMAAYAHCMAAAAAhgB4CWMABwAkIwAAAACGAMEIYwAHACwjAAAA
+AIYYnQcGAAcATCMAAAAAxgBUCdEABwBxIwAAAADGAU0JtQALAIQjAAAAAMYBYQm1AAwAhiMAAAAA
+hhidB9sADQCVIwAAAACGGJ0H2wAOAKQjAAAAAIMYnQcGAA8ArCMAAAAAkwiJB+EADwDYIwAAAACT
+CHIB5gAPAN8jAAAAAJMIfgHrAA8A5yMAAAAAlgjNCPEAEADuIwAAAACGGJ0HBgAQAPYjAAAAAJEY
+owf2ABAAAAABAHwJAAABAIIHAAACAHkIAAADAFYHAAABAPQDAAABAPQDAAABAGgAAAACADYBAAAD
+AIIHAAAEAFYHAAABAIIHAAABAHwJAAABAP0IAAABAP0IAAABAPQDCQCdBwEAEQCdBwYAGQCdBwoA
+KQCdBxAAMQCdBxAAOQCdBxAAQQCdBxAASQCdBxAAUQCdBxAAWQCdBxAAYQCdBxAAaQCdBwYAoQCd
+BwYAwQCdBxUA0QCdBwYAkQDdAwYAkQDoAwYA2QCnCB8AiQCNCSQA4QDUACwAcQCdBzEAcQCCBzsA
+cQB5CD8AeQABAEMAcQCXBkgAeQAsBE0AeQAiAlIAeQBAAVIAeQDdAFgAcQCmBl0AcQCeBgEA8QCd
+BxAAcQB4CWMAcQDBCGMAkQCdBwYA2QCnCGcAkQCNCG4AmQCdBwYAAQH5AHQAAQGACX0AqQCdB4MA
+yQCdBwYALgALAB4BLgATACcBLgAbAEYBLgAjAE8BLgArAHgBLgAzAHgBLgA7AH4BLgBDAE8BLgBL
+AIYBLgBTAHgBLgBbAJ8BQwBjAOkB4QB7AOkB4wBrAOkBaQRzAEYBiQRzAEYBGwADAAEABwAjAAgA
+JQAAADsA+gAAALoE/gAAACcBAgEAAIYF/gAAAMoA+gAAAFIF/gAAAIIEAgEAAIsG/gAAAAsCBgEA
+AAoG/gAAANMBBgEAAMQF/gAAAJEABgEAABsF/gAAAFsA+gAAAOgE/gAAABgEAgEAACwG/gAAAEUA
++gAAAMsE/gAAAA8BAgEAAGcF/gAAALcA+gAAADgF/gAAAG0EAgEAAG8G/gAAAOsBBgEAAOMF/gAA
+ALYBBgEAAKAF/gAAADoECwEAAEsG/gAAAH0A/gAAAAAF/gAAAI0HDwEAAJIBFAEAANEIGQECAAYA
+AwACAAcABQACAAgABwACAAkACQACAAoACwACAAsADQACAAwADwACAA0AEQACAA4AEwACAA8AFQAC
+ABAAFwACABEAGQACABIAGwACABMAHQACABQAHwACABUAIQACABYAIwACABcAJQACABgAJwACABkA
+KQACABoAKwACABsALQACABwALwACAB0AMQACAB4AMwACAB8ANQACACAANwACACEAOQACACIAOwAC
+ACMAPQACACQAPwACACUAQQABACYAQwABACcARQACADEARwACADIASQABADMASQACADQASwAEgAAA
+AQAAAAAAAAAAAAAAAAAKAAAABAAAAAAAAAAAAAAAiwBwAAAAAAAQAAAAAAAAAAAAAACUAAcJAAAA
+ABAAAAAAAAAAAAAAAJQALAkAAAAABAAAAAAAAAAAAAAAiwCvBgAAAAAAAAAAAQAAAO4HAAAAAAAA
+AEdldEludDMyAFNDX2NhMTlmM2JhNDk5MzQzY2RhYzJiZmQ3Mzc2YTVkNjI5ADxNb2R1bGU+AGdl
+dF9TdGdJRABnZXRfT0xFREJTb3VyY2VVc2VySUQAZ2V0X0xvb2t1cFVzZXJJRABJbnB1dElEAG1z
+Y29ybGliAHNldF9Jc1JlY29yZFVwZGF0ZWQAZ2V0X1JlY29yZExhc3RVcGRhdGVkAGRlZmF1bHRJ
+bnN0YW5jZQBnZXRfT0xFREJTb3VyY2VBZ2UAZ2V0X0xvb2t1cEFnZQBUb0RvdWJsZQBHZXREb3Vi
+bGUAUnVudGltZVR5cGVIYW5kbGUAR2V0VHlwZUZyb21IYW5kbGUAZ2V0X09MRURCU291cmNlRnVs
+bE5hbWUAZ2V0X0xvb2t1cEZ1bGxOYW1lAElucHV0TmFtZQBHZXREYXRlVGltZQBNaWNyb3NvZnQu
+U3FsU2VydmVyLkR0cy5QaXBlbGluZQBUeXBlAGdldF9DdWx0dXJlAHNldF9DdWx0dXJlAHJlc291
+cmNlQ3VsdHVyZQBBcHBsaWNhdGlvblNldHRpbmdzQmFzZQBnZXRfT0xFREJTb3VyY2VMYXN0TG9n
+aW5EYXRlAGdldF9Mb29rdXBMYXN0TG9naW5EYXRlAGdldF9PTEVEQlNvdXJjZVJlZ2lzdHJhdGlv
+bkRhdGUAZ2V0X0xvb2t1cFJlZ2lzdHJhdGlvbkRhdGUAR2V0RGF0ZQBFZGl0b3JCcm93c2FibGVT
+dGF0ZQBDb21waWxlckdlbmVyYXRlZEF0dHJpYnV0ZQBEZWJ1Z2dlck5vblVzZXJDb2RlQXR0cmli
+dXRlAERlYnVnZ2FibGVBdHRyaWJ1dGUARWRpdG9yQnJvd3NhYmxlQXR0cmlidXRlAEFzc2VtYmx5
+VGl0bGVBdHRyaWJ1dGUAQXNzZW1ibHlUcmFkZW1hcmtBdHRyaWJ1dGUAVGFyZ2V0RnJhbWV3b3Jr
+QXR0cmlidXRlAEFzc2VtYmx5Q29uZmlndXJhdGlvbkF0dHJpYnV0ZQBBc3NlbWJseURlc2NyaXB0
+aW9uQXR0cmlidXRlAENvbXBpbGF0aW9uUmVsYXhhdGlvbnNBdHRyaWJ1dGUAQXNzZW1ibHlQcm9k
+dWN0QXR0cmlidXRlAEFzc2VtYmx5Q29weXJpZ2h0QXR0cmlidXRlAFNTSVNTY3JpcHRDb21wb25l
+bnRFbnRyeVBvaW50QXR0cmlidXRlAEFzc2VtYmx5Q29tcGFueUF0dHJpYnV0ZQBSdW50aW1lQ29t
+cGF0aWJpbGl0eUF0dHJpYnV0ZQBQcmVFeGVjdXRlAFBvc3RFeGVjdXRlAHZhbHVlAFN5c3RlbS5S
+dW50aW1lLlZlcnNpb25pbmcAZ2V0X1B1cmNoYXNlVG90YWxTdHJpbmcAR2V0U3RyaW5nAGdldF9P
+TEVEQlNvdXJjZVB1cmNoYXNlVG90YWwAU3lzdGVtLkNvbXBvbmVudE1vZGVsAGdldF9PTEVEQlNv
+dXJjZUVtYWlsAGdldF9Mb29rdXBFbWFpbABTQ19jYTE5ZjNiYTQ5OTM0M2NkYWMyYmZkNzM3NmE1
+ZDYyOS5kbGwAZ2V0X1N0Z0lEX0lzTnVsbABnZXRfT0xFREJTb3VyY2VVc2VySURfSXNOdWxsAGdl
+dF9Mb29rdXBVc2VySURfSXNOdWxsAHNldF9Jc1JlY29yZFVwZGF0ZWRfSXNOdWxsAGdldF9SZWNv
+cmRMYXN0VXBkYXRlZF9Jc051bGwAZ2V0X09MRURCU291cmNlQWdlX0lzTnVsbABnZXRfTG9va3Vw
+QWdlX0lzTnVsbABnZXRfT0xFREJTb3VyY2VGdWxsTmFtZV9Jc051bGwAZ2V0X0xvb2t1cEZ1bGxO
+YW1lX0lzTnVsbABnZXRfT0xFREJTb3VyY2VMYXN0TG9naW5EYXRlX0lzTnVsbABnZXRfTG9va3Vw
+TGFzdExvZ2luRGF0ZV9Jc051bGwAZ2V0X09MRURCU291cmNlUmVnaXN0cmF0aW9uRGF0ZV9Jc051
+bGwAZ2V0X0xvb2t1cFJlZ2lzdHJhdGlvbkRhdGVfSXNOdWxsAGdldF9QdXJjaGFzZVRvdGFsU3Ry
+aW5nX0lzTnVsbABnZXRfT0xFREJTb3VyY2VQdXJjaGFzZVRvdGFsX0lzTnVsbABnZXRfT0xFREJT
+b3VyY2VFbWFpbF9Jc051bGwAZ2V0X0xvb2t1cEVtYWlsX0lzTnVsbABTZXROdWxsAHNldF9JdGVt
+AFN5c3RlbQByZXNvdXJjZU1hbgBCb29sZWFuAFNjcmlwdE1haW4AU3lzdGVtLkNvbmZpZ3VyYXRp
+b24AU3lzdGVtLkdsb2JhbGl6YXRpb24AU3lzdGVtLlJlZmxlY3Rpb24ASW52YWxpZE9wZXJhdGlv
+bkV4Y2VwdGlvbgBTdHJpbmdDb21wYXJpc29uAEN1bHR1cmVJbmZvAE91dHB1dE5hbWVNYXAAT3V0
+cHV0TWFwAElucHV0MEJ1ZmZlcgBQaXBlbGluZUJ1ZmZlcgBTY3JpcHRCdWZmZXIAZ2V0X1Jlc291
+cmNlTWFuYWdlcgAuY3RvcgAuY2N0b3IAU3lzdGVtLkRpYWdub3N0aWNzAFN5c3RlbS5SdW50aW1l
+LkNvbXBpbGVyU2VydmljZXMAU3lzdGVtLlJlc291cmNlcwBTQ19jYTE5ZjNiYTQ5OTM0M2NkYWMy
+YmZkNzM3NmE1ZDYyOS5Qcm9wZXJ0aWVzLlJlc291cmNlcy5yZXNvdXJjZXMARGVidWdnaW5nTW9k
+ZXMAU0NfY2ExOWYzYmE0OTkzNDNjZGFjMmJmZDczNzZhNWQ2MjkuUHJvcGVydGllcwBWYXJpYWJs
+ZXMAQnVmZmVyQ29sdW1uSW5kZXhlcwBHZXRDb2x1bW5JbmRleGVzAFNldHRpbmdzAEVxdWFscwBD
+b25uZWN0aW9ucwBPYmplY3QARW5kT2ZSb3dzZXQAZ2V0X0RlZmF1bHQAVXNlckNvbXBvbmVudABQ
+YXJlbnRDb21wb25lbnQAU2NyaXB0Q29tcG9uZW50AE1pY3Jvc29mdC5TcWxTZXJ2ZXIuVHhTY3Jp
+cHQAQ29udmVydABNaWNyb3NvZnQuU3FsU2VydmVyLlBpcGVsaW5lSG9zdABJbnB1dDBfUHJvY2Vz
+c0lucHV0AElucHV0MF9Qcm9jZXNzSW5wdXRSb3cATmV4dFJvdwBnZXRfQXNzZW1ibHkAb3BfSW5l
+cXVhbGl0eQAAAICbSQBzAE4AdQBsAGwAIABwAHIAbwBwAGUAcgB0AHkAIABjAGEAbgBuAG8AdAAg
+AGIAZQAgAHMAZQB0ACAAdABvACAARgBhAGwAcwBlAC4AIABBAHMAcwBpAGcAbgAgAGEAIAB2AGEA
+bAB1AGUAIAB0AG8AIAB0AGgAZQAgAGMAbwBsAHUAbQBuACAAaQBuAHMAdABlAGEAZAAuAAAPSQBu
+AHAAdQB0ACAAMAAAcVMAQwBfAGMAYQAxADkAZgAzAGIAYQA0ADkAOQAzADQAMwBjAGQAYQBjADIA
+YgBmAGQANwAzADcANgBhADUAZAA2ADIAOQAuAFAAcgBvAHAAZQByAHQAaQBlAHMALgBSAGUAcwBv
+AHUAcgBjAGUAcwAAaoTmLds8uEeq6lItigIEVwAEIAEBCAMgAAEFIAEBEREEIAEBDgUgAQERXQMH
+AQIEIAECDgcAAgIRRRFFBAABDQ4JIAMBEj0dCBJBAwYSPQMGHQgEIAEICAQgAQIIBCABDggFIAER
+RQgEIAENCAUgAgEIHAMgAAIGIAICDhF9BSABHQgICAABEoCBEYCFBSAAEoCJByACAQ4SgIkIt3pc
+Vhk04IkIiYRdzYCAzJEDBhIUAwYSGAMGEkkDBhJVAwYSWQMGEiAFIAEBEgwDIAAIAyAADgQgABFF
+AyAADQQgAQECCSAEAQgOEj0SQQUgAQESSQQAABJVBAAAElkFAAEBElkEAAASIAMAAAEDKAAIAygA
+AgMoAA4EKAARRQMoAA0ECAASVQQIABJZBAgAEiAIAQAIAAAAAAAeAQABAFQCFldyYXBOb25FeGNl
+cHRpb25UaHJvd3MBCAEAAgAAAAAAKAEAI1NDX2NhMTlmM2JhNDk5MzQzY2RhYzJiZmQ3Mzc2YTVk
+NjI5AAAFAQAAAAAHAQACSFAAABgBABNDb3B5cmlnaHQgQCBIUCAyMDI0AABJAQAaLk5FVEZyYW1l
+d29yayxWZXJzaW9uPXY0LjcBAFQOFEZyYW1ld29ya0Rpc3BsYXlOYW1lEi5ORVQgRnJhbWV3b3Jr
+IDQuNwQBAAAAAAC0AAAAzsrvvgEAAACRAAAAbFN5c3RlbS5SZXNvdXJjZXMuUmVzb3VyY2VSZWFk
+ZXIsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5
+VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSNTeXN0ZW0uUmVzb3VyY2VzLlJ1bnRpbWVSZXNvdXJjZVNl
+dAIAAAAAAAAAAAAAAFBBRFBBRFC0AAAAwDoAAAAAAAAAAAAA2joAAAAgAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAMw6AAAAAAAAAAAAAAAAX0NvckRsbE1haW4AbXNjb3JlZS5kbGwAAAAAAP8lACAAEAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB
+ABAAAAAYAACAAAAAAAAAAAAAAAAAAAABAAEAAAAwAACAAAAAAAAAAAAAAAAAAAABAAAAAABIAAAA
+WEAAAPQDAAAAAAAAAAAAAPQDNAAAAFYAUwBfAFYARQBSAFMASQBPAE4AXwBJAE4ARgBPAAAAAAC9
+BO/+AAABAAAAAQAAAAAAAAABAAAAAAA/AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAAAAEA
+VgBhAHIARgBpAGwAZQBJAG4AZgBvAAAAAAAkAAQAAABUAHIAYQBuAHMAbABhAHQAaQBvAG4AAAAA
+AAAAsARUAwAAAQBTAHQAcgBpAG4AZwBGAGkAbABlAEkAbgBmAG8AAAAwAwAAAQAwADAAMAAwADAA
+NABiADAAAAAaAAEAAQBDAG8AbQBtAGUAbgB0AHMAAAAAAAAAJgADAAEAQwBvAG0AcABhAG4AeQBO
+AGEAbQBlAAAAAABIAFAAAAAAAHAAJAABAEYAaQBsAGUARABlAHMAYwByAGkAcAB0AGkAbwBuAAAA
+AABTAEMAXwBjAGEAMQA5AGYAMwBiAGEANAA5ADkAMwA0ADMAYwBkAGEAYwAyAGIAZgBkADcAMwA3
+ADYAYQA1AGQANgAyADkAAAAwAAgAAQBGAGkAbABlAFYAZQByAHMAaQBvAG4AAAAAADEALgAwAC4A
+MAAuADAAAABwACgAAQBJAG4AdABlAHIAbgBhAGwATgBhAG0AZQAAAFMAQwBfAGMAYQAxADkAZgAz
+AGIAYQA0ADkAOQAzADQAMwBjAGQAYQBjADIAYgBmAGQANwAzADcANgBhADUAZAA2ADIAOQAuAGQA
+bABsAAAATAAUAAEATABlAGcAYQBsAEMAbwBwAHkAcgBpAGcAaAB0AAAAQwBvAHAAeQByAGkAZwBo
+AHQAIABAACAASABQACAAMgAwADIANAAAACoAAQABAEwAZQBnAGEAbABUAHIAYQBkAGUAbQBhAHIA
+awBzAAAAAAAAAAAAeAAoAAEATwByAGkAZwBpAG4AYQBsAEYAaQBsAGUAbgBhAG0AZQAAAFMAQwBf
+AGMAYQAxADkAZgAzAGIAYQA0ADkAOQAzADQAMwBjAGQAYQBjADIAYgBmAGQANwAzADcANgBhADUA
+ZAA2ADIAOQAuAGQAbABsAAAAaAAkAAEAUAByAG8AZAB1AGMAdABOAGEAbQBlAAAAAABTAEMAXwBj
+AGEAMQA5AGYAMwBiAGEANAA5ADkAMwA0ADMAYwBkAGEAYwAyAGIAZgBkADcAMwA3ADYAYQA1AGQA
+NgAyADkAAAA0AAgAAQBQAHIAbwBkAHUAYwB0AFYAZQByAHMAaQBvAG4AAAAxAC4AMAAuADAALgAw
+AAAAOAAIAAEAQQBzAHMAZQBtAGIAbAB5ACAAVgBlAHIAcwBpAG8AbgAAADEALgAwAC4AMAAuADAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAwAAADsOgAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the Microsoft Visual Studio Tools for Applications project. Project names must be unique within a package."
+                  name="VSTAProjectName"
+                  typeConverter="NOTBROWSABLE">SC_ca19f3ba499343cdac2bfd7376a5d629</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the programming language used by the script."
+                  name="ScriptLanguage"
+                  typeConverter="Microsoft.SqlServer.VSTAHosting.ScriptingLanguages">CSharp</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a comma-separated list of read-only variables."
+                  name="ReadOnlyVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIVariablePickerDlg"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a comma-separated list of read/write variables."
+                  name="ReadWriteVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIWriteableVariablePickerDlg"></property>
+                <property
+                  dataType="System.String"
+                  description="List of breakpoints present on the script."
+                  isArray="true"
+                  name="BreakpointCollection"
+                  typeConverter="NOTBROWSABLE">
+                  <arrayElements
+                    arrayElementCount="0" />
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Checksum to match component metedata against compiled codes."
+                  name="MetadataChecksum140"
+                  typeConverter="NOTBROWSABLE">F9</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.ScriptComponentHost</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Incremental Load\Script Component.Inputs[Input 0]"
+                  hasSideEffects="true"
+                  name="Input 0">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[StgID]"
+                      cachedDataType="i4"
+                      cachedName="StgID"
+                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[StgID]" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[Lookup.FullName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FullName"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[FullName]"
+                      name="Lookup.FullName" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[Lookup.Age]"
+                      cachedDataType="i4"
+                      cachedName="Age"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[Age]"
+                      name="Lookup.Age" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[Lookup.Email]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Email"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[Email]"
+                      name="Lookup.Email" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[Lookup.RegistrationDate]"
+                      cachedDataType="dbDate"
+                      cachedName="RegistrationDate"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[RegistrationDate]"
+                      name="Lookup.RegistrationDate" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[Lookup.LastLoginDate]"
+                      cachedDataType="dbDate"
+                      cachedName="LastLoginDate"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[LastLoginDate]"
+                      name="Lookup.LastLoginDate" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[RecordLastUpdated]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="RecordLastUpdated"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[RecordLastUpdated]" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[Lookup.UserID]"
+                      cachedDataType="i4"
+                      cachedName="UserID"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[UserID]"
+                      name="Lookup.UserID" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[PurchaseTotalString]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="PurchaseTotalString"
+                      lineageId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output].Columns[PurchaseTotalString]" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[OLE DB Source.UserID]"
+                      cachedDataType="i4"
+                      cachedName="UserID"
+                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[UserID]"
+                      name="OLE DB Source.UserID" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[OLE DB Source.FullName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FullName"
+                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[FullName]"
+                      name="OLE DB Source.FullName" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[OLE DB Source.Age]"
+                      cachedDataType="i4"
+                      cachedName="Age"
+                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Age]"
+                      name="OLE DB Source.Age" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[OLE DB Source.Email]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Email"
+                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Email]"
+                      name="OLE DB Source.Email" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[OLE DB Source.RegistrationDate]"
+                      cachedDataType="dbDate"
+                      cachedName="RegistrationDate"
+                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[RegistrationDate]"
+                      name="OLE DB Source.RegistrationDate" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[OLE DB Source.LastLoginDate]"
+                      cachedDataType="dbDate"
+                      cachedName="LastLoginDate"
+                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[LastLoginDate]"
+                      name="OLE DB Source.LastLoginDate" />
+                    <inputColumn
+                      refId="Package\Incremental Load\Script Component.Inputs[Input 0].Columns[OLE DB Source.PurchaseTotal]"
+                      cachedDataType="r8"
+                      cachedName="PurchaseTotal"
+                      lineageId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[PurchaseTotal]"
+                      name="OLE DB Source.PurchaseTotal" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Incremental Load\Script Component.Outputs[Output 0]"
+                  name="Output 0"
+                  synchronousInputId="Package\Incremental Load\Script Component.Inputs[Input 0]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Incremental Load\Script Component.Outputs[Output 0].Columns[IsRecordUpdated]"
+                      dataType="bool"
+                      lineageId="Package\Incremental Load\Script Component.Outputs[Output 0].Columns[IsRecordUpdated]"
+                      name="IsRecordUpdated" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
           </components>
           <paths>
             <path
@@ -5249,30 +6449,30 @@ WHERE UserID = ?
               name="Data Conversion Output"
               startId="Package\Incremental Load\Data Conversion.Outputs[Data Conversion Output]" />
             <path
-              refId="Package\Incremental Load.Paths[Derived Column Output]"
-              endId="Package\Incremental Load\OLE DB Destination.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\Incremental Load\Derived Column.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\Incremental Load.Paths[ExistingRecords]"
-              endId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input]"
-              name="ExistingRecords"
-              startId="Package\Incremental Load\Conditional Split.Outputs[ExistingRecords]" />
-            <path
               refId="Package\Incremental Load.Paths[Lookup Match Output]"
-              endId="Package\Incremental Load\Conditional Split.Inputs[Conditional Split Input]"
+              endId="Package\Incremental Load\Script Component.Inputs[Input 0]"
               name="Lookup Match Output"
               startId="Package\Incremental Load\Lookup.Outputs[Lookup Match Output]" />
             <path
-              refId="Package\Incremental Load.Paths[NewRecords]"
-              endId="Package\Incremental Load\Derived Column.Inputs[Derived Column Input]"
-              name="NewRecords"
-              startId="Package\Incremental Load\Conditional Split.Outputs[NewRecords]" />
+              refId="Package\Incremental Load.Paths[Lookup No Match Output]"
+              endId="Package\Incremental Load\OLE DB Command.Inputs[OLE DB Command Input]"
+              name="Lookup No Match Output"
+              startId="Package\Incremental Load\Lookup.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\Incremental Load.Paths[OLE DB Source Output]"
               endId="Package\Incremental Load\Data Conversion.Inputs[Data Conversion Input]"
               name="OLE DB Source Output"
               startId="Package\Incremental Load\OLE DB Source.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Incremental Load.Paths[Output 0]"
+              endId="Package\Incremental Load\Conditional Split.Inputs[Conditional Split Input]"
+              name="Output 0"
+              startId="Package\Incremental Load\Script Component.Outputs[Output 0]" />
+            <path
+              refId="Package\Incremental Load.Paths[UpdatedRecord]"
+              endId="Package\Incremental Load\OLE DB Command 1.Inputs[OLE DB Command Input]"
+              name="UpdatedRecord"
+              startId="Package\Incremental Load\Conditional Split.Outputs[UpdatedRecord]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -5282,11 +6482,11 @@ WHERE UserID = ?
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{0BECBDDD-2BAF-405D-BF95-D51474F0ADEE}"
+      DTS:DTSID="{EAF6C1B7-B6A5-4EF7-A164-C76E86776F9A}"
       DTS:From="Package\Clear Old InValid Rows"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\ExtractData From CSV to Staging" />
+      DTS:To="Package\Execute SQL Task" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
@@ -5295,6 +6495,14 @@ WHERE UserID = ?
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
       DTS:To="Package\Incremental Load" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{560C6A82-0A33-4B16-9250-A52D6F4373E0}"
+      DTS:From="Package\Execute SQL Task"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\ExtractData From CSV to Staging" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -5311,7 +6519,7 @@ WHERE UserID = ?
         <NodeLayout
           Size="185.6,41.6"
           Id="Package\Clear Old InValid Rows"
-          TopLeft="163.333324409194,94.4666660097572" />
+          TopLeft="167.499990848204,44.1999996926387" />
         <NodeLayout
           Size="233.6,41.6"
           Id="Package\ExtractData From CSV to Staging"
@@ -5320,28 +6528,6 @@ WHERE UserID = ?
           Size="158.4,41.6"
           Id="Package\Incremental Load"
           TopLeft="184.166656604244,304.199997884631" />
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="258.966658243371,136.066666009757">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,75.3999991863968"
-              Start="0,0"
-              End="0,67.8999991863968">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,67.8999991863968" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
           TopLeft="262.583324340897,253.066665196154">
@@ -5356,6 +6542,54 @@ WHERE UserID = ?
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,43.633332688477" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="164.8,41.6"
+          Id="Package\Execute SQL Task"
+          TopLeft="174.16665715062,147.333332308796" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="258.433323999412,85.7999996926387">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,61.5333326161571"
+              Start="0,0"
+              End="0,54.0333326161571">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,54.0333326161571" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="259.183324614085,188.933332308796">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,22.5333328873582"
+              Start="0,0"
+              End="0,15.0333328873582">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.0333328873582" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -5479,9 +6713,7 @@ WHERE UserID = ?
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -5671,9 +6903,7 @@ WHERE UserID = ?
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -5695,9 +6925,7 @@ WHERE UserID = ?
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -5719,9 +6947,7 @@ WHERE UserID = ?
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -5809,135 +7035,107 @@ WHERE UserID = ?
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="152.8,41.6"
-          Id="Package\Incremental Load\Derived Column"
-          TopLeft="120.999998196959,383.999994277954" />
+          Size="112.8,41.6"
+          Id="Package\Incremental Load\Lookup"
+          TopLeft="177.499997437,334.299995827675" />
         <NodeLayout
           Size="152,41.6"
           Id="Package\Incremental Load\OLE DB Source"
-          TopLeft="150.833331085742,26.6666662693024" />
-        <NodeLayout
-          Size="171.2,41.6"
-          Id="Package\Incremental Load\OLE DB Destination"
-          TopLeft="107.999998390675,460.999993130565" />
-        <NodeLayout
-          Size="112.8,41.6"
-          Id="Package\Incremental Load\Lookup"
-          TopLeft="173.499997496605,181.499997377396" />
-        <NodeLayout
-          Size="153.6,41.6"
-          Id="Package\Incremental Load\Conditional Split"
-          TopLeft="151.999997735023,280.999995812774" />
+          TopLeft="154.833331026137,26.6666662693024" />
         <NodeLayout
           Size="156,41.6"
           Id="Package\Incremental Load\Data Conversion"
-          TopLeft="144.999997839332,91.9999986290932" />
+          TopLeft="157.999997645617,203.79999769032" />
+        <NodeLayout
+          Size="161.6,41.6"
+          Id="Package\Incremental Load\Script Component"
+          TopLeft="116.999998256564,443.799994114041" />
+        <NodeLayout
+          Size="167.2,41.6"
+          Id="Package\Incremental Load\OLE DB Command"
+          TopLeft="379.999994337558,483.799993517995" />
+        <NodeLayout
+          Size="153.6,41.6"
+          Id="Package\Incremental Load\Conditional Split"
+          TopLeft="8.99999986588955,500.799993264675" />
         <EdgeLayout
-          Id="Package\Incremental Load.Paths[OLE DB Source Output]"
-          TopLeft="224.916664462537,68.2666662693024">
+          Id="Package\Incremental Load.Paths[Output 0]"
+          TopLeft="116.999998256564,464.599994114041">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,23.7333323597908"
+              EndConnector="-31.1999983906746,36.1999991506337"
               Start="0,0"
-              End="0,16.2333323597908">
+              End="-31.1999983906746,28.6999991506337">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,16.2333323597908" />
+                    End="-27.1999983906746,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-27.1999983906746,0"
+                    Point2="-31.1999983906746,0"
+                    Point3="-31.1999983906746,4" />
+                  <mssgle:LineSegment
+                    End="-31.1999983906746,28.6999991506337" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Incremental Load.Paths[NewRecords]"
-          TopLeft="200.966664632658,322.599995812774">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,61.3999984651805"
-              Start="0,0"
-              End="0,53.8999984651805">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,53.8999984651805" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-27.762578125,22.0754875138402,55.52515625,9.7490234375"
-              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Incremental Load.Paths[Lookup Match Output]"
-          TopLeft="229.349997615814,223.099997377396">
+          TopLeft="233.899997437,375.899995827675">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,57.8999984353781"
+              EndConnector="-36.0999991804356,67.8999982863661"
               Start="0,0"
-              End="0,50.3999984353781">
+              End="-36.0999991804356,60.3999982863661">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,50.3999984353781" />
+                    End="0,29.949999143183" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.949999143183"
+                    Point2="0,33.949999143183"
+                    Point3="-4,33.949999143183" />
+                  <mssgle:LineSegment
+                    End="-32.0999991804356,33.949999143183" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-32.0999991804356,33.949999143183"
+                    Point2="-36.0999991804356,33.949999143183"
+                    Point3="-36.0999991804356,37.949999143183" />
+                  <mssgle:LineSegment
+                    End="-36.0999991804356,60.3999982863661" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,19.3953117176891,96.3827734375,11.609375"
+              BoundingBox="-66.2413863089678,38.949999143183,96.3827734375,11.609375"
               RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Incremental Load.Paths[Derived Column Output]"
-          TopLeft="195.499998293817,425.599994277954">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,35.3999988526105"
-              Start="0,0"
-              End="0,27.8999988526105">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,27.8999988526105" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Incremental Load.Paths[Data Conversion Output]"
-          TopLeft="226.449997667968,133.599998629093">
+          TopLeft="234.949997541308,245.39999769032">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,47.8999987483025"
+              EndConnector="0,88.8999981373553"
               Start="0,0"
-              End="0,40.3999987483025">
+              End="0,81.3999981373553">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,40.3999987483025" />
+                    End="0,81.3999981373553" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -5946,49 +7144,130 @@ WHERE UserID = ?
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="167.2,41.6"
-          Id="Package\Incremental Load\OLE DB Command"
-          TopLeft="360.999994620681,365.999994546175" />
         <EdgeLayout
-          Id="Package\Incremental Load.Paths[ExistingRecords]"
-          TopLeft="253.06666440169,322.599995812774">
+          Id="Package\Incremental Load.Paths[Lookup No Match Output]"
+          TopLeft="251.366664103667,375.899995827675">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="191.533330218991,43.3999987334012"
+              EndConnector="212.233330233892,107.89999769032"
               Start="0,0"
-              End="191.533330218991,35.8999987334012">
+              End="212.233330233892,100.39999769032">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,13.6284530937733" />
+                    End="0,40.0654536022004" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,13.6284530937733"
-                    Point2="0,17.6284530937733"
-                    Point3="4,17.6284530937733" />
+                    Point1="0,40.0654536022004"
+                    Point2="0,44.0654536022004"
+                    Point3="4,44.0654536022004" />
                   <mssgle:LineSegment
-                    End="187.533330218991,17.6284530937733" />
+                    End="208.233330233892,44.0654536022004" />
                   <mssgle:CubicBezierSegment
-                    Point1="187.533330218991,17.6284530937733"
-                    Point2="191.533330218991,17.6284530937733"
-                    Point3="191.533330218991,21.6284530937733" />
+                    Point1="208.233330233892,44.0654536022004"
+                    Point2="212.233330233892,44.0654536022004"
+                    Point3="212.233330233892,48.0654536022004" />
                   <mssgle:LineSegment
-                    End="191.533330218991,35.8999987334012" />
+                    End="212.233330233892,100.39999769032" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="60.6540869844955,22.6284530937733,70.22515625,11.6630859375"
+              BoundingBox="50.3102783981959,49.0654536022004,111.6127734375,11.609375"
               RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="176,41.6"
+          Id="Package\Incremental Load\OLE DB Command 1"
+          TopLeft="149.999997764826,667.799990776181" />
+        <EdgeLayout
+          Id="Package\Incremental Load.Paths[UpdatedRecord]"
+          TopLeft="85.7999998658895,542.399993264675">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="152.199997898936,125.399997511506"
+              Start="0,0"
+              End="152.199997898936,117.899997511506">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,58.699998755753" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,58.699998755753"
+                    Point2="0,62.699998755753"
+                    Point3="4,62.699998755753" />
+                  <mssgle:LineSegment
+                    End="148.199997898936,62.699998755753" />
+                  <mssgle:CubicBezierSegment
+                    Point1="148.199997898936,62.699998755753"
+                    Point2="152.199997898936,62.699998755753"
+                    Point3="152.199997898936,66.699998755753" />
+                  <mssgle:LineSegment
+                    End="152.199997898936,117.899997511506" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="41.9380653557182,67.699998755753,68.3238671875,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Incremental Load.Paths[OLE DB Source Output]"
+          TopLeft="233.416664335877,68.2666662693024">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,135.533331421018"
+              Start="0,0"
+              End="0,128.033331421018">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,128.033331421018" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Incremental Load\Lookup">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\Incremental Load\OLE DB Source">
     <Properties>
@@ -5999,42 +7278,6 @@ WHERE UserID = ?
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Incremental Load\OLE DB Destination">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Incremental Load\Lookup">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:string">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string"></Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:string">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>

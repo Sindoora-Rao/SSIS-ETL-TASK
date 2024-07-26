@@ -73,6 +73,6 @@ IF (SELECT COUNT(*) FROM prod.Users) = 0
 
 truncate table stg.Users;
 --Drop table prod.Users;
-
+--Drop table stg.Users;
 SELECT * from prod.Users;
 SELECT * from stg.Users;
