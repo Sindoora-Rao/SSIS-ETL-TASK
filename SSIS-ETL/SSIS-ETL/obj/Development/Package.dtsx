@@ -11,8 +11,8 @@
   DTS:LocaleID="4105"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="236"
-  DTS:VersionGUID="{44FECB8A-68B4-4AC6-9C85-F78E878E3395}">
+  DTS:VersionBuild="240"
+  DTS:VersionGUID="{93FA3FBF-92CD-4BDC-8CDD-4DB459E8409A}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -4092,43 +4092,325 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           version="1">
           <components>
             <component
-              refId="Package\Load Data from stage table to target table\Conditional Split"
-              componentClassID="Microsoft.ConditionalSplit"
-              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
-              name="Conditional Split"
+              refId="Package\Load Data from stage table to target table\AmmendData"
+              componentClassID="Microsoft.OLEDBCommand"
+              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+              name="AmmendData"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">INSERT INTO prod.Users (UserID, FullName, Age, Email, RegistrationDate, LastLoginDate, PurchaseTotal, RecordLastUpdated)
+VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE())
+</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Data from stage table to target table\AmmendData.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
+                  connectionManagerRefId="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Command Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].Columns[UserID]"
+                      cachedDataType="i4"
+                      cachedName="UserID"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[UserID]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].Columns[FullName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FullName"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[FullName]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].Columns[Age]"
+                      cachedDataType="i4"
+                      cachedName="Age"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[Age]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].Columns[Email]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Email"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[Email]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].Columns[RegistrationDate]"
+                      cachedDataType="dbDate"
+                      cachedName="RegistrationDate"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[RegistrationDate]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].Columns[LastLoginDate]"
+                      cachedDataType="dbDate"
+                      cachedName="LastLoginDate"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[LastLoginDate]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].Columns[PurchaseTotal]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="PurchaseTotal"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
+                      lineageId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Outputs[Data Conversion Output].Columns[PurchaseTotal]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      dataType="i4"
+                      name="Param_0">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_1">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      dataType="i4"
+                      name="Param_2">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_3">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      dataType="dbDate"
+                      name="Param_4">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
+                      dataType="dbDate"
+                      name="Param_5">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
+                      dataType="r8"
+                      name="Param_6">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load Data from stage table to target table\AmmendData.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Load Data from stage table to target table\AmmendData.Outputs[OLE DB Command Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Data from stage table to target table\AmmendData.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\AmmendData.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Data from stage table to target table\AmmendData.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Data from stage table to target table\ConvertPurchaseTotal"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="ConvertPurchaseTotal"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\Load Data from stage table to target table\Conditional Split.Inputs[Conditional Split Input]"
-                  description="Input to the Conditional Split Transformation"
-                  name="Conditional Split Input">
+                  refId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Conditional Split.Inputs[Conditional Split Input].Columns[IsRecordUpdated]"
-                      cachedDataType="bool"
-                      cachedName="IsRecordUpdated"
-                      lineageId="Package\Load Data from stage table to target table\Script Component.Outputs[Output 0].Columns[IsRecordUpdated]" />
+                      refId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Inputs[Data Conversion Input].Columns[PurchaseTotal]"
+                      cachedDataType="r8"
+                      cachedName="PurchaseTotal"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[PurchaseTotal]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\Load Data from stage table to target table\Conditional Split.Outputs[UpdatedRecord]"
+                  refId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Outputs[Data Conversion Output].Columns[PurchaseTotal]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="IgnoreFailure"
+                      length="50"
+                      lineageId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Outputs[Data Conversion Output].Columns[PurchaseTotal]"
+                      name="PurchaseTotal"
+                      truncationRowDisposition="IgnoreFailure">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[PurchaseTotal]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Data from stage table to target table\Filter OutOfDateData"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Filter OutOfDateData"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Load Data from stage table to target table\Filter OutOfDateData.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\Filter OutOfDateData.Inputs[Conditional Split Input].Columns[IsRecordUpdated]"
+                      cachedDataType="bool"
+                      cachedName="IsRecordUpdated"
+                      lineageId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Outputs[Output 0].Columns[IsRecordUpdated]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load Data from stage table to target table\Filter OutOfDateData.Outputs[UpdatedRecord]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="UpdatedRecord"
-                  synchronousInputId="Package\Load Data from stage table to target table\Conditional Split.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\Load Data from stage table to target table\Filter OutOfDateData.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\Load Data from stage table to target table\Script Component.Outputs[Output 0].Columns[IsRecordUpdated]} ==  TRUE </property>
+                      name="Expression">#{Package\Load Data from stage table to target table\RecordUpToDateChecker.Outputs[Output 0].Columns[IsRecordUpdated]} ==  TRUE </property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -4143,11 +4425,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Load Data from stage table to target table\Conditional Split.Outputs[Conditional Split Default Output]"
+                  refId="Package\Load Data from stage table to target table\Filter OutOfDateData.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\Load Data from stage table to target table\Conditional Split.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\Load Data from stage table to target table\Filter OutOfDateData.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -4156,100 +4438,23 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\Load Data from stage table to target table\Conditional Split.Outputs[Conditional Split Error Output]"
+                  refId="Package\Load Data from stage table to target table\Filter OutOfDateData.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\Load Data from stage table to target table\Conditional Split.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\Load Data from stage table to target table\Filter OutOfDateData.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Load Data from stage table to target table\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\Load Data from stage table to target table\Filter OutOfDateData.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\Load Data from stage table to target table\Filter OutOfDateData.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\Load Data from stage table to target table\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\Load Data from stage table to target table\Filter OutOfDateData.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\Load Data from stage table to target table\Data Conversion"
-              componentClassID="Microsoft.DataConvert"
-              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Data Conversion"
-              name="Data Conversion"
-              usesDispositions="true">
-              <inputs>
-                <input
-                  refId="Package\Load Data from stage table to target table\Data Conversion.Inputs[Data Conversion Input]"
-                  name="Data Conversion Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\Data Conversion.Inputs[Data Conversion Input].Columns[PurchaseTotal]"
-                      cachedDataType="r8"
-                      cachedName="PurchaseTotal"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[PurchaseTotal]" />
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\Load Data from stage table to target table\Data Conversion.Outputs[Data Conversion Output]"
-                  exclusionGroup="1"
-                  name="Data Conversion Output"
-                  synchronousInputId="Package\Load Data from stage table to target table\Data Conversion.Inputs[Data Conversion Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\Data Conversion.Outputs[Data Conversion Output].Columns[PurchaseTotal]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="IgnoreFailure"
-                      length="50"
-                      lineageId="Package\Load Data from stage table to target table\Data Conversion.Outputs[Data Conversion Output].Columns[PurchaseTotal]"
-                      name="PurchaseTotal"
-                      truncationRowDisposition="IgnoreFailure">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[PurchaseTotal]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\Load Data from stage table to target table\Data Conversion.Outputs[Data Conversion Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Data Conversion Error Output"
-                  synchronousInputId="Package\Load Data from stage table to target table\Data Conversion.Inputs[Data Conversion Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\Load Data from stage table to target table\Filter OutOfDateData.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -4316,7 +4521,7 @@ where [refTable].[UserID] = ?</property>
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[UserID]};</property>
+                  name="ParameterMap">#{Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[UserID]};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -4343,7 +4548,7 @@ where [refTable].[UserID] = ?</property>
                       refId="Package\Load Data from stage table to target table\Lookup.Inputs[Lookup Input].Columns[UserID]"
                       cachedDataType="i4"
                       cachedName="UserID"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[UserID]">
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[UserID]">
                       <properties>
                         <property
                           dataType="System.String"
@@ -4519,666 +4724,11 @@ where [refTable].[UserID] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\Load Data from stage table to target table\OLE DB Command"
-              componentClassID="Microsoft.OLEDBCommand"
-              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
-              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
-              name="OLE DB Command"
-              usesDispositions="true"
-              version="2">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  expressionType="Notify"
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">INSERT INTO prod.Users (UserID, FullName, Age, Email, RegistrationDate, LastLoginDate, PurchaseTotal, RecordLastUpdated)
-VALUES (?, ?, ?, ?, ?, ?, ?, GETDATE())
-</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\Load Data from stage table to target table\OLE DB Command.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
-                  connectionManagerRefId="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <inputs>
-                <input
-                  refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input]"
-                  errorOrTruncationOperation="Command Execution"
-                  errorRowDisposition="FailComponent"
-                  hasSideEffects="true"
-                  name="OLE DB Command Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].Columns[UserID]"
-                      cachedDataType="i4"
-                      cachedName="UserID"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[UserID]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].Columns[FullName]"
-                      cachedDataType="wstr"
-                      cachedLength="255"
-                      cachedName="FullName"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[FullName]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].Columns[Age]"
-                      cachedDataType="i4"
-                      cachedName="Age"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[Age]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].Columns[Email]"
-                      cachedDataType="wstr"
-                      cachedLength="255"
-                      cachedName="Email"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[Email]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].Columns[RegistrationDate]"
-                      cachedDataType="dbDate"
-                      cachedName="RegistrationDate"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[RegistrationDate]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].Columns[LastLoginDate]"
-                      cachedDataType="dbDate"
-                      cachedName="LastLoginDate"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[LastLoginDate]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].Columns[PurchaseTotal]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="PurchaseTotal"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
-                      lineageId="Package\Load Data from stage table to target table\Data Conversion.Outputs[Data Conversion Output].Columns[PurchaseTotal]" />
-                  </inputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
-                      dataType="i4"
-                      name="Param_0">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">65</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
-                      dataType="wstr"
-                      length="255"
-                      name="Param_1">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">81</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
-                      dataType="i4"
-                      name="Param_2">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">65</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
-                      dataType="wstr"
-                      length="255"
-                      name="Param_3">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">65</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
-                      dataType="dbDate"
-                      name="Param_4">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">65</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
-                      dataType="dbDate"
-                      name="Param_5">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">81</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
-                      dataType="r8"
-                      name="Param_6">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">81</property>
-                      </properties>
-                    </externalMetadataColumn>
-                  </externalMetadataColumns>
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\Load Data from stage table to target table\OLE DB Command.Outputs[OLE DB Command Output]"
-                  exclusionGroup="1"
-                  name="OLE DB Command Output"
-                  synchronousInputId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input]">
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\Load Data from stage table to target table\OLE DB Command.Outputs[OLE DB Command Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="OLE DB Command Error Output"
-                  synchronousInputId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\Load Data from stage table to target table\OLE DB Command 1"
-              componentClassID="Microsoft.OLEDBCommand"
-              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
-              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
-              name="OLE DB Command 1"
-              usesDispositions="true"
-              version="2">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  expressionType="Notify"
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">UPDATE prod.Users
-SET 
-    FullName = ?,
-    Age = ?,
-    Email = ?,
-    RegistrationDate = ?,
-    LastLoginDate = ?,
-    PurchaseTotal = ?,
-    RecordLastUpdated = GETDATE()
-WHERE UserID = ?</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\Load Data from stage table to target table\OLE DB Command 1.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
-                  connectionManagerRefId="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <inputs>
-                <input
-                  refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input]"
-                  errorOrTruncationOperation="Command Execution"
-                  errorRowDisposition="FailComponent"
-                  hasSideEffects="true"
-                  name="OLE DB Command Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[RegistrationDate]"
-                      cachedDataType="dbDate"
-                      cachedName="RegistrationDate"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
-                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[RegistrationDate]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[LastLoginDate]"
-                      cachedDataType="dbDate"
-                      cachedName="LastLoginDate"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
-                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[LastLoginDate]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[Email]"
-                      cachedDataType="wstr"
-                      cachedLength="255"
-                      cachedName="Email"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
-                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[Email]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[Age]"
-                      cachedDataType="i4"
-                      cachedName="Age"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
-                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[Age]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[FullName]"
-                      cachedDataType="wstr"
-                      cachedLength="255"
-                      cachedName="FullName"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
-                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[FullName]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[PurchaseTotal]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="PurchaseTotal"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
-                      lineageId="Package\Load Data from stage table to target table\Data Conversion.Outputs[Data Conversion Output].Columns[PurchaseTotal]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].Columns[UserID]"
-                      cachedDataType="i4"
-                      cachedName="UserID"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
-                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[UserID]" />
-                  </inputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
-                      dataType="wstr"
-                      length="255"
-                      name="Param_0">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">65</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
-                      dataType="i4"
-                      name="Param_1">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">81</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
-                      dataType="wstr"
-                      length="255"
-                      name="Param_2">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">65</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
-                      dataType="dbDate"
-                      name="Param_3">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">65</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
-                      dataType="dbDate"
-                      name="Param_4">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">65</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
-                      dataType="r8"
-                      name="Param_5">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">81</property>
-                      </properties>
-                    </externalMetadataColumn>
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
-                      dataType="i4"
-                      name="Param_6">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
-                          name="DBParamInfoFlags">81</property>
-                      </properties>
-                    </externalMetadataColumn>
-                  </externalMetadataColumns>
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\Load Data from stage table to target table\OLE DB Command 1.Outputs[OLE DB Command Output]"
-                  exclusionGroup="1"
-                  name="OLE DB Command Output"
-                  synchronousInputId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input]">
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\Load Data from stage table to target table\OLE DB Command 1.Outputs[OLE DB Command Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="OLE DB Command Error Output"
-                  synchronousInputId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Command 1.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Command 1.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Command 1.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\Load Data from stage table to target table\OLE DB Source"
-              componentClassID="Microsoft.OLEDBSource"
-              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
-              description="OLE DB Source"
-              name="OLE DB Source"
-              usesDispositions="true"
-              version="7">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[stg].[Users]</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
-                <property
-                  dataType="System.String"
-                  description="The variable that contains the SQL command to be executed."
-                  name="SqlCommandVariable"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Forces the use of the DefaultCodePage property value when describing character data."
-                  name="AlwaysUseDefaultCodePage">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">0</property>
-                <property
-                  dataType="System.String"
-                  description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\Load Data from stage table to target table\OLE DB Source.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
-                  connectionManagerRefId="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <outputs>
-                <output
-                  refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output]"
-                  name="OLE DB Source Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[UserID]"
-                      dataType="i4"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[UserID]"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[UserID]"
-                      name="UserID"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[FullName]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FullName]"
-                      length="255"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[FullName]"
-                      name="FullName"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[Age]"
-                      dataType="i4"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Age]"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[Age]"
-                      name="Age"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[Email]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Email]"
-                      length="255"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[Email]"
-                      name="Email"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[RegistrationDate]"
-                      dataType="dbDate"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[RegistrationDate]"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[RegistrationDate]"
-                      name="RegistrationDate"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[LastLoginDate]"
-                      dataType="dbDate"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[LastLoginDate]"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[LastLoginDate]"
-                      name="LastLoginDate"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[PurchaseTotal]"
-                      dataType="r8"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PurchaseTotal]"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[PurchaseTotal]"
-                      name="PurchaseTotal"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[StgID]"
-                      dataType="i4"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[StgID]"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[StgID]"
-                      name="StgID"
-                      truncationRowDisposition="FailComponent" />
-                  </outputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[UserID]"
-                      dataType="i4"
-                      name="UserID" />
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FullName]"
-                      dataType="wstr"
-                      length="255"
-                      name="FullName" />
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Age]"
-                      dataType="i4"
-                      name="Age" />
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Email]"
-                      dataType="wstr"
-                      length="255"
-                      name="Email" />
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[RegistrationDate]"
-                      dataType="dbDate"
-                      name="RegistrationDate" />
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[LastLoginDate]"
-                      dataType="dbDate"
-                      name="LastLoginDate" />
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PurchaseTotal]"
-                      dataType="r8"
-                      name="PurchaseTotal" />
-                    <externalMetadataColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[StgID]"
-                      dataType="i4"
-                      name="StgID" />
-                  </externalMetadataColumns>
-                </output>
-                <output
-                  refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output]"
-                  isErrorOut="true"
-                  name="OLE DB Source Error Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[StgID]"
-                      dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[StgID]"
-                      name="StgID" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[UserID]"
-                      dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[UserID]"
-                      name="UserID" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FullName]"
-                      dataType="wstr"
-                      length="255"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FullName]"
-                      name="FullName" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Age]"
-                      dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Age]"
-                      name="Age" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Email]"
-                      dataType="wstr"
-                      length="255"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Email]"
-                      name="Email" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[RegistrationDate]"
-                      dataType="dbDate"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[RegistrationDate]"
-                      name="RegistrationDate" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[LastLoginDate]"
-                      dataType="dbDate"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[LastLoginDate]"
-                      name="LastLoginDate" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PurchaseTotal]"
-                      dataType="r8"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PurchaseTotal]"
-                      name="PurchaseTotal" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\Load Data from stage table to target table\Script Component"
+              refId="Package\Load Data from stage table to target table\RecordUpToDateChecker"
               componentClassID="Microsoft.ManagedComponentHost"
               contactInfo="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum.;Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;13"
               description="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum."
-              name="Script Component"
+              name="RecordUpToDateChecker"
               version="13">
               <properties>
                 <property
@@ -6318,108 +5868,108 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
               </properties>
               <inputs>
                 <input
-                  refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0]"
+                  refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0]"
                   hasSideEffects="true"
                   name="Input 0">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[StgID]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[StgID]"
                       cachedDataType="i4"
                       cachedName="StgID"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[StgID]" />
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[StgID]" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[Lookup.FullName]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[Lookup.FullName]"
                       cachedDataType="wstr"
                       cachedLength="255"
                       cachedName="FullName"
                       lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[FullName]"
                       name="Lookup.FullName" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[Lookup.Age]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[Lookup.Age]"
                       cachedDataType="i4"
                       cachedName="Age"
                       lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[Age]"
                       name="Lookup.Age" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[Lookup.Email]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[Lookup.Email]"
                       cachedDataType="wstr"
                       cachedLength="255"
                       cachedName="Email"
                       lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[Email]"
                       name="Lookup.Email" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[Lookup.RegistrationDate]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[Lookup.RegistrationDate]"
                       cachedDataType="dbDate"
                       cachedName="RegistrationDate"
                       lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[RegistrationDate]"
                       name="Lookup.RegistrationDate" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[Lookup.LastLoginDate]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[Lookup.LastLoginDate]"
                       cachedDataType="dbDate"
                       cachedName="LastLoginDate"
                       lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[LastLoginDate]"
                       name="Lookup.LastLoginDate" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[RecordLastUpdated]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[RecordLastUpdated]"
                       cachedDataType="dbTimeStamp"
                       cachedName="RecordLastUpdated"
                       lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[RecordLastUpdated]" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[Lookup.UserID]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[Lookup.UserID]"
                       cachedDataType="i4"
                       cachedName="UserID"
                       lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[UserID]"
                       name="Lookup.UserID" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[PurchaseTotalString]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[PurchaseTotalString]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="PurchaseTotalString"
                       lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[PurchaseTotalString]" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[OLE DB Source.UserID]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[OLE DB Source.UserID]"
                       cachedDataType="i4"
                       cachedName="UserID"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[UserID]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[UserID]"
                       name="OLE DB Source.UserID" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[OLE DB Source.FullName]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[OLE DB Source.FullName]"
                       cachedDataType="wstr"
                       cachedLength="255"
                       cachedName="FullName"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[FullName]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[FullName]"
                       name="OLE DB Source.FullName" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[OLE DB Source.Age]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[OLE DB Source.Age]"
                       cachedDataType="i4"
                       cachedName="Age"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[Age]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[Age]"
                       name="OLE DB Source.Age" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[OLE DB Source.Email]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[OLE DB Source.Email]"
                       cachedDataType="wstr"
                       cachedLength="255"
                       cachedName="Email"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[Email]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[Email]"
                       name="OLE DB Source.Email" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[OLE DB Source.RegistrationDate]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[OLE DB Source.RegistrationDate]"
                       cachedDataType="dbDate"
                       cachedName="RegistrationDate"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[RegistrationDate]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[RegistrationDate]"
                       name="OLE DB Source.RegistrationDate" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[OLE DB Source.LastLoginDate]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[OLE DB Source.LastLoginDate]"
                       cachedDataType="dbDate"
                       cachedName="LastLoginDate"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[LastLoginDate]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[LastLoginDate]"
                       name="OLE DB Source.LastLoginDate" />
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0].Columns[OLE DB Source.PurchaseTotal]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0].Columns[OLE DB Source.PurchaseTotal]"
                       cachedDataType="r8"
                       cachedName="PurchaseTotal"
-                      lineageId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output].Columns[PurchaseTotal]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[PurchaseTotal]"
                       name="OLE DB Source.PurchaseTotal" />
                   </inputColumns>
                   <externalMetadataColumns />
@@ -6427,15 +5977,465 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\Load Data from stage table to target table\Script Component.Outputs[Output 0]"
+                  refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Outputs[Output 0]"
                   name="Output 0"
-                  synchronousInputId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0]">
+                  synchronousInputId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\Load Data from stage table to target table\Script Component.Outputs[Output 0].Columns[IsRecordUpdated]"
+                      refId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Outputs[Output 0].Columns[IsRecordUpdated]"
                       dataType="bool"
-                      lineageId="Package\Load Data from stage table to target table\Script Component.Outputs[Output 0].Columns[IsRecordUpdated]"
+                      lineageId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Outputs[Output 0].Columns[IsRecordUpdated]"
                       name="IsRecordUpdated" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Data from stage table to target table\Staged Data"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Staged Data"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[stg].[Users]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Data from stage table to target table\Staged Data.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
+                  connectionManagerRefId="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[UserID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[UserID]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[UserID]"
+                      name="UserID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[FullName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[FullName]"
+                      length="255"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[FullName]"
+                      name="FullName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[Age]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[Age]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[Age]"
+                      name="Age"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[Email]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[Email]"
+                      length="255"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[Email]"
+                      name="Email"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[RegistrationDate]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[RegistrationDate]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[RegistrationDate]"
+                      name="RegistrationDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[LastLoginDate]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[LastLoginDate]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[LastLoginDate]"
+                      name="LastLoginDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[PurchaseTotal]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[PurchaseTotal]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[PurchaseTotal]"
+                      name="PurchaseTotal"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[StgID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[StgID]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[StgID]"
+                      name="StgID"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[UserID]"
+                      dataType="i4"
+                      name="UserID" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[FullName]"
+                      dataType="wstr"
+                      length="255"
+                      name="FullName" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[Age]"
+                      dataType="i4"
+                      name="Age" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[Email]"
+                      dataType="wstr"
+                      length="255"
+                      name="Email" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[RegistrationDate]"
+                      dataType="dbDate"
+                      name="RegistrationDate" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[LastLoginDate]"
+                      dataType="dbDate"
+                      name="LastLoginDate" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[PurchaseTotal]"
+                      dataType="r8"
+                      name="PurchaseTotal" />
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].ExternalColumns[StgID]"
+                      dataType="i4"
+                      name="StgID" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[StgID]"
+                      dataType="i4"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[StgID]"
+                      name="StgID" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[UserID]"
+                      dataType="i4"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[UserID]"
+                      name="UserID" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[FullName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[FullName]"
+                      name="FullName" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[Age]"
+                      dataType="i4"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[Age]"
+                      name="Age" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[Email]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[Email]"
+                      name="Email" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[RegistrationDate]"
+                      dataType="dbDate"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[RegistrationDate]"
+                      name="RegistrationDate" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[LastLoginDate]"
+                      dataType="dbDate"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[LastLoginDate]"
+                      name="LastLoginDate" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[PurchaseTotal]"
+                      dataType="r8"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[PurchaseTotal]"
+                      name="PurchaseTotal" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Data from stage table to target table\UpdateData"
+              componentClassID="Microsoft.OLEDBCommand"
+              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+              name="UpdateData"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">UPDATE prod.Users
+SET 
+    FullName = ?,
+    Age = ?,
+    Email = ?,
+    RegistrationDate = ?,
+    LastLoginDate = ?,
+    PurchaseTotal = ?,
+    RecordLastUpdated = GETDATE()
+WHERE UserID = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load Data from stage table to target table\UpdateData.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
+                  connectionManagerRefId="Package.ConnectionManagers[LocalHost.KoreAssignment_Sindoora_Rao]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Command Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[RegistrationDate]"
+                      cachedDataType="dbDate"
+                      cachedName="RegistrationDate"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[RegistrationDate]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[LastLoginDate]"
+                      cachedDataType="dbDate"
+                      cachedName="LastLoginDate"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[LastLoginDate]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[Email]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Email"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[Email]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[Age]"
+                      cachedDataType="i4"
+                      cachedName="Age"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[Age]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[FullName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FullName"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[FullName]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[PurchaseTotal]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="PurchaseTotal"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
+                      lineageId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Outputs[Data Conversion Output].Columns[PurchaseTotal]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[UserID]"
+                      cachedDataType="i4"
+                      cachedName="UserID"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
+                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[UserID]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_0">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      dataType="i4"
+                      name="Param_1">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_2">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      dataType="dbDate"
+                      name="Param_3">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      dataType="dbDate"
+                      name="Param_4">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
+                      dataType="r8"
+                      name="Param_5">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
+                      dataType="i4"
+                      name="Param_6">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load Data from stage table to target table\UpdateData.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Load Data from stage table to target table\UpdateData.Outputs[OLE DB Command Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Data from stage table to target table\UpdateData.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Data from stage table to target table\UpdateData.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
@@ -6447,32 +6447,32 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
               refId="Package\Load Data from stage table to target table.Paths[Data Conversion Output]"
               endId="Package\Load Data from stage table to target table\Lookup.Inputs[Lookup Input]"
               name="Data Conversion Output"
-              startId="Package\Load Data from stage table to target table\Data Conversion.Outputs[Data Conversion Output]" />
+              startId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Outputs[Data Conversion Output]" />
             <path
               refId="Package\Load Data from stage table to target table.Paths[Lookup Match Output]"
-              endId="Package\Load Data from stage table to target table\Script Component.Inputs[Input 0]"
+              endId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Inputs[Input 0]"
               name="Lookup Match Output"
               startId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output]" />
             <path
               refId="Package\Load Data from stage table to target table.Paths[Lookup No Match Output]"
-              endId="Package\Load Data from stage table to target table\OLE DB Command.Inputs[OLE DB Command Input]"
+              endId="Package\Load Data from stage table to target table\AmmendData.Inputs[OLE DB Command Input]"
               name="Lookup No Match Output"
               startId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\Load Data from stage table to target table.Paths[OLE DB Source Output]"
-              endId="Package\Load Data from stage table to target table\Data Conversion.Inputs[Data Conversion Input]"
+              endId="Package\Load Data from stage table to target table\ConvertPurchaseTotal.Inputs[Data Conversion Input]"
               name="OLE DB Source Output"
-              startId="Package\Load Data from stage table to target table\OLE DB Source.Outputs[OLE DB Source Output]" />
+              startId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output]" />
             <path
               refId="Package\Load Data from stage table to target table.Paths[Output 0]"
-              endId="Package\Load Data from stage table to target table\Conditional Split.Inputs[Conditional Split Input]"
+              endId="Package\Load Data from stage table to target table\Filter OutOfDateData.Inputs[Conditional Split Input]"
               name="Output 0"
-              startId="Package\Load Data from stage table to target table\Script Component.Outputs[Output 0]" />
+              startId="Package\Load Data from stage table to target table\RecordUpToDateChecker.Outputs[Output 0]" />
             <path
               refId="Package\Load Data from stage table to target table.Paths[UpdatedRecord]"
-              endId="Package\Load Data from stage table to target table\OLE DB Command 1.Inputs[OLE DB Command Input]"
+              endId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input]"
               name="UpdatedRecord"
-              startId="Package\Load Data from stage table to target table\Conditional Split.Outputs[UpdatedRecord]" />
+              startId="Package\Load Data from stage table to target table\Filter OutOfDateData.Outputs[UpdatedRecord]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -6607,45 +6607,57 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="135.2,41.6"
-          Id="Package\Extract And Transform Data From CSV to Staging\CSV Source"
-          TopLeft="334.999994946023,5.49999999999995" />
+          Size="196.8,41.6"
+          Id="Package\Extract And Transform Data From CSV to Staging\Remove duplicate UserID"
+          TopLeft="306.66664991114,274.199999439517" />
         <NodeLayout
-          Size="163.2,41.6"
-          Id="Package\Extract And Transform Data From CSV to Staging\StringToDataType"
-          TopLeft="50.9333436689437,554.299998481274" />
-        <NodeLayout
-          Size="222.4,41.6"
-          Id="Package\Extract And Transform Data From CSV to Staging\DateCorrectionAndEmailCheck"
-          TopLeft="301.666650184327,191.599998806715" />
-        <NodeLayout
-          Size="136.8,41.6"
-          Id="Package\Extract And Transform Data From CSV to Staging\InValidEmail"
-          TopLeft="704.166628192698,637.066663966709" />
-        <NodeLayout
-          Size="148,41.6"
-          Id="Package\Extract And Transform Data From CSV to Staging\Stagging Table"
-          TopLeft="66.333330009547,653.299998499353" />
-        <NodeLayout
-          Size="142.4,41.6"
-          Id="Package\Extract And Transform Data From CSV to Staging\InValidUserID"
-          TopLeft="313.333316213556,665.066663532786" />
-        <NodeLayout
-          Size="219.2,41.6"
-          Id="Package\Extract And Transform Data From CSV to Staging\CheckNumericAndSetDefaults"
-          TopLeft="298.333317033119,92.7333326884773" />
+          Size="164,41.6"
+          Id="Package\Extract And Transform Data From CSV to Staging\Data Conversion 1"
+          TopLeft="307.499983198941,555.799997703831" />
         <NodeLayout
           Size="128.8,41.6"
           Id="Package\Extract And Transform Data From CSV to Staging\InValidAge"
           TopLeft="520.833304876256,643.866663930549" />
         <NodeLayout
-          Size="196.8,41.6"
-          Id="Package\Extract And Transform Data From CSV to Staging\Remove duplicate UserID"
-          TopLeft="306.66664991114,274.199999439517" />
+          Size="135.2,41.6"
+          Id="Package\Extract And Transform Data From CSV to Staging\CSV Source"
+          TopLeft="334.999994946023,5.49999999999995" />
+        <NodeLayout
+          Size="164,41.6"
+          Id="Package\Extract And Transform Data From CSV to Staging\Data Conversion 2"
+          TopLeft="502.499972544612,560.266664472951" />
+        <NodeLayout
+          Size="163.2,41.6"
+          Id="Package\Extract And Transform Data From CSV to Staging\StringToDataType"
+          TopLeft="50.9333436689437,554.299998481274" />
+        <NodeLayout
+          Size="164,41.6"
+          Id="Package\Extract And Transform Data From CSV to Staging\Data Conversion 3"
+          TopLeft="697.499961890282,550.266664581431" />
+        <NodeLayout
+          Size="136.8,41.6"
+          Id="Package\Extract And Transform Data From CSV to Staging\InValidEmail"
+          TopLeft="704.166628192698,637.066663966709" />
         <NodeLayout
           Size="192,41.6"
           Id="Package\Extract And Transform Data From CSV to Staging\Data Validation and Split"
           TopLeft="313.333316213556,402.133332127995" />
+        <NodeLayout
+          Size="142.4,41.6"
+          Id="Package\Extract And Transform Data From CSV to Staging\InValidUserID"
+          TopLeft="313.333316213556,665.066663532786" />
+        <NodeLayout
+          Size="148,41.6"
+          Id="Package\Extract And Transform Data From CSV to Staging\Stagging Table"
+          TopLeft="66.333330009547,653.299998499353" />
+        <NodeLayout
+          Size="219.2,41.6"
+          Id="Package\Extract And Transform Data From CSV to Staging\CheckNumericAndSetDefaults"
+          TopLeft="298.333317033119,92.7333326884773" />
+        <NodeLayout
+          Size="222.4,41.6"
+          Id="Package\Extract And Transform Data From CSV to Staging\DateCorrectionAndEmailCheck"
+          TopLeft="301.666650184327,191.599998806715" />
         <EdgeLayout
           Id="Package\Extract And Transform Data From CSV to Staging.Paths[ValidAge]"
           TopLeft="354.133316213556,443.733332127995">
@@ -6705,6 +6717,28 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
+          Id="Package\Extract And Transform Data From CSV to Staging.Paths[Sort Output]"
+          TopLeft="407.199983062348,315.799999439517">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,86.3333326884782"
+              Start="0,0"
+              End="0,78.8333326884782">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,78.8333326884782" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
           Id="Package\Extract And Transform Data From CSV to Staging.Paths[Script Output]"
           TopLeft="408.966650047734,233.199998806715">
           <EdgeLayout.Curve>
@@ -6724,82 +6758,32 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-8,8.75000031640081,16,16"
+              BoundingBox="-8,8.7500003164008,16,16"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Extract And Transform Data From CSV to Staging.Paths[Derived Column Output]"
-          TopLeft="410.399983608724,134.333332688477">
+          Id="Package\Extract And Transform Data From CSV to Staging.Paths[InValidUserID]"
+          TopLeft="390.216649706248,443.733332127995">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,57.2666661182379"
+              EndConnector="0,112.066665575836"
               Start="0,0"
-              End="0,49.7666661182379">
+              End="0,104.566665575836">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,49.7666661182379" />
+                    End="0,104.566665575836" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-8,16.883333059119,16,16"
+              BoundingBox="-31.1328125,47.408821069168,62.265625,9.7490234375"
               RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Extract And Transform Data From CSV to Staging.Paths[Data Conversion Output]"
-          TopLeft="136.433336839245,595.899998481274">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,57.400000018079"
-              Start="0,0"
-              End="0,49.900000018079">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,49.900000018079" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-8,16.9500000090395,16,16"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="164,41.6"
-          Id="Package\Extract And Transform Data From CSV to Staging\Data Conversion 3"
-          TopLeft="697.499961890282,550.266664581431" />
-        <EdgeLayout
-          Id="Package\Extract And Transform Data From CSV to Staging.Paths[Data Conversion Output1]"
-          TopLeft="776.03329504149,591.866664581431">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,45.1999993852776"
-              Start="0,0"
-              End="0,37.6999993852776">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,37.6999993852776" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -6838,32 +6822,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="164,41.6"
-          Id="Package\Extract And Transform Data From CSV to Staging\Data Conversion 2"
-          TopLeft="502.499972544612,560.266664472951" />
-        <EdgeLayout
-          Id="Package\Extract And Transform Data From CSV to Staging.Paths[Data Conversion Output2]"
-          TopLeft="584.866638710434,601.866664472951">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,41.9999994575982"
-              Start="0,0"
-              End="0,34.4999994575982">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,34.4999994575982" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package\Extract And Transform Data From CSV to Staging.Paths[InValidAge]"
           TopLeft="427.733316213556,443.733332127995">
@@ -6896,35 +6854,31 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="54.0253789467781,57.09093657816,48.7158984375,11.6630859375"
+              BoundingBox="54.025378946778,57.09093657816,48.7158984375,11.6630859375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="164,41.6"
-          Id="Package\Extract And Transform Data From CSV to Staging\Data Conversion 1"
-          TopLeft="307.499983198941,555.799997703831" />
         <EdgeLayout
-          Id="Package\Extract And Transform Data From CSV to Staging.Paths[InValidUserID]"
-          TopLeft="390.216649706248,443.733332127995">
+          Id="Package\Extract And Transform Data From CSV to Staging.Paths[Derived Column Output]"
+          TopLeft="410.399983608724,134.333332688477">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,112.066665575836"
+              EndConnector="0,57.2666661182379"
               Start="0,0"
-              End="0,104.566665575836">
+              End="0,49.7666661182379">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,104.566665575836" />
+                    End="0,49.7666661182379" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-31.1328125,47.4088210691679,62.265625,9.7490234375"
+              BoundingBox="-8,16.883333059119,16,16"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -6951,19 +6905,19 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Extract And Transform Data From CSV to Staging.Paths[Sort Output]"
-          TopLeft="407.199983062348,315.799999439517">
+          Id="Package\Extract And Transform Data From CSV to Staging.Paths[Data Conversion Output2]"
+          TopLeft="584.866638710434,601.866664472951">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,86.3333326884782"
+              EndConnector="0,41.9999994575982"
               Start="0,0"
-              End="0,78.8333326884782">
+              End="0,34.4999994575982">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,78.8333326884782" />
+                    End="0,34.4999994575982" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -6972,11 +6926,57 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Extract And Transform Data From CSV to Staging.Paths[Data Conversion Output1]"
+          TopLeft="776.03329504149,591.866664581431">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,45.1999993852776"
+              Start="0,0"
+              End="0,37.6999993852776">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,37.6999993852776" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Extract And Transform Data From CSV to Staging.Paths[Data Conversion Output]"
+          TopLeft="136.433336839245,595.899998481274">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,57.400000018079"
+              Start="0,0"
+              End="0,49.900000018079">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,49.900000018079" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-8,16.9500000090395,16,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Extract And Transform Data From CSV to Staging\InValidEmail">
+    design-time-name="Package\Extract And Transform Data From CSV to Staging\InValidAge">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -6989,7 +6989,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Extract And Transform Data From CSV to Staging\Stagging Table">
+    design-time-name="Package\Extract And Transform Data From CSV to Staging\InValidEmail">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -7015,7 +7015,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Extract And Transform Data From CSV to Staging\InValidAge">
+    design-time-name="Package\Extract And Transform Data From CSV to Staging\Stagging Table">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -7033,217 +7033,193 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="156,41.6"
-          Id="Package\Load Data from stage table to target table\Data Conversion"
-          TopLeft="157.999997645617,203.79999769032" />
+          Size="181.6,41.6"
+          Id="Package\Load Data from stage table to target table\ConvertPurchaseTotal"
+          TopLeft="132.999998018146,123.799998882413" />
         <NodeLayout
-          Size="167.2,41.6"
-          Id="Package\Load Data from stage table to target table\OLE DB Command"
-          TopLeft="379.999994337558,483.799993517995" />
+          Size="141.6,41.6"
+          Id="Package\Load Data from stage table to target table\AmmendData"
+          TopLeft="313.999995321035,325.799995872378" />
         <NodeLayout
-          Size="161.6,41.6"
-          Id="Package\Load Data from stage table to target table\Script Component"
-          TopLeft="116.999998256564,443.799994114041" />
+          Size="198.4,41.6"
+          Id="Package\Load Data from stage table to target table\RecordUpToDateChecker"
+          TopLeft="65.9999990165232,321.799995931983" />
         <NodeLayout
-          Size="176,41.6"
-          Id="Package\Load Data from stage table to target table\OLE DB Command 1"
-          TopLeft="149.999997764826,667.799990776181" />
+          Size="133.6,41.6"
+          Id="Package\Load Data from stage table to target table\UpdateData"
+          TopLeft="89.9999986588956,551.799992504716" />
         <NodeLayout
           Size="112.8,41.6"
           Id="Package\Load Data from stage table to target table\Lookup"
-          TopLeft="177.499997437,334.299995827675" />
+          TopLeft="165.499997615814,205.299997749925" />
         <NodeLayout
-          Size="152,41.6"
-          Id="Package\Load Data from stage table to target table\OLE DB Source"
+          Size="136,41.6"
+          Id="Package\Load Data from stage table to target table\Staged Data"
           TopLeft="154.833331026137,26.6666662693024" />
         <NodeLayout
-          Size="153.6,41.6"
-          Id="Package\Load Data from stage table to target table\Conditional Split"
-          TopLeft="8.99999986588955,500.799993264675" />
+          Size="176,41.6"
+          Id="Package\Load Data from stage table to target table\Filter OutOfDateData"
+          TopLeft="71.9999989271164,412.799994575977" />
         <EdgeLayout
           Id="Package\Load Data from stage table to target table.Paths[UpdatedRecord]"
-          TopLeft="85.7999998658895,542.399993264675">
+          TopLeft="158.399998793006,454.399994575977">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="152.199997898936,125.399997511506"
+              EndConnector="0,97.3999979287386"
               Start="0,0"
-              End="152.199997898936,117.899997511506">
+              End="0,89.8999979287386">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,58.699998755753" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,58.699998755753"
-                    Point2="0,62.699998755753"
-                    Point3="4,62.699998755753" />
-                  <mssgle:LineSegment
-                    End="148.199997898936,62.699998755753" />
-                  <mssgle:CubicBezierSegment
-                    Point1="148.199997898936,62.699998755753"
-                    Point2="152.199997898936,62.699998755753"
-                    Point3="152.199997898936,66.699998755753" />
-                  <mssgle:LineSegment
-                    End="152.199997898936,117.899997511506" />
+                    End="0,89.8999979287386" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="41.9380653557182,67.699998755753,68.3238671875,11.609375"
+              BoundingBox="-34.16193359375,39.1453114643693,68.3238671875,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Load Data from stage table to target table.Paths[Output 0]"
-          TopLeft="116.999998256564,464.599994114041">
+          TopLeft="162.59999897182,363.399995931983">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-31.1999983906746,36.1999991506337"
+              EndConnector="0,49.3999986439944"
               Start="0,0"
-              End="-31.1999983906746,28.6999991506337">
+              End="0,41.8999986439944">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-27.1999983906746,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-27.1999983906746,0"
-                    Point2="-31.1999983906746,0"
-                    Point3="-31.1999983906746,4" />
-                  <mssgle:LineSegment
-                    End="-31.1999983906746,28.6999991506337" />
+                    End="0,41.8999986439944" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Load Data from stage table to target table.Paths[OLE DB Source Output]"
-          TopLeft="233.416664335877,68.2666662693024">
+          TopLeft="223.316664522141,68.2666662693024">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,135.533331421018"
+              EndConnector="0,55.5333326131105"
               Start="0,0"
-              End="0,128.033331421018">
+              End="0,48.0333326131105">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,128.033331421018" />
+                    End="0,48.0333326131105" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Load Data from stage table to target table.Paths[Lookup No Match Output]"
-          TopLeft="251.366664103667,375.899995827675">
+          TopLeft="239.366664282481,246.899997749925">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="212.233330233892,107.89999769032"
+              EndConnector="145.433331038554,78.8999981224535"
               Start="0,0"
-              End="212.233330233892,100.39999769032">
+              End="145.433331038554,71.3999981224535">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,40.0654536022004" />
+                    End="0,28.2220971353237" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,40.0654536022004"
-                    Point2="0,44.0654536022004"
-                    Point3="4,44.0654536022004" />
+                    Point1="0,28.2220971353237"
+                    Point2="0,32.2220971353237"
+                    Point3="4,32.2220971353237" />
                   <mssgle:LineSegment
-                    End="208.233330233892,44.0654536022004" />
+                    End="141.433331038554,32.2220971353237" />
                   <mssgle:CubicBezierSegment
-                    Point1="208.233330233892,44.0654536022004"
-                    Point2="212.233330233892,44.0654536022004"
-                    Point3="212.233330233892,48.0654536022004" />
+                    Point1="141.433331038554,32.2220971353237"
+                    Point2="145.433331038554,32.2220971353237"
+                    Point3="145.433331038554,36.2220971353237" />
                   <mssgle:LineSegment
-                    End="212.233330233892,100.39999769032" />
+                    End="145.433331038554,71.3999981224535" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="50.3102783981959,49.0654536022004,111.6127734375,11.609375"
+              BoundingBox="16.910278800527,37.2220971353237,111.6127734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Load Data from stage table to target table.Paths[Lookup Match Output]"
-          TopLeft="233.899997437,375.899995827675">
+          TopLeft="204.433330949147,246.899997749925">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-36.0999991804356,67.8999982863661"
+              EndConnector="-39.233331932624,74.8999981820578"
               Start="0,0"
-              End="-36.0999991804356,60.3999982863661">
+              End="-39.233331932624,67.3999981820578">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,29.949999143183" />
+                    End="0,26.5885307260991" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,29.949999143183"
-                    Point2="0,33.949999143183"
-                    Point3="-4,33.949999143183" />
+                    Point1="0,26.5885307260991"
+                    Point2="0,30.5885307260991"
+                    Point3="-4,30.5885307260991" />
                   <mssgle:LineSegment
-                    End="-32.0999991804356,33.949999143183" />
+                    End="-35.233331932624,30.5885307260991" />
                   <mssgle:CubicBezierSegment
-                    Point1="-32.0999991804356,33.949999143183"
-                    Point2="-36.0999991804356,33.949999143183"
-                    Point3="-36.0999991804356,37.949999143183" />
+                    Point1="-35.233331932624,30.5885307260991"
+                    Point2="-39.233331932624,30.5885307260991"
+                    Point3="-39.233331932624,34.5885307260991" />
                   <mssgle:LineSegment
-                    End="-36.0999991804356,60.3999982863661" />
+                    End="-39.233331932624,67.3999981820578" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-66.2413863089678,38.949999143183,96.3827734375,11.609375"
+              BoundingBox="-67.808052685062,35.5885307260991,96.3827734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Load Data from stage table to target table.Paths[Data Conversion Output]"
-          TopLeft="234.949997541308,245.39999769032">
+          TopLeft="222.84999781698,165.399998882413">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,88.8999981373553"
+              EndConnector="0,39.8999988675119"
               Start="0,0"
-              End="0,81.3999981373553">
+              End="0,32.3999988675119">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,81.3999981373553" />
+                    End="0,32.3999988675119" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -7273,7 +7249,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=]]></arrayElement>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Load Data from stage table to target table\OLE DB Source">
+    design-time-name="Package\Load Data from stage table to target table\Staged Data">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
