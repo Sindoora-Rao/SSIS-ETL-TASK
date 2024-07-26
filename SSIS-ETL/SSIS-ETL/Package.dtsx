@@ -11,8 +11,8 @@
   DTS:LocaleID="4105"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="240"
-  DTS:VersionGUID="{93FA3FBF-92CD-4BDC-8CDD-4DB459E8409A}">
+  DTS:VersionBuild="241"
+  DTS:VersionGUID="{AB1FB4D9-67EA-4DA0-90C9-7BFC2282086E}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -1851,6 +1851,7 @@ public class ScriptMain : UserComponent
         DateTime SafeParseDate(string dateStr)
         {
             DateTime parsedDate;
+            // Attempt to parse the date using the default DateTime.TryParse method
             if (DateTime.TryParse(dateStr, out parsedDate))
             {
                 // If the date is valid, return it
@@ -1862,13 +1863,14 @@ public class ScriptMain : UserComponent
                 string[] formats = { "dd/MM/yyyy", "MM/dd/yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "M/d/yyyy", "d/M/yyyy" };
                 foreach (var format in formats)
                 {
+                    // Try parsing the date using different common formats
                     if (DateTime.TryParseExact(dateStr, format, null, System.Globalization.DateTimeStyles.None, out parsedDate))
                     {
                         return parsedDate;
                     }
                 }
 
-                // If all parsing attempts fail, find the next valid date
+                // If all parsing attempts fail, try to correct the date by adjusting day/month/year
                 string[] parts = dateStr.Split(new char[] { '/', '-', ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length >= 3)
                 {
@@ -1876,6 +1878,7 @@ public class ScriptMain : UserComponent
                     int month = int.Parse(parts[1]);
                     int day = int.Parse(parts[2]);
 
+                    // Adjust the date to find the next valid date
                     while (!DateTime.TryParse($"{year}-{month}-{day}", out parsedDate))
                     {
                         if (day > DateTime.DaysInMonth(year, month))
@@ -1904,26 +1907,35 @@ public class ScriptMain : UserComponent
         // Check and clean RegistrationDate
         if (Row.RegistrationDate_IsNull || string.IsNullOrWhiteSpace(Row.RegistrationDate))
         {
+            // If RegistrationDate is null or empty, set CleanRegistrationDate_IsNull to true
             Row.CleanRegistrationDate_IsNull = true;
+            // No date to compare for oldness
             Row.IsDateOld = false;
         }
         else
         {
+            // Trim the date string to remove any leading or trailing whitespace
             string dateStr = Row.RegistrationDate.Trim();
+            // Parse the date safely using the SafeParseDate method
             DateTime parsedDate = SafeParseDate(dateStr);
 
+            // Set the cleaned registration date
             Row.CleanRegistrationDate = parsedDate;
+            // Check if the parsed date is older than the cutoff date
             Row.IsDateOld = parsedDate < cutoffDate;
         }
 
         // Check and clean LastLoginDate
         if (Row.LastLoginDate_IsNull || string.IsNullOrWhiteSpace(Row.LastLoginDate))
         {
+            // If LastLoginDate is null or empty, set it to the current date
             Row.CleanLastLoginDate = currentDate;
         }
         else
         {
+            // Trim the date string to remove any leading or trailing whitespace
             string dateStr = Row.LastLoginDate.Trim();
+            // Parse the date safely using the SafeParseDate method
             DateTime parsedDate = SafeParseDate(dateStr);
 
             // If LastLoginDate is a future date, correct it to currentDate
@@ -1933,11 +1945,14 @@ public class ScriptMain : UserComponent
         // Check and validate Email
         if (Row.Email_IsNull || string.IsNullOrWhiteSpace(Row.Email))
         {
+            // If Email is null or empty, set IsEmailValid to false
             Row.IsEmailValid = false;
         }
         else
         {
+            // Trim the email string to remove any leading or trailing whitespace
             string email = Row.Email.Trim();
+            // Validate the email format using a helper method IsValidEmail
             Row.IsEmailValid = IsValidEmail(email);
         }
     }
@@ -2262,7 +2277,7 @@ namespace SC_352229efcdd54405872c1725bdd177aa.Properties {
     <msb:CodeName>SC_352229efcdd54405872c1725bdd177aa</msb:CodeName>
     <msb:Language>msBuild</msb:Language>
     <msb:DisplayName>SC_352229efcdd54405872c1725bdd177aa</msb:DisplayName>
-    <msb:ProjectId>{377819C3-DC34-4409-95C0-D116EC6F369A}</msb:ProjectId>
+    <msb:ProjectId>{60C579B4-A2DF-40D8-AB1E-43A219BA893F}</msb:ProjectId>
   </msb:PropertyGroup>
   <msb:ItemGroup>
     <msb:Project Include="SC_352229efcdd54405872c1725bdd177aa.csproj" />
@@ -2409,7 +2424,7 @@ namespace SC_352229efcdd54405872c1725bdd177aa.Properties {
                     <arrayElement
                       dataType="System.String"><![CDATA[TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
-ZGUuDQ0KJAAAAAAAAABQRQAATAEDAKqJomYAAAAAAAAAAOAAIiALATAAABwAAAAIAAAAAAAAGjsA
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAEXAo2YAAAAAAAAAAOAAIiALATAAABwAAAAIAAAAAAAAGjsA
 AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAGAAAAAAAAAACAAAAAAgAAAAAAAAMAYIUAABAA
 ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAMg6AABPAAAAAEAAAFAEAAAAAAAAAAAAAAAAAAAA
 AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -2522,7 +2537,7 @@ YwBhAG4AbgBvAHQAIABiAGUAIABzAGUAdAAgAHQAbwAgAEYAYQBsAHMAZQAuACAAQQBzAHMAaQBn
 AG4AIABhACAAdgBhAGwAdQBlACAAdABvACAAdABoAGUAIABjAG8AbAB1AG0AbgAgAGkAbgBzAHQA
 ZQBhAGQALgAAD0kAbgBwAHUAdAAgADAAAHFTAEMAXwAzADUAMgAyADIAOQBlAGYAYwBkAGQANQA0
 ADQAMAA1ADgANwAyAGMAMQA3ADIANQBiAGQAZAAxADcANwBhAGEALgBQAHIAbwBwAGUAcgB0AGkA
-ZQBzAC4AUgBlAHMAbwB1AHIAYwBlAHMAAOcstxrCmihEkxRZga6eT7AABCABAQgDIAABBSABARER
+ZQBzAC4AUgBlAHMAbwB1AHIAYwBlAHMAAKnR3q+Qs0JIuvN+DZhXkU4ABCABAQgDIAABBSABARER
 BCABAQ4FIAEBEWULBwURKBE5ETkROQ4GIAMBCAgIBAAAETkEAAECDgMgAA4HAAICETkROQMHAQIF
 AAICDg4NBwgROR0OHQ4IDggICAcAAgIOEBE5DAAFAg4OEnkRfRAROQkAAgESgIkRgI0JIAIdDh0D
 EYCRBAABCA4FAAIICAgHAAQODhwcHAkgAwESTR0IElEDBhJNAwYdCAQgAQ4IBCABAggFIAIBCBwD
@@ -7226,6 +7241,19 @@ WHERE UserID = ?</property>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
+    design-time-name="Package\Load Data from stage table to target table\Staged Data">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
     design-time-name="Package\Load Data from stage table to target table\Lookup">
     <Properties>
       <Property>
@@ -7245,19 +7273,6 @@ WHERE UserID = ?</property>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Load Data from stage table to target table\Staged Data">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
