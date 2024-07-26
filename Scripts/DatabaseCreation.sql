@@ -71,8 +71,5 @@ IF (SELECT COUNT(*) FROM prod.Users) = 0
  (110, 'Robert Wilson', 31, 'robertwilson@example.com', '2020-02-20', '2023-01-20', 175.00);
  END
 
-truncate table stg.Users;
---Drop table prod.Users;
---Drop table stg.Users;
 SELECT * from prod.Users;
 SELECT * from stg.Users;
