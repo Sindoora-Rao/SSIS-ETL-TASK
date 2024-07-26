@@ -17,3 +17,38 @@ This repository contains an SSIS-based ETL solution designed to demonstrate data
   - Ensure the production table includes an ID column for unique record identification.
   - Create a data flow from the staging table to the production table, differentiating new from existing records based on ID.
   - Insert new records and update existing records.
+
+## Process
+
+1. **Data Extraction:**
+   - Utilized an SSIS package to read data from a CSV file.
+   - Data was loaded into a staging table with necessary type conversions.
+   
+2. **Data Cleaning:**
+   - Implemented checks to remove duplicate records.
+   - Applied transformations to standardize data types and formats.
+   - Error records were identified and handled appropriately.
+
+3. **Incremental Loading:**
+   - Designed a data flow to compare staging table data with the production table.
+   - Inserted new records into the production table.
+   - Updated existing records based on unique identifiers.
+
+## Error Handling
+
+- **Data Type Mismatches:**
+  - Implemented data type checks and conversions during the transformation phase.
+  
+- **Duplicate Records:**
+  - Applied deduplication logic to ensure unique records in the staging table.
+  
+- **Invalid Dates and Values:**
+  - Utilized custom scripts to parse and correct invalid dates.
+  - Handled erroneous values with default replacements or corrections.
+
+## Outcomes
+
+- Successfully migrated data from a CSV file to a SQL Server production table.
+- Ensured data integrity through type standardization and error handling.
+- Achieved efficient incremental loading with accurate identification of new and updated records.
+- Demonstrated proficiency in SSIS-based ETL processes and data management techniques.
