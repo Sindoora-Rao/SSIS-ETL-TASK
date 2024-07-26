@@ -11,8 +11,8 @@
   DTS:LocaleID="4105"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="243"
-  DTS:VersionGUID="{A32476BE-18EC-4A97-9D87-1A55806A006E}">
+  DTS:VersionBuild="245"
+  DTS:VersionGUID="{6A0D1D46-73B0-4BA4-9291-5E575BE344D6}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -6313,38 +6313,6 @@ WHERE UserID = ?</property>
                   name="OLE DB Command Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[RegistrationDate]"
-                      cachedDataType="dbDate"
-                      cachedName="RegistrationDate"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
-                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[RegistrationDate]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[LastLoginDate]"
-                      cachedDataType="dbDate"
-                      cachedName="LastLoginDate"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
-                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[LastLoginDate]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[Email]"
-                      cachedDataType="wstr"
-                      cachedLength="255"
-                      cachedName="Email"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
-                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[Email]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[Age]"
-                      cachedDataType="i4"
-                      cachedName="Age"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
-                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[Age]" />
-                    <inputColumn
-                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[FullName]"
-                      cachedDataType="wstr"
-                      cachedLength="255"
-                      cachedName="FullName"
-                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
-                      lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[FullName]" />
-                    <inputColumn
                       refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[PurchaseTotal]"
                       cachedCodepage="1252"
                       cachedDataType="str"
@@ -6358,6 +6326,38 @@ WHERE UserID = ?</property>
                       cachedName="UserID"
                       externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
                       lineageId="Package\Load Data from stage table to target table\Lookup.Outputs[Lookup Match Output].Columns[UserID]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[FullName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FullName"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[FullName]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[Age]"
+                      cachedDataType="i4"
+                      cachedName="Age"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[Age]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[Email]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Email"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[Email]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[RegistrationDate]"
+                      cachedDataType="dbDate"
+                      cachedName="RegistrationDate"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[RegistrationDate]" />
+                    <inputColumn
+                      refId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].Columns[LastLoginDate]"
+                      cachedDataType="dbDate"
+                      cachedName="LastLoginDate"
+                      externalMetadataColumnId="Package\Load Data from stage table to target table\UpdateData.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      lineageId="Package\Load Data from stage table to target table\Staged Data.Outputs[OLE DB Source Output].Columns[LastLoginDate]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -7100,21 +7100,21 @@ WHERE UserID = ?</property>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,97.3999979287386"
+              EndConnector="0,97.399997928739"
               Start="0,0"
-              End="0,89.8999979287386">
+              End="0,89.899997928739">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,89.8999979287386" />
+                    End="0,89.899997928739" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-34.16193359375,39.1453114643693,68.3238671875,11.609375"
+              BoundingBox="-34.16193359375,39.1453114643695,68.3238671875,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -7124,14 +7124,14 @@ WHERE UserID = ?</property>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,49.3999986439944"
+              EndConnector="0,49.399998643994"
               Start="0,0"
-              End="0,41.8999986439944">
+              End="0,41.899998643994">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,41.8999986439944" />
+                    End="0,41.899998643994" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
